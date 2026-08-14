@@ -2,23 +2,9 @@
   "tools": [
     {
       "tool_id": 101,
-      "name": "calculator",
-      "card": {
-        "id": 101,
-        "title": "Calculator",
-        "url": "calculator/",
-        "tags": ["calculator", "math", "arithmetic", "utility"],
-        "category": "UTILITY",
-        "description": "Perform basic arithmetic calculations quickly and easily.",
-        "footer": { "slug": "calculator", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z'></path></svg>"
-      }
-    },
-    {
-      "tool_id": 102,
       "name": "file-downloader",
       "card": {
-        "id": 102,
+        "id": 101,
         "title": "File Downloader",
         "url": "file-downloader/",
         "tags": ["file", "download", "manager", "utility"],
@@ -29,10 +15,10 @@
       }
     },
     {
-      "tool_id": 103,
+      "tool_id": 102,
       "name": "file-hash-verifier",
       "card": {
-        "id": 103,
+        "id": 102,
         "title": "File Hash Checker & Verifier",
         "url": "file-hash-verifier/",
         "tags": ["file", "hash", "verification", "security"],
@@ -43,10 +29,10 @@
       }
     },
     {
-      "tool_id": 104,
+      "tool_id": 103,
       "name": "uuid-generator",
       "card": {
-        "id": 104,
+        "id": 103,
         "title": "UUID Generator",
         "url": "uuid-generator/",
         "tags": ["uuid", "guid", "random", "generator", "id", "identifier"],
@@ -54,6 +40,20 @@
         "description": "Generate unique RFC4122 compliant version-4 UUIDs individually or in bulk.",
         "footer": { "slug": "uuid-generator", "version": "v1.0" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 20l4-16m2 16l4-16M6 9h14M4 15h14'></path></svg>"
+      }
+    },
+    {
+      "tool_id": 104,
+      "name": "calculator",
+      "card": {
+        "id": 104,
+        "title": "Calculator",
+        "url": "calculator/",
+        "tags": ["calculator", "math", "arithmetic", "utility"],
+        "category": "UTILITY",
+        "description": "Perform basic arithmetic calculations quickly and easily.",
+        "footer": { "slug": "calculator", "version": "v1.0" },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z'></path></svg>"
       }
     }
   ]

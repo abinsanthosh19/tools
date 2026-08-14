@@ -207,7 +207,7 @@
     }
 
     /* Card Containers */
-    .calc-card, .history-card {
+    .calc-card, .history-card, .info-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
@@ -386,6 +386,64 @@
       margin: auto 0;
       padding: 2rem 0;
     }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
   </style>
 </head>
 <body>
@@ -393,7 +451,7 @@
   <div class="container">
     <!-- Top Nav -->
     <div class="top-bar">
-      <a href="/" class="back-link">
+      <a href=".." class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         Back to Hub
       </a>
@@ -472,9 +530,103 @@
       </aside>
 
     </div>
+
+    <!-- How to Use & Documentation Section -->
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom: 0.5rem;">
+        <div class="panel-title" style="font-size: 1rem; color: var(--text-primary);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          How to Use & Guide
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <!-- 1. How to Open (Loaded Dynamically) -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            How to Open
+          </h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <!-- 2. How to Use -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+            How to Use
+          </h3>
+          <ul>
+            <li><strong>Enter Equations:</strong> Use the on-screen keypad or physical keyboard keys (numbers, operators, exponents, square roots).</li>
+            <li><strong>Calculate:</strong> Click <code>=</code> or press <code>Enter</code> to compute.</li>
+            <li><strong>Recall Memory:</strong> Click any item in the History panel to reload its output.</li>
+            <li><strong>Shortcuts:</strong> Press <code>Esc</code> to clear screen, <code>Backspace</code> to delete digits.</li>
+          </ul>
+        </div>
+
+        <!-- 3. USP -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            USP (Why It's Different)
+          </h3>
+          <ul>
+            <li><strong>Persistent Local Storage:</strong> History remains saved in local storage across browser refreshes.</li>
+            <li><strong>Full Keyboard Integration:</strong> Seamless, physical keyboard navigation without input lag.</li>
+            <li><strong>Dual Theme Glassmorphism:</strong> Dark and Light themes crafted specifically for long developer sessions.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      // Set current root domain dynamically
+      const currentHost = window.location.host || 'root domain';
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const hubPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) || '/';
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) {
+        hubEl.textContent = currentHost;
+      }
+
+      try {
+        const response = await fetch('/tools-config.json');
+        if (!response.ok) throw new Error('Config file unavailable');
+        const config = await response.json();
+
+        const tool = config.tools?.find(t => 
+          t.name?.toLowerCase() === hubPath.slice(1)
+        );
+
+        if (tool) {
+          const slug = tool.slug || tool.name.toLowerCase();
+          document.getElementById('openSlug').textContent = `/${slug}`;
+          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
+        } else {
+          throw new Error('Tool not found in configuration');
+        }
+      } catch (err) {
+        console.error('Error loading tool info:', err);
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
     // --------------------------------------------------------------------------
     // Theme Switcher Logic
     // --------------------------------------------------------------------------
@@ -517,7 +669,6 @@
 
     function appendValue(val) {
       if (isEvaluated) {
-        // Reset expression if starting new input after calculation unless it's an operator
         if (['+', '-', '*', '/', '^', '%'].includes(val)) {
           currentExpression = resultLine.textContent;
         } else {
@@ -549,7 +700,6 @@
     function safeEval(expr) {
       if (!expr.trim()) return 0;
       
-      // Sanitize and transform mathematical notation for safe JS parsing
       let sanitized = expr
         .replace(/×/g, '*')
         .replace(/÷/g, '/')
@@ -558,16 +708,13 @@
         .replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)')
         .replace(/√(\d+(\.\d+)?)/g, 'Math.sqrt($1)');
 
-      // Allow only safe characters (digits, math operators, basic Math functions)
       if (/[^0-9\+\-\*\/\%\.\(\)\s\*\*\sMath\.sqrt]/.test(sanitized.replace(/Math\.sqrt/g, ''))) {
         throw new Error('Invalid Expression');
       }
 
-      // Safe evaluation using Function
       const res = new Function(`return ${sanitized}`)();
       if (!isFinite(res) || isNaN(res)) throw new Error('Math Error');
       
-      // Fix floating point precision artifacts (e.g. 0.1 + 0.2 = 0.30000000000000004)
       return Math.round(res * 1e10) / 1e10;
     }
 
@@ -578,7 +725,6 @@
         const result = safeEval(currentExpression);
         resultLine.textContent = result;
         
-        // Save to History
         saveHistoryItem(currentExpression, result);
         isEvaluated = true;
       } catch (err) {
@@ -617,7 +763,7 @@
 
     function saveHistoryItem(exp, res) {
       history.push({ expression: exp, result: res });
-      if (history.length > 30) history.shift(); // keep max 30 items
+      if (history.length > 30) history.shift();
       localStorage.setItem('calc_history', JSON.stringify(history));
       renderHistory();
     }
@@ -643,7 +789,6 @@
       });
     });
 
-    // Physical Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if (e.key >= '0' && e.key <= '9') appendValue(e.key);
       else if (['+', '-', '*', '/', '.', '(', ')', '%', '^'].includes(e.key)) appendValue(e.key);
@@ -652,7 +797,6 @@
       else if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearAll();
     });
 
-    // Initial Render
     renderHistory();
   </script>
 </body>

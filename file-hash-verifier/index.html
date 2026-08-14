@@ -60,7 +60,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 4rem;
     }
 
     .header-bar {
@@ -384,12 +384,79 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      width: 100%;
+      max-width: 800px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      box-shadow: 0 10px 30px var(--shadow-color);
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: monospace;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
   </style>
 </head>
 <body>
 
   <div class="header-bar">
-    <a href="/" class="back-link">
+    <a href=".." class="back-link">
       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
       Back to Tools
     </a>
@@ -428,9 +495,6 @@
       </div>
     </div>
 
-    <!-- Status Banner -->
-    <div class="status-banner" id="statusBanner"></div>
-
     <!-- File Meta -->
     <div class="file-meta-grid" id="fileMeta" style="display: none;">
       <div class="meta-item">
@@ -446,6 +510,9 @@
         <span class="meta-value" id="metaType">-</span>
       </div>
     </div>
+
+    <!-- Status Banner -->
+    <div class="status-banner" id="statusBanner"></div>
 
     <!-- Hash Verification Input -->
     <div class="verify-group">
@@ -508,7 +575,96 @@
     </div>
   </div>
 
+  <!-- How to Use & Documentation Section -->
+  <section class="info-card">
+    <div style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main);">
+      <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      How to Use & Guide
+    </div>
+
+    <div class="info-grid">
+      <!-- 1. How to Open -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          How to Open
+        </h3>
+        <ol>
+          <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+          <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+          <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+        </ol>
+      </div>
+
+      <!-- 2. How to Use -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+          How to Use
+        </h3>
+        <ul>
+          <li><strong>Upload File:</strong> Drag & drop any file into the drop zone or click to browse.</li>
+          <li><strong>Generate Hashes:</strong> Automatically computes MD5, SHA-1, SHA-256, and SHA-512 checksums in real time.</li>
+          <li><strong>Verify Integrity:</strong> Paste an expected hash into the verification input to trigger automatic matching.</li>
+        </ul>
+      </div>
+
+      <!-- 3. USP -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          USP (Why It's Different)
+        </h3>
+        <ul>
+          <li><strong>100% Private & Local:</strong> Processing happens entirely in browser memory; no files are ever uploaded.</li>
+          <li><strong>Chunked Processing:</strong> Handles large files smoothly with non-blocking UI yield and WebCrypto speed.</li>
+          <li><strong>Multi-Hash Verification:</strong> Computes all major cryptographic algorithms in parallel with instant match detection.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const hubPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) || '/';
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) {
+        hubEl.textContent = currentHost;
+      }
+
+      try {
+        const response = await fetch('/tools-config.json');
+        if (!response.ok) throw new Error('Config file unavailable');
+        const config = await response.json();
+
+        const tool = config.tools?.find(t => 
+          t.name?.toLowerCase() === hubPath.slice(1)
+        );
+
+        if (tool) {
+          const slug = tool.slug || tool.name.toLowerCase();
+          document.getElementById('openSlug').textContent = `/${slug}`;
+          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
+        } else {
+          throw new Error('Tool not found in configuration');
+        }
+      } catch (err) {
+        console.error('Error loading tool info:', err);
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
     // --------------------------------------------------------------------------
     // Theme Switcher
     // --------------------------------------------------------------------------
@@ -651,7 +807,7 @@
     function showBanner(msg, type = 'warning') {
       statusBanner.textContent = msg;
       statusBanner.className = `status-banner ${type}`;
-      statusBanner.style.display = 'block'; // Explicitly set display block
+      statusBanner.style.display = 'block';
     }
 
     function hideBanner() {
@@ -714,7 +870,6 @@
 
       const md5Engine = createMD5State();
 
-      // Read whole arrayBuffer for WebCrypto (if file < 500MB) or in chunks
       try {
         const fullBuffer = await file.arrayBuffer();
 
@@ -732,7 +887,6 @@
           progressText.textContent = `Computing MD5 & preparing WebCrypto digests...`;
           progressPercent.textContent = `${percent}%`;
 
-          // Yield to main thread every few chunks so UI stays silky smooth
           if (currentChunk % 5 === 0) {
             await new Promise(r => setTimeout(r, 0));
           }
