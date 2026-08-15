@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tool Not Found</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --input-bg: rgba(15, 23, 42, 0.6);
+      --border-color: #334155;
+      --shadow-color: rgba(0, 0, 0, 0.37);
+      --tag-bg: rgba(59, 130, 246, 0.15);
+      --tag-color: #60a5fa;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+      --input-bg: #ffffff;
+      --border-color: #cbd5e1;
+      --shadow-color: rgba(148, 163, 184, 0.2);
+      --tag-bg: #dbeafe;
+      --tag-color: #1d4ed8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .header-bar {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-btn {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--accent-color);
+    }
+
+    /* Container for 404 card and Loader */
+    .content-container {
+      width: 100%;
+      max-width: 540px;
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Loader State */
+    .redirect-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent-color);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 404 Card Styling */
+    .not-found-card {
+      display: none; /* Shown only if redirect fails */
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 4px 20px var(--shadow-color);
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .error-code {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .error-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .error-path {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      color: var(--tag-color);
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.35rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .error-description {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 1rem 0 2rem 0;
+    }
+
+    .home-btn {
+      background: var(--accent-color);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .home-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <a href="/" class="brand">Developer Utilities</a>
+    <button class="theme-btn" id="themeToggleBtn">
+      <span id="themeToggleText">Light Mode</span>
+    </button>
+  </div>
+
+  <div class="content-container">
+    <!-- Redirect Checking State -->
+    <div id="redirectLoader" class="redirect-loader">
+      <div class="spinner"></div>
+      <span>Checking shortlink redirection...</span>
+    </div>
+
+    <!-- 404 Error Display Card -->
+    <div id="notFoundCard" class="not-found-card">
+      <div class="error-code">404</div>
+      <h1 class="error-title">Tool Not Found</h1>
+      <p>The path <span id="requestedPath" class="error-path">/</span> does not exist or has been moved.</p>
+      <p class="error-description">Double-check the tool ID or path URL, or head back to the main directory to view all available developer tools.</p>
+      <a href="/" class="home-btn">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Back to Tools Directory
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Theme Switcher
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --------------------------------------------------------------------------
+    // Shortlink Redirection & Fallback
+    // --------------------------------------------------------------------------
+    async function handle404Redirection() {
+      const loader = document.getElementById('redirectLoader');
+      const card = document.getElementById('notFoundCard');
+      const pathDisplay = document.getElementById('requestedPath');
+
+      // Extract path segments (e.g., "/104" -> ["104"])
+      const path = window.location.pathname;
+      const pathSegments = path.split('/').filter(Boolean);
+      
+      pathDisplay.textContent = path;
+
+      if (pathSegments.length > 0) {
+        const querySegment = pathSegments[0].toLowerCase();
+        const possibleId = parseInt(querySegment, 10);
+
+        try {
+          const configRes = await fetch('/tools-config.json');
+          if (configRes.ok) {
+            const config = await configRes.json();
+            
+            // Match by tool_id (e.g. 104) OR by folder name (e.g. uuid-generator)
+            const matchedTool = config.tools.find(t => 
+              (t.tool_id && t.tool_id === possibleId) || 
+              (t.name && t.name.toLowerCase() === querySegment)
+            );
+
+            if (matchedTool && matchedTool.name) {
+              // Redirect to destination folder path
+              window.location.replace(`/${matchedTool.name}/`);
+              return;
+            }
+          }
+        } catch (err) {
+          console.error('Error verifying tools-config.json:', err);
+        }
+      }
+
+      // If no match found or error occurs, show 404 UI
+      loader.style.display = 'none';
+      card.style.display = 'flex';
+    }
+
+    handle404Redirection();
+  </script>
+</body>
+</html>

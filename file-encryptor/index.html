@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>File Encrypter & Decrypter (.mjcrypt)</title>
+  <meta name="title" content="File Encrypter & Decrypter (.mjcrypt)">
+  <meta name="description" content="Securely encrypt and decrypt any file client-side using AES-256-GCM with a single password.">
+  <meta name="keywords" content="file encrypter, file decrypter, aes-256, privacy tool, client side encryption, mjcrypt">
+  <link rel="canonical" href="https://tools.mj46.in/file-encryptor/">
+
+  <!-- Open Graph / Social Media Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tools.mj46.in/file-encryptor/">
+  <meta property="og:title" content="File Encrypter & Decrypter (.mjcrypt)">
+  <meta property="og:description" content="Securely encrypt and decrypt any file client-side using AES-256-GCM with a single password.">
+  <meta property="og:image" content="https://tools.mj46.in/file-encryptor/og-image.png?date=140826">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-op-bg: rgba(99, 102, 241, 0.12);
+      --btn-op-color: #818cf8;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-op-bg: rgba(79, 70, 229, 0.08);
+      --btn-op-color: #4f46e5;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Main Layout */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .app-layout {
+        grid-template-columns: 1.25fr 0.75fr;
+      }
+    }
+
+    /* Card Containers */
+    .crypto-card, .history-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Mode Switcher Tabs */
+    .tab-switch {
+      display: flex;
+      background: var(--input-bg);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* File Drop Area */
+    .drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      background: var(--input-bg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--accent-primary);
+      background: var(--btn-hover);
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-info {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-primary);
+      word-break: break-all;
+      margin-top: 0.5rem;
+    }
+
+    /* Inputs */
+    .field-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .text-input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .text-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--accent-primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Status Notification */
+    .status-banner {
+      display: none;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      word-break: break-all;
+    }
+
+    .status-banner.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .status-banner.error {
+      display: block;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #f43f5e;
+    }
+
+    /* History Panel Header & Actions */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clear-history-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .clear-history-btn:hover {
+      color: #f43f5e;
+    }
+
+    /* History List */
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 4px;
+    }
+
+    .history-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+    }
+
+    .history-file {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      word-break: break-all;
+    }
+
+    .history-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .empty-history {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.85rem;
+      margin: auto 0;
+      padding: 2rem 0;
+    }
+
+    /* How to Use Section */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+      <h1>File Encrypter & Decrypter</h1>
+      <p class="subtitle">Client-side AES-256-GCM encryption for any file using single password security.</p>
+    </header>
+
+    <!-- App Split Layout -->
+    <div class="app-layout">
+      
+      <!-- Left: Primary Crypto Interface -->
+      <main class="crypto-card">
+        <!-- Tab Mode Switcher -->
+        <div class="tab-switch">
+          <button class="tab-btn active" id="tabEncrypt" onclick="switchMode('encrypt')">Encrypt File</button>
+          <button class="tab-btn" id="tabDecrypt" onclick="switchMode('decrypt')">Decrypt .mjcrypt</button>
+        </div>
+
+        <!-- File Upload Zone -->
+        <div class="drop-zone" id="dropZone">
+          <svg width="36" height="36" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 0.5rem; color: var(--text-secondary);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          <p style="font-weight: 600; font-size: 0.95rem;" id="dropText">Choose a file or drag & drop</p>
+          <p style="font-size: 0.75rem; color: var(--text-muted);" id="dropSubText">Any file format or size supported</p>
+          <div class="file-info" id="fileInfo"></div>
+          <input type="file" id="fileInput" onchange="handleFileSelect(this.files)" />
+        </div>
+
+        <!-- Password Field -->
+        <div class="field-group">
+          <label class="field-label" for="passInput">Secret Encryption Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="passInput" class="text-input" placeholder="Enter strong password..." />
+          </div>
+        </div>
+
+        <!-- Live Progress Indicator -->
+        <div id="progressContainer" style="display: none; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;">
+            <span id="progressStatus">Processing...</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div style="width: 100%; height: 8px; background: var(--input-bg); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color);">
+            <div id="progressBar" style="width: 0%; height: 100%; background: var(--accent-primary); transition: width 0.1s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="action-btn" id="processBtn" onclick="processFile()">
+          <span>Encrypt & Download .mjcrypt</span>
+        </button>
+
+        <!-- Status Notification -->
+        <div id="statusBanner" class="status-banner"></div>
+      </main>
+
+      <!-- Right: Activity Log -->
+      <aside class="history-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Recent Actions
+          </div>
+          <button class="clear-history-btn" id="clearHistoryBtn">Clear Memory</button>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <!-- History injected via JS -->
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- How to Use & Documentation Section -->
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom: 0.5rem;">
+        <div class="panel-title" style="font-size: 1rem; color: var(--text-primary);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          How to Use & Guide
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <!-- 1. How to Open -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            How to Open
+          </h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <!-- 2. How to Use -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+            How to Use
+          </h3>
+          <ul>
+            <li><strong>To Encrypt:</strong> Choose any file, set a password, and click <code>Encrypt & Download</code> to generate a <code>.mjcrypt</code> file.</li>
+            <li><strong>To Decrypt:</strong> Switch to Decrypt tab, upload the <code>.mjcrypt</code> file, type the password, and click <code>Decrypt & Restore File</code>.</li>
+            <li><strong>Zero Knowledge:</strong> All crypto runs inside your web browser. No files leave your device.</li>
+          </ul>
+        </div>
+
+        <!-- 3. USP -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            USP (Why It's Different)
+          </h3>
+          <ul>
+            <li><strong>AES-256-GCM + PBKDF2:</strong> Military-grade authenticated encryption standard.</li>
+            <li><strong>Smart Hybrid Download:</strong> Standard downloads for files ≤1GB, and disk streaming for >1GB files.</li>
+            <li><strong>Tamper Proof:</strong> Encrypted files cannot be modified or unlocked without the exact password.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const hubPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) || '/';
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) hubEl.textContent = currentHost;
+
+      try {
+        const response = await fetch('/tools-config.json');
+        if (!response.ok) throw new Error('Config file unavailable');
+        const config = await response.json();
+
+        const tool = config.tools?.find(t => 
+          t.name?.toLowerCase() === hubPath.slice(1)
+        );
+
+        if (tool) {
+          const slug = tool.slug || tool.name.toLowerCase();
+          document.getElementById('openSlug').textContent = `/${slug}`;
+          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
+        } else {
+          throw new Error('Tool not found in configuration');
+        }
+      } catch (err) {
+        document.getElementById('openSlug').textContent = '/file-encryptor';
+        document.getElementById('openToolId').textContent = '/106';
+      }
+    }
+
+    loadDynamicToolInfo();
+
+    // --------------------------------------------------------------------------
+    // Theme Switcher
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --------------------------------------------------------------------------
+    // Smart Chunk-Based Encrypter & Decrypter Engine
+    // --------------------------------------------------------------------------
+    const MAGIC = new TextEncoder().encode("MJCRYPT2"); // 8 Bytes Chunked Header Magic
+    const CHUNK_SIZE = 1024 * 1024; // 1 MB Slices
+    const GCM_TAG_SIZE = 16;
+    const ENCRYPTED_CHUNK_SIZE = CHUNK_SIZE + GCM_TAG_SIZE; // 1 MB + 16 Bytes Tag
+
+    let currentMode = 'encrypt';
+    let selectedFile = null;
+    let history = JSON.parse(localStorage.getItem('crypto_history') || '[]');
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('tabEncrypt').classList.toggle('active', mode === 'encrypt');
+      document.getElementById('tabDecrypt').classList.toggle('active', mode === 'decrypt');
+
+      const fileInput = document.getElementById('fileInput');
+      fileInput.value = '';
+      selectedFile = null;
+      document.getElementById('fileInfo').textContent = '';
+      document.getElementById('statusBanner').className = 'status-banner';
+      hideProgress();
+
+      if (mode === 'encrypt') {
+        fileInput.removeAttribute('accept');
+        document.getElementById('dropText').textContent = 'Choose a file or drag & drop';
+        document.getElementById('dropSubText').textContent = 'Any file format or size supported';
+        document.getElementById('processBtn').innerHTML = '<span>Encrypt & Download .mjcrypt</span>';
+      } else {
+        fileInput.setAttribute('accept', '.mjcrypt');
+        document.getElementById('dropText').textContent = 'Choose a .mjcrypt file';
+        document.getElementById('dropSubText').textContent = 'Upload an encrypted file to restore';
+        document.getElementById('processBtn').innerHTML = '<span>Decrypt & Restore File</span>';
+      }
+    }
+
+    function handleFileSelect(files) {
+      if (!files.length) return;
+      selectedFile = files[0];
+      document.getElementById('fileInfo').textContent = `Selected: ${selectedFile.name} (${formatBytes(selectedFile.size)})`;
+    }
+
+    // Drag & Drop
+    const dropZone = document.getElementById('dropZone');
+    ['dragenter', 'dragover'].forEach(eName => {
+      dropZone.addEventListener(eName, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(eName => {
+      dropZone.addEventListener(eName, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+    });
+    dropZone.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files.length) {
+        document.getElementById('fileInput').files = e.dataTransfer.files;
+        handleFileSelect(e.dataTransfer.files);
+      }
+    });
+
+    // Smart Hybrid Destination Writer
+    async function getDestinationWriter(suggestedName, mimeType, fileSize) {
+      const ONE_GB = 1024 * 1024 * 1024; // 1 GB threshold in Bytes
+
+      // If file > 1GB AND browser supports File System Access API -> Stream directly to disk
+      if (fileSize > ONE_GB && 'showSaveFilePicker' in window) {
+        const handle = await window.showSaveFilePicker({ suggestedName });
+        return await handle.createWritable();
+      } 
+      // Otherwise (Files <= 1GB or unsupported API) -> Standard warning-free download
+      else {
+        const chunks = [];
+        return {
+          write: async (data) => {
+            chunks.push(data);
+          },
+          close: async () => {
+            const blob = new Blob(chunks, { type: mimeType });
+            triggerDownload(blob, suggestedName);
+          }
+        };
+      }
+    }
+
+    // Key Derivation
+    async function deriveKey(password, salt) {
+      const enc = new TextEncoder();
+      const keyMaterial = await window.crypto.subtle.importKey(
+        'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']
+      );
+      return window.crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    // Helper to construct a unique 12-byte IV for each chunk
+    function createChunkIV(baseIv, chunkIndex) {
+      const iv = new Uint8Array(12);
+      iv.set(baseIv, 0); // First 8 bytes are Base IV
+      const view = new DataView(iv.buffer);
+      view.setUint32(8, chunkIndex, false); // Last 4 bytes are Big-Endian Chunk Counter
+      return iv;
+    }
+
+    async function processFile() {
+      const password = document.getElementById('passInput').value;
+      const processBtn = document.getElementById('processBtn');
+
+      if (!selectedFile) {
+        showStatus('Please select a file first.', 'error');
+        return;
+      }
+      if (!password) {
+        showStatus('Please enter a password.', 'error');
+        return;
+      }
+
+      processBtn.disabled = true;
+      showStatus(currentMode === 'encrypt' ? 'Preparing encryption...' : 'Preparing decryption...', 'success');
+
+      try {
+        if (currentMode === 'encrypt') {
+          await encryptChunked(selectedFile, password);
+        } else {
+          await decryptChunked(selectedFile, password);
+        }
+      } catch (err) {
+        console.error(err);
+        if (err.name !== 'AbortError') {
+          showStatus(currentMode === 'decrypt' ? 'Decryption failed: Incorrect password or corrupted file.' : 'Encryption failed.', 'error');
+        } else {
+          showStatus('Operation canceled by user.', 'error');
+        }
+      } finally {
+        processBtn.disabled = false;
+        hideProgress();
+      }
+    }
+
+    // Chunked Encryption
+    async function encryptChunked(file, password) {
+      const suggestedName = `${file.name}.mjcrypt`;
+      
+      // Request stream writer early so transient user action remains active for > 1GB picker prompt
+      const streamWriter = await getDestinationWriter(suggestedName, 'application/octet-stream', file.size);
+
+      const salt = window.crypto.getRandomValues(new Uint8Array(16));
+      const baseIv = window.crypto.getRandomValues(new Uint8Array(8));
+      const derivedKey = await deriveKey(password, salt);
+
+      // File metadata header
+      const metaObj = { name: file.name, type: file.type || 'application/octet-stream' };
+      const metaBytes = new TextEncoder().encode(JSON.stringify(metaObj));
+      const metaLen = new Uint32Array([metaBytes.byteLength]);
+
+      // Write Container Header
+      await streamWriter.write(MAGIC);
+      await streamWriter.write(salt);
+      await streamWriter.write(baseIv);
+      await streamWriter.write(metaLen);
+      await streamWriter.write(metaBytes);
+
+      let chunkIndex = 0;
+      let offset = 0;
+
+      showProgress('Encrypting file slices...');
+
+      while (offset < file.size) {
+        const chunkBlob = file.slice(offset, offset + CHUNK_SIZE);
+        const chunkBuffer = await chunkBlob.arrayBuffer();
+
+        const chunkIv = createChunkIV(baseIv, chunkIndex);
+        const encryptedChunk = await window.crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv: chunkIv }, derivedKey, chunkBuffer
+        );
+
+        await streamWriter.write(new Uint8Array(encryptedChunk));
+
+        offset += CHUNK_SIZE;
+        chunkIndex++;
+        updateProgress((offset / file.size) * 100);
+      }
+
+      await streamWriter.close();
+      showStatus(`Successfully encrypted as ${suggestedName}`, 'success');
+      saveHistoryItem(file.name, 'Encrypted to .mjcrypt');
+    }
+
+    // Chunked Decryption
+    async function decryptChunked(file, password) {
+      showProgress('Reading file header...');
+
+      // Read header (first 4KB is enough for magic + salt + iv + metadata)
+      const headerSlice = file.slice(0, 4096);
+      const headerBuffer = await headerSlice.arrayBuffer();
+
+      const magicCheck = new Uint8Array(headerBuffer, 0, 8);
+      for (let i = 0; i < 8; i++) {
+        if (magicCheck[i] !== MAGIC[i]) {
+          throw new Error('Invalid file format. Ensure this is a valid chunked .mjcrypt file.');
+        }
+      }
+
+      const salt = new Uint8Array(headerBuffer, 8, 16);
+      const baseIv = new Uint8Array(headerBuffer, 24, 8);
+      const metaLen = new Uint32Array(headerBuffer, 32, 1)[0];
+      const metaBytes = new Uint8Array(headerBuffer, 36, metaLen);
+      const metaObj = JSON.parse(new TextDecoder().decode(metaBytes));
+
+      const streamWriter = await getDestinationWriter(metaObj.name, metaObj.type, file.size);
+      const derivedKey = await deriveKey(password, salt);
+
+      const headerOffset = 36 + metaLen;
+      let offset = headerOffset;
+      let chunkIndex = 0;
+      const totalSize = file.size - headerOffset;
+
+      showProgress('Decrypting file slices...');
+
+      while (offset < file.size) {
+        const chunkBlob = file.slice(offset, offset + ENCRYPTED_CHUNK_SIZE);
+        const chunkBuffer = await chunkBlob.arrayBuffer();
+
+        const chunkIv = createChunkIV(baseIv, chunkIndex);
+        const decryptedChunk = await window.crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv: chunkIv }, derivedKey, chunkBuffer
+        );
+
+        await streamWriter.write(new Uint8Array(decryptedChunk));
+
+        offset += ENCRYPTED_CHUNK_SIZE;
+        chunkIndex++;
+        updateProgress(((offset - headerOffset) / totalSize) * 100);
+      }
+
+      await streamWriter.close();
+      showStatus(`Successfully restored original file: ${metaObj.name}`, 'success');
+      saveHistoryItem(metaObj.name, 'Decrypted from .mjcrypt');
+    }
+
+    function triggerDownload(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Progress Bar Updates
+    function showProgress(statusText) {
+      document.getElementById('progressContainer').style.display = 'block';
+      document.getElementById('progressStatus').textContent = statusText;
+      updateProgress(0);
+    }
+
+    function updateProgress(percent) {
+      const clamped = Math.min(Math.max(percent, 0), 100).toFixed(0);
+      document.getElementById('progressBar').style.width = `${clamped}%`;
+      document.getElementById('progressPercent').textContent = `${clamped}%`;
+    }
+
+    function hideProgress() {
+      document.getElementById('progressContainer').style.display = 'none';
+    }
+
+    function showStatus(msg, type) {
+      const banner = document.getElementById('statusBanner');
+      banner.textContent = msg;
+      banner.className = `status-banner ${type}`;
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024, sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // --------------------------------------------------------------------------
+    // History Tracking
+    // --------------------------------------------------------------------------
+    function renderHistory() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+      if (history.length === 0) {
+        historyList.innerHTML = '<div class="empty-history">No encryption/decryption history yet.</div>';
+        return;
+      }
+
+      history.slice().reverse().forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <div class="history-file">${escapeHtml(item.fileName)}</div>
+          <div class="history-meta">${item.action} • ${item.time}</div>
+        `;
+        historyList.appendChild(div);
+      });
+    }
+
+    function saveHistoryItem(fileName, action) {
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      history.push({ fileName, action, time });
+      if (history.length > 20) history.shift();
+      localStorage.setItem('crypto_history', JSON.stringify(history));
+      renderHistory();
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+      history = [];
+      localStorage.removeItem('crypto_history');
+      renderHistory();
+    });
+
+    renderHistory();
+  </script>
+</body>
+</html>

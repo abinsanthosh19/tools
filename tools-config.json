@@ -55,6 +55,56 @@
         "footer": { "slug": "calculator", "version": "v1.0" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z'></path></svg>"
       }
+    },
+    {
+      "tool_id": 105,
+      "name": "file-encryptor",
+      "card": {
+        "id": 105,
+        "title": "File Encrypter & Decrypter",
+        "url": "file-encryptor/",
+        "tags": [
+          "file-encryptor",
+          "aes-256",
+          "mjcrypt",
+          "decrypter",
+          "encryption",
+          "privacy",
+          "security"
+        ],
+        "category": "SECURITY",
+        "description": "Securely encrypt and decrypt any file client-side using AES-256-GCM with a single password.",
+        "footer": {
+          "slug": "file-encryptor",
+          "version": "v1.0"
+        },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'></path></svg>"
+      }
+    },
+    {
+      "tool_id": 106,
+      "name": "qr-code",
+      "card": {
+        "id": 106,
+        "title": "QR Code Generator & Reader",
+        "url": "qr-code/",
+        "tags": [
+          "qr-code",
+          "generator",
+          "scanner",
+          "reader",
+          "decoder",
+          "privacy",
+          "utilities"
+        ],
+        "category": "UTILITIES",
+        "description": "Generate custom QR codes or scan and decode existing QR code images entirely in your browser.",
+        "footer": {
+          "slug": "qr-code",
+          "version": "v1.0"
+        },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><rect x='3' y='3' width='6' height='6' stroke-width='2'/><rect x='15' y='3' width='6' height='6' stroke-width='2'/><rect x='3' y='15' width='6' height='6' stroke-width='2'/><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 15h2v2h-2zM19 19h2v2h-2zM17 17h2v2h-2z'/></svg>"
+      }
     }
   ]
 }
