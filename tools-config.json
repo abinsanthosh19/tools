@@ -105,6 +105,20 @@
         },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><rect x='3' y='3' width='6' height='6' stroke-width='2'/><rect x='15' y='3' width='6' height='6' stroke-width='2'/><rect x='3' y='15' width='6' height='6' stroke-width='2'/><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 15h2v2h-2zM19 19h2v2h-2zM17 17h2v2h-2z'/></svg>"
       }
+    },
+    {
+      "tool_id": 107,
+      "name": "color-picker",
+      "card": {
+        "id": 107,
+        "title": "Color Picker",
+        "url": "color-picker/",
+        "tags": ["color picker", "hex", "rgb", "hsl", "eyedropper", "utility"],
+        "category": "UTILITY",
+        "description": "Pick colors visually or sample them straight from an uploaded image, with instant HEX, RGB, and HSL values.",
+        "footer": { "slug": "color-picker", "version": "v1.0" },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 22 1-1h3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 21v-3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z'></path></svg>"
+      }
     }
   ]
 }

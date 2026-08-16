@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>Color Picker</title>
+  <meta name="title" content="Color Picker">
+  <meta name="description" content="Pick colors visually or sample them straight from an uploaded image, and get instant HEX, RGB, and HSL values.">
+  <meta name="keywords" content="color picker, image color picker, hex, rgb, hsl, eyedropper, utility">
+  <link rel="canonical" href="https://tools.mj46.in/color-picker/">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tools.mj46.in/color-picker/">
+  <meta property="og:title" content="Color Picker">
+  <meta property="og:description" content="Pick colors visually or sample them straight from an uploaded image, and get instant HEX, RGB, and HSL values.">
+  <meta property="og:image" content="https://tools.mj46.in/color-picker/og-image.png?date=160826">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tools.mj46.in/color-picker/">
+  <meta name="twitter:title" content="Color Picker">
+  <meta name="twitter:description" content="Pick colors visually or sample them straight from an uploaded image, and get instant HEX, RGB, and HSL values.">
+  <meta name="twitter:image" content="https://tools.mj46.in/color-picker/og-image.png?date=160826">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-op-bg: rgba(99, 102, 241, 0.12);
+      --btn-op-color: #818cf8;
+
+      --bg-gradient:
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-op-bg: rgba(79, 70, 229, 0.08);
+      --btn-op-color: #4f46e5;
+
+      --bg-gradient:
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Main App Split View */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .app-layout {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    /* Card Containers */
+    .picker-card, .history-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .image-section {
+      margin-top: 1.5rem;
+    }
+
+    /* Panel Header (shared) */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clear-history-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .clear-history-btn:hover {
+      color: #f43f5e;
+    }
+
+    /* Swatch */
+    .swatch-frame {
+      position: relative;
+      width: 100%;
+      height: 130px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    .swatch-frame:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .swatch-display {
+      width: 100%;
+      height: 100%;
+      transition: background-color 0.1s ease;
+    }
+
+    .swatch-input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+    }
+
+    .swatch-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+
+    /* RGB Sliders */
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .slider-row label {
+      width: 16px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent-primary);
+      height: 4px;
+      cursor: pointer;
+    }
+
+    .slider-row .slider-val {
+      width: 34px;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-primary);
+    }
+
+    /* Value Rows (HEX / RGB / HSL) */
+    .value-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .value-row label {
+      width: 36px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .value-row input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    .copy-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      padding: 5px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    /* Eyedropper Button */
+    .eyedropper-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 0.35rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      background: var(--btn-op-bg);
+      color: var(--btn-op-color);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .eyedropper-btn:hover {
+      background: var(--accent-primary);
+      color: #ffffff;
+    }
+
+    .eyedropper-btn[hidden] {
+      display: none;
+    }
+
+    /* Saved Colors List */
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding-right: 4px;
+    }
+
+    .history-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .history-item:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(-2px);
+    }
+
+    .chip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .chip-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .chip-hex {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chip-remove {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      line-height: 1;
+      padding: 4px;
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+
+    .chip-remove:hover {
+      color: #f43f5e;
+    }
+
+    .empty-history {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.85rem;
+      margin: auto 0;
+      padding: 2rem 0;
+    }
+
+    /* Image Sampler */
+    .dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.75rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      background: var(--icon-bg);
+    }
+
+    .dropzone svg {
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .dropzone strong {
+      color: var(--accent-primary);
+    }
+
+    #imageFileInput {
+      display: none;
+    }
+
+    .image-canvas-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .image-canvas-wrap.active {
+      display: flex;
+    }
+
+    #imageCanvas {
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      cursor: crosshair;
+      display: block;
+    }
+
+    .canvas-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .remove-image-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .remove-image-btn:hover {
+      color: #f43f5e;
+    }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m2 22 1-1h3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>
+      </div>
+      <h1>Color Picker</h1>
+      <p class="subtitle">Pick colors visually or sample them straight from an image, get instant HEX, RGB & HSL.</p>
+    </header>
+
+    <!-- Pick Color From Image -->
+    <section class="picker-card image-section" style="margin-bottom: 2rem;">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.5" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15l-5-5L5 21"/></svg>
+          Pick Color From Image
+        </div>
+      </div>
+
+      <div class="dropzone" id="dropzone">
+        <svg width="26" height="26" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"/></svg>
+        <div><strong>Click to upload</strong> or drag & drop an image here</div>
+        <input type="file" id="imageFileInput" accept="image/*">
+      </div>
+
+      <div class="image-canvas-wrap" id="imageCanvasWrap">
+        <canvas id="imageCanvas"></canvas>
+        <div class="canvas-hint">Click anywhere on the image to sample that pixel's color.</div>
+        <button class="remove-image-btn" id="removeImageBtn">Remove Image</button>
+      </div>
+    </section>
+
+    <!-- App Split Layout -->
+    <div class="app-layout">
+
+      <!-- Left: Picker Controls -->
+      <main class="picker-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m2 22 1-1h3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>
+            Manual Selection
+          </div>
+        </div>
+
+        <div class="swatch-frame" id="swatchFrame">
+          <div class="swatch-display" id="swatchDisplay"></div>
+          <input type="color" id="colorInput" class="swatch-input" value="#6366f1" aria-label="Choose a color">
+          <span class="swatch-hint">Click to open picker</span>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-row">
+            <label for="rSlider">R</label>
+            <input type="range" id="rSlider" min="0" max="255" value="99">
+            <span class="slider-val" id="rVal">99</span>
+          </div>
+          <div class="slider-row">
+            <label for="gSlider">G</label>
+            <input type="range" id="gSlider" min="0" max="255" value="102">
+            <span class="slider-val" id="gVal">102</span>
+          </div>
+          <div class="slider-row">
+            <label for="bSlider">B</label>
+            <input type="range" id="bSlider" min="0" max="255" value="241">
+            <span class="slider-val" id="bVal">241</span>
+          </div>
+        </div>
+
+        <div class="value-row">
+          <label for="hexField">HEX</label>
+          <input type="text" id="hexField" value="#6366F1" spellcheck="false">
+          <button class="copy-btn" data-copy-target="hexField">Copy</button>
+        </div>
+        <div class="value-row">
+          <label for="rgbField">RGB</label>
+          <input type="text" id="rgbField" value="rgb(99, 102, 241)" readonly>
+          <button class="copy-btn" data-copy-target="rgbField">Copy</button>
+        </div>
+        <div class="value-row">
+          <label for="hslField">HSL</label>
+          <input type="text" id="hslField" value="hsl(239, 84%, 67%)" readonly>
+          <button class="copy-btn" data-copy-target="hslField">Copy</button>
+        </div>
+
+        <button class="eyedropper-btn" id="eyedropperBtn" hidden>
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m2 22 1-1h3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-3l9-9"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>
+          Pick From Screen
+        </button>
+      </main>
+
+      <!-- Right: Saved Colors Panel -->
+      <aside class="history-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Saved Colors
+          </div>
+          <button class="clear-history-btn" id="clearHistoryBtn">Clear All</button>
+        </div>
+
+        <div class="history-list" id="historyList">
+          <!-- Saved colors injected via JS -->
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- How to Use & Documentation Section -->
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom: 0.5rem;">
+        <div class="panel-title" style="font-size: 1rem; color: var(--text-primary);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          How to Use & Guide
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <!-- 1. How to Open (Loaded Dynamically) -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            How to Open
+          </h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <!-- 2. How to Use -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+            How to Use
+          </h3>
+          <ul>
+            <li><strong>Manual Pick:</strong> Click the big swatch for the native picker, or drag the R/G/B sliders.</li>
+            <li><strong>Type Values:</strong> Edit the <code>HEX</code> field directly and press <code>Enter</code>.</li>
+            <li><strong>From Image:</strong> Upload a photo, then click any pixel to sample its exact color.</li>
+            <li><strong>Screen Pick:</strong> Use <code>Pick From Screen</code> to sample any pixel on your display (supported browsers).</li>
+          </ul>
+        </div>
+
+        <!-- 3. USP -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            USP (Why It's Different)
+          </h3>
+          <ul>
+            <li><strong>Image Sampling:</strong> Pull exact colors from any uploaded photo, no extra software needed.</li>
+            <li><strong>Pick Color From Screen:</strong> Sample any pixel on your entire display.</li>
+            <li><strong>Persistent Palette:</strong> Saved colors remain stored in local storage across browser refreshes.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const hubPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) || '/';
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) {
+        hubEl.textContent = currentHost;
+      }
+
+      try {
+        const response = await fetch('/tools-config.json');
+        if (!response.ok) throw new Error('Config file unavailable');
+        const config = await response.json();
+
+        const tool = config.tools?.find(t =>
+          t.name?.toLowerCase() === hubPath.slice(1)
+        );
+
+        if (tool) {
+          const slug = tool.slug || tool.name.toLowerCase();
+          document.getElementById('openSlug').textContent = `/${slug}`;
+          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
+        } else {
+          throw new Error('Tool not found in configuration');
+        }
+      } catch (err) {
+        console.error('Error loading tool info:', err);
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
+    // --------------------------------------------------------------------------
+    // Theme Switcher Logic
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --------------------------------------------------------------------------
+    // Color Conversion Helpers
+    // --------------------------------------------------------------------------
+    function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+
+    function toHex2(n) { return clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0'); }
+
+    function rgbToHex(r, g, b) {
+      return `#${toHex2(r)}${toHex2(g)}${toHex2(b)}`.toUpperCase();
+    }
+
+    function hexToRgb(hex) {
+      let h = hex.trim().replace('#', '');
+      if (h.length === 3) h = h.split('').map(c => c + c).join('');
+      if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+      return {
+        r: parseInt(h.substring(0, 2), 16),
+        g: parseInt(h.substring(2, 4), 16),
+        b: parseInt(h.substring(4, 6), 16)
+      };
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    // --------------------------------------------------------------------------
+    // Core State & UI Sync
+    // --------------------------------------------------------------------------
+    const swatchDisplay = document.getElementById('swatchDisplay');
+    const colorInput = document.getElementById('colorInput');
+    const rSlider = document.getElementById('rSlider');
+    const gSlider = document.getElementById('gSlider');
+    const bSlider = document.getElementById('bSlider');
+    const rVal = document.getElementById('rVal');
+    const gVal = document.getElementById('gVal');
+    const bVal = document.getElementById('bVal');
+    const hexField = document.getElementById('hexField');
+    const rgbField = document.getElementById('rgbField');
+    const hslField = document.getElementById('hslField');
+
+    let current = { r: 99, g: 102, b: 241 };
+
+    function setColor(r, g, b, { fromSliders = false, fromHex = false } = {}) {
+      r = clamp(r, 0, 255); g = clamp(g, 0, 255); b = clamp(b, 0, 255);
+      current = { r, g, b };
+      const hex = rgbToHex(r, g, b);
+      const hsl = rgbToHsl(r, g, b);
+
+      swatchDisplay.style.backgroundColor = hex;
+      colorInput.value = hex;
+
+      if (!fromSliders) {
+        rSlider.value = r; gSlider.value = g; bSlider.value = b;
+      }
+      rVal.textContent = r; gVal.textContent = g; bVal.textContent = b;
+
+      if (!fromHex) hexField.value = hex;
+      rgbField.value = `rgb(${r}, ${g}, ${b})`;
+      hslField.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+    }
+
+    setColor(current.r, current.g, current.b);
+
+    // Native color input
+    colorInput.addEventListener('input', () => {
+      const rgb = hexToRgb(colorInput.value);
+      if (rgb) setColor(rgb.r, rgb.g, rgb.b);
+    });
+    colorInput.addEventListener('change', () => {
+      saveHistoryItem(rgbToHex(current.r, current.g, current.b));
+    });
+
+    // Sliders
+    [rSlider, gSlider, bSlider].forEach(slider => {
+      slider.addEventListener('input', () => {
+        setColor(Number(rSlider.value), Number(gSlider.value), Number(bSlider.value), { fromSliders: true });
+      });
+      slider.addEventListener('change', () => {
+        saveHistoryItem(rgbToHex(current.r, current.g, current.b));
+      });
+    });
+
+    // Hex field
+    function applyHexField() {
+      const rgb = hexToRgb(hexField.value);
+      if (rgb) {
+        setColor(rgb.r, rgb.g, rgb.b, { fromHex: true });
+        saveHistoryItem(rgbToHex(rgb.r, rgb.g, rgb.b));
+      } else {
+        hexField.value = rgbToHex(current.r, current.g, current.b);
+      }
+    }
+    hexField.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); applyHexField(); hexField.blur(); }
+    });
+    hexField.addEventListener('blur', applyHexField);
+
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const target = document.getElementById(btn.getAttribute('data-copy-target'));
+        try {
+          await navigator.clipboard.writeText(target.value);
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1200);
+        } catch (err) {
+          console.error('Copy failed:', err);
+        }
+      });
+    });
+
+    // --------------------------------------------------------------------------
+    // EyeDropper (screen sampling), where supported
+    // --------------------------------------------------------------------------
+    const eyedropperBtn = document.getElementById('eyedropperBtn');
+    if ('EyeDropper' in window) {
+      eyedropperBtn.hidden = false;
+      eyedropperBtn.addEventListener('click', async () => {
+        try {
+          const result = await new window.EyeDropper().open();
+          const rgb = hexToRgb(result.sRGBHex);
+          if (rgb) {
+            setColor(rgb.r, rgb.g, rgb.b);
+            saveHistoryItem(rgbToHex(rgb.r, rgb.g, rgb.b));
+          }
+        } catch (err) {
+          // User cancelled the eyedropper - no action needed
+        }
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // Saved Colors (History) Persistence
+    // --------------------------------------------------------------------------
+    const historyList = document.getElementById('historyList');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    let history = JSON.parse(localStorage.getItem('color_picker_history') || '[]');
+
+    function renderHistory() {
+      historyList.innerHTML = '';
+      if (history.length === 0) {
+        historyList.innerHTML = '<div class="empty-history">No colors saved yet.</div>';
+        return;
+      }
+
+      history.slice().reverse().forEach((hex) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+          <div class="chip-left">
+            <div class="chip-swatch" style="background:${hex}"></div>
+            <div class="chip-hex">${hex}</div>
+          </div>
+          <button class="chip-remove" aria-label="Remove color">✕</button>
+        `;
+
+        div.querySelector('.chip-left').addEventListener('click', () => {
+          const rgb = hexToRgb(hex);
+          if (rgb) setColor(rgb.r, rgb.g, rgb.b);
+        });
+
+        div.querySelector('.chip-remove').addEventListener('click', (e) => {
+          e.stopPropagation();
+          history = history.filter(h => h !== hex);
+          localStorage.setItem('color_picker_history', JSON.stringify(history));
+          renderHistory();
+        });
+
+        historyList.appendChild(div);
+      });
+    }
+
+    function saveHistoryItem(hex) {
+      history = history.filter(h => h !== hex);
+      history.push(hex);
+      if (history.length > 24) history.shift();
+      localStorage.setItem('color_picker_history', JSON.stringify(history));
+      renderHistory();
+    }
+
+    clearHistoryBtn.addEventListener('click', () => {
+      history = [];
+      localStorage.removeItem('color_picker_history');
+      renderHistory();
+    });
+
+    renderHistory();
+
+    // --------------------------------------------------------------------------
+    // Pick Color From Image
+    // --------------------------------------------------------------------------
+    const dropzone = document.getElementById('dropzone');
+    const imageFileInput = document.getElementById('imageFileInput');
+    const imageCanvasWrap = document.getElementById('imageCanvasWrap');
+    const imageCanvas = document.getElementById('imageCanvas');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    const ctx = imageCanvas.getContext('2d', { willReadFrequently: true });
+
+    function loadImageFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxWidth = imageCanvasWrap.parentElement.clientWidth - 4;
+          const scale = Math.min(1, maxWidth / img.width);
+          imageCanvas.width = Math.round(img.width * scale);
+          imageCanvas.height = Math.round(img.height * scale);
+          ctx.drawImage(img, 0, 0, imageCanvas.width, imageCanvas.height);
+
+          dropzone.style.display = 'none';
+          imageCanvasWrap.classList.add('active');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    dropzone.addEventListener('click', () => imageFileInput.click());
+    imageFileInput.addEventListener('change', () => {
+      if (imageFileInput.files[0]) loadImageFile(imageFileInput.files[0]);
+    });
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (file) loadImageFile(file);
+    });
+
+    imageCanvas.addEventListener('click', (e) => {
+      const rect = imageCanvas.getBoundingClientRect();
+      const x = Math.round((e.clientX - rect.left) * (imageCanvas.width / rect.width));
+      const y = Math.round((e.clientY - rect.top) * (imageCanvas.height / rect.height));
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      setColor(pixel[0], pixel[1], pixel[2]);
+      saveHistoryItem(rgbToHex(pixel[0], pixel[1], pixel[2]));
+    });
+
+    removeImageBtn.addEventListener('click', () => {
+      ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+      imageCanvas.width = 0;
+      imageCanvas.height = 0;
+      imageCanvasWrap.classList.remove('active');
+      dropzone.style.display = '';
+      imageFileInput.value = '';
+    });
+  </script>
+</body>
+</html>
