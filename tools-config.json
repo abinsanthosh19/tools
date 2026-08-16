@@ -119,6 +119,20 @@
         "footer": { "slug": "color-picker", "version": "v1.0" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 22 1-1h3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 21v-3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z'></path></svg>"
       }
+    },
+    {
+      "tool_id": 108,
+      "name": "metadata-viewer",
+      "card": {
+        "id": 108,
+        "title": "Metadata Viewer",
+        "url": "metadata-viewer/",
+        "tags": ["metadata", "exif", "file inspector", "pdf", "id3", "utility"],
+        "category": "UTILITY",
+        "description": "Inspect hidden metadata in your files — EXIF, GPS, PDF document info, and audio ID3 tags — entirely in your browser.",
+        "footer": { "slug": "metadata-viewer", "version": "v1.0" },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><circle cx='16.5' cy='17.5' r='2.5' stroke-width='2'></circle><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18.5 19.5L21 22'></path></svg>"
+      }
     }
   ]
 }
