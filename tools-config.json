@@ -133,6 +133,20 @@
         "footer": { "slug": "metadata-viewer", "version": "v1.1" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><circle cx='16.5' cy='17.5' r='2.5' stroke-width='2'></circle><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18.5 19.5L21 22'></path></svg>"
       }
+    },
+    {
+      "tool_id": 109,
+      "name": "markdown-preview",
+      "card": {
+        "id": 109,
+        "title": "Markdown Preview",
+        "url": "markdown-preview/",
+        "tags": ["markdown", "preview", "editor", "gfm", "utility"],
+        "category": "UTILITY",
+        "description": "Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.",
+        "footer": { "slug": "markdown-preview", "version": "v1.0" },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 13h6M9 17h6M9 9h1'></path></svg>"
+      }
     }
   ]
 }

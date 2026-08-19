@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Applied immediately, before any CSS paints or CDN scripts load,
+       so the page never flashes the wrong theme on load. -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Primary Meta Tags -->
+  <title>Markdown Preview</title>
+  <meta name="title" content="Markdown Preview">
+  <meta name="description" content="Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.">
+  <meta name="keywords" content="markdown preview, markdown editor, gfm, live preview, markdown to html, utility">
+  <link rel="canonical" href="https://tools.mj46.in/markdown-preview/">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tools.mj46.in/markdown-preview/">
+  <meta property="og:title" content="Markdown Preview">
+  <meta property="og:description" content="Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.">
+  <meta property="og:image" content="https://tools.mj46.in/markdown-preview/og-image.png?date=180826">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tools.mj46.in/markdown-preview/">
+  <meta name="twitter:title" content="Markdown Preview">
+  <meta name="twitter:description" content="Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.">
+  <meta name="twitter:image" content="https://tools.mj46.in/markdown-preview/og-image.png?date=180826">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-op-bg: rgba(99, 102, 241, 0.12);
+      --btn-op-color: #818cf8;
+
+      --bg-gradient:
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-op-bg: rgba(79, 70, 229, 0.08);
+      --btn-op-color: #4f46e5;
+
+      --bg-gradient:
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Upload Section (Full Width) */
+    .upload-section {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Card Containers */
+    .picker-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Panel Header (shared) */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar-btns {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      padding: 5px 11px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .toolbar-btn:hover:not(:disabled) {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .toolbar-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .toolbar-btn.copied {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      background: var(--icon-bg);
+    }
+
+    .dropzone svg {
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .dropzone strong {
+      color: var(--accent-primary);
+    }
+
+    .dropzone small {
+      display: block;
+      margin-top: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    /* Editor / Preview Split */
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* Prevents grid columns from expanding when containing wide code/table/image elements */
+    .editor-layout > * {
+      min-width: 0;
+    }
+
+    @media (min-width: 900px) {
+      .editor-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .editor-textarea {
+      flex: 1;
+      width: 100%;
+      min-height: 460px;
+      resize: vertical;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .editor-textarea:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .editor-stats {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* Preview Pane */
+    .preview-pane {
+      flex: 1;
+      min-height: 460px;
+      max-height: 620px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.35rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .preview-placeholder {
+      color: var(--text-muted);
+      text-align: center;
+      padding: 3rem 0;
+      font-size: 0.9rem;
+    }
+
+    .preview-pane h1, .preview-pane h2, .preview-pane h3,
+    .preview-pane h4, .preview-pane h5, .preview-pane h6 {
+      margin: 1.2em 0 0.5em;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text-primary);
+    }
+
+    .preview-pane h1 { font-size: 1.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+    .preview-pane h2 { font-size: 1.4rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.25em; }
+    .preview-pane h3 { font-size: 1.15rem; }
+    .preview-pane h4 { font-size: 1.02rem; }
+
+    .preview-pane > *:first-child { margin-top: 0; }
+
+    .preview-pane p {
+      margin: 0.7em 0;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .preview-pane a {
+      color: var(--accent-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .preview-pane a:hover { text-decoration: underline; }
+
+    .preview-pane strong { color: var(--text-primary); }
+
+    .preview-pane ul, .preview-pane ol {
+      margin: 0.6em 0;
+      padding-left: 1.5em;
+      color: var(--text-secondary);
+    }
+
+    .preview-pane li { margin: 0.3em 0; }
+
+    .preview-pane li > input[type="checkbox"] {
+      margin-right: 6px;
+      accent-color: var(--accent-primary);
+    }
+
+    .preview-pane blockquote {
+      margin: 0.8em 0;
+      padding: 0.4em 1em;
+      border-left: 3px solid var(--accent-primary);
+      color: var(--text-muted);
+      background: var(--icon-bg);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .preview-pane code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      color: var(--text-primary);
+    }
+
+    .preview-pane pre {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1em;
+      overflow-x: auto;
+      max-width: 100%;
+      margin: 0.8em 0;
+    }
+
+    .preview-pane pre code {
+      background: none;
+      padding: 0;
+      color: #e6edf3;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .preview-pane table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      margin: 0.8em 0;
+      font-size: 0.85rem;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .preview-pane th, .preview-pane td {
+      border: 1px solid var(--border-color);
+      padding: 0.5em 0.75em;
+      text-align: left;
+    }
+
+    .preview-pane th {
+      background: var(--icon-bg);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    /* Fixed image sizing issue when inline styles/attributes specify explicit width/height */
+    .preview-pane img {
+      max-width: 100% !important;
+      height: auto !important;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+    }
+
+    .preview-pane hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 1.5em 0;
+    }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    /* ==========================================================================
+       MOBILE RESPONSIVENESS OVERRIDES
+       ========================================================================== */
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem 0.75rem 2rem;
+      }
+
+      header {
+        margin-bottom: 1.5rem;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .subtitle {
+        font-size: 0.88rem;
+      }
+
+      .picker-card, .info-card {
+        padding: 1rem;
+      }
+
+      .top-bar {
+        gap: 0.5rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .back-link, .theme-toggle {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+      }
+
+      .panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .toolbar-btns {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .editor-textarea, .preview-pane {
+        min-height: 280px;
+        max-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v6h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6M9 17h6M9 9h1"/></svg>
+      </div>
+      <h1>Markdown Preview</h1>
+      <p class="subtitle">Write or upload Markdown and watch it render live — GFM tables, task lists & highlighted code.</p>
+    </header>
+
+    <!-- Upload Zone (Full Width) -->
+    <section class="picker-card upload-section">
+      <div class="dropzone" id="dropzone">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"/></svg>
+        <div><strong>Click to upload</strong> a .md / .markdown / .txt file, or drag & drop it here</div>
+        <small>Or just start typing below — nothing leaves your browser</small>
+        <input type="file" id="fileInput" accept=".md,.markdown,.txt,text/markdown,text/plain">
+      </div>
+    </section>
+
+    <!-- Editor / Preview Split -->
+    <div class="editor-layout">
+
+      <!-- Left: Editor -->
+      <main class="picker-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Editor
+          </div>
+          <div class="toolbar-btns">
+            <button class="toolbar-btn" id="exampleBtn">Load Example</button>
+            <button class="toolbar-btn" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <textarea class="editor-textarea" id="editor" placeholder="# Start typing Markdown here...&#10;&#10;Or upload a .md file above." spellcheck="false"></textarea>
+        <div class="editor-stats" id="editorStats">0 words · 0 characters · 0 lines</div>
+      </main>
+
+      <!-- Right: Live Preview -->
+      <aside class="picker-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3" stroke-width="2"/></svg>
+            Live Preview
+          </div>
+          <div class="toolbar-btns">
+            <button class="toolbar-btn" id="copyHtmlBtn">Copy HTML</button>
+            <button class="toolbar-btn" id="downloadHtmlBtn">Download .html</button>
+            <button class="toolbar-btn" id="downloadMdBtn">Download .md</button>
+          </div>
+        </div>
+
+        <div class="preview-pane" id="preview">
+          <div class="preview-placeholder">Nothing to preview yet — start typing or upload a file.</div>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- How to Use & Documentation Section -->
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom: 0.5rem;">
+        <div class="panel-title" style="font-size: 1rem; color: var(--text-primary);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          How to Use & Guide
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <!-- 1. How to Open (Loaded Dynamically) -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            How to Open
+          </h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <!-- 2. How to Use -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+            How to Use
+          </h3>
+          <ul>
+            <li><strong>Type or Upload:</strong> Write directly in the editor, or upload a <code>.md</code> file.</li>
+            <li><strong>Watch It Render:</strong> The preview updates live as you type — no button needed.</li>
+            <li><strong>Export:</strong> Copy the rendered HTML, or download it as a standalone <code>.html</code> or the raw <code>.md</code>.</li>
+          </ul>
+        </div>
+
+        <!-- 3. USP -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            USP (Why It's Different)
+          </h3>
+          <ul>
+            <li><strong>GitHub-Flavored:</strong> Tables, task lists, and strikethrough render exactly like on GitHub.</li>
+            <li><strong>Highlighted Code:</strong> Fenced code blocks get real syntax highlighting, not plain text.</li>
+            <li><strong>Sanitized & Safe:</strong> Rendered HTML is cleaned before display, so pasted content can't run scripts.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================================================
+       Theme Switcher Logic — placed ABOVE the CDN library tags below
+       so it runs immediately after the DOM is parsed instead of
+       waiting on marked.js / DOMPurify / highlight.js to download.
+       ============================================================ -->
+  <script>
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    // Sync the button label with whatever the inline head script already applied.
+    applyTheme(htmlElement.getAttribute('data-theme'));
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+
+  <!-- ============================================================
+       Markdown Rendering Libraries (CDN)
+       ============================================================ -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/lib/marked.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.13/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css"> -->
+
+  <script src="assets/marked.umd.js"></script>
+  <script src="assets/purify.min.js"></script>
+  <script src="assets/highlight.min.js"></script>
+  <link rel="stylesheet" href="assets/github-dark.min.css">
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const hubPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) || '/';
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) {
+        hubEl.textContent = currentHost;
+      }
+
+      try {
+        const response = await fetch('/tools-config.json');
+        if (!response.ok) throw new Error('Config file unavailable');
+        const config = await response.json();
+
+        const tool = config.tools?.find(t =>
+          t.name?.toLowerCase() === hubPath.slice(1)
+        );
+
+        if (tool) {
+          const slug = tool.slug || tool.name.toLowerCase();
+          document.getElementById('openSlug').textContent = `/${slug}`;
+          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
+        } else {
+          throw new Error('Tool not found in configuration');
+        }
+      } catch (err) {
+        console.error('Error loading tool info:', err);
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
+    // --------------------------------------------------------------------------
+    // Markdown Renderer Setup
+    // --------------------------------------------------------------------------
+    if (window.marked) {
+      marked.setOptions({
+        gfm: true,
+        breaks: false,
+        headerIds: true,
+        mangle: false,
+        highlight: function (code, lang) {
+          if (window.hljs) {
+            try {
+              if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value;
+              return hljs.highlightAuto(code).value;
+            } catch (e) { return code; }
+          }
+          return code;
+        }
+      });
+    }
+
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    const editorStats = document.getElementById('editorStats');
+
+    function updateStats(text) {
+      const trimmed = text.trim();
+      const words = trimmed ? trimmed.split(/\s+/).length : 0;
+      const chars = text.length;
+      const lines = text ? text.split('\n').length : 0;
+      editorStats.textContent = `${words} words · ${chars} characters · ${lines} lines`;
+    }
+
+    function renderPreview() {
+      const raw = editor.value;
+      updateStats(raw);
+
+      if (!raw.trim()) {
+        preview.innerHTML = '<div class="preview-placeholder">Nothing to preview yet — start typing or upload a file.</div>';
+        return;
+      }
+
+      let html;
+      try {
+        html = window.marked ? marked.parse(raw) : escapeHtml(raw);
+      } catch (e) {
+        html = '<p style="color:#f43f5e;">Error parsing this Markdown.</p>';
+      }
+
+      preview.innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return `<pre>${div.innerHTML}</pre>`;
+    }
+
+    let renderTimer = null;
+    editor.addEventListener('input', () => {
+      clearTimeout(renderTimer);
+      renderTimer = setTimeout(renderPreview, 120);
+    });
+
+    // Scroll sync between editor and preview (guarded to avoid feedback loop)
+    let isSyncingScroll = false;
+    function syncScroll(source, target) {
+      if (isSyncingScroll) return;
+      isSyncingScroll = true;
+      const ratio = source.scrollTop / (source.scrollHeight - source.clientHeight || 1);
+      target.scrollTop = ratio * (target.scrollHeight - target.clientHeight);
+      requestAnimationFrame(() => { isSyncingScroll = false; });
+    }
+    editor.addEventListener('scroll', () => syncScroll(editor, preview));
+    preview.addEventListener('scroll', () => syncScroll(preview, editor));
+
+    // --------------------------------------------------------------------------
+    // Toolbar Actions
+    // --------------------------------------------------------------------------
+
+    document.getElementById('exampleBtn').addEventListener('click', async () => {
+      if (editor.value.trim() && !confirm('Replace current content with the example?')) return;
+      
+      try {
+        const res = await fetch('assets/example.md');
+        if (!res.ok) throw new Error('Could not fetch example.md');
+        editor.value = await res.text();
+        renderPreview();
+      } catch (err) {
+        alert('Failed to load example file.');
+        console.error(err);
+      }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (editor.value.trim() && !confirm('Clear all content?')) return;
+      editor.value = '';
+      renderPreview();
+    });
+
+    document.getElementById('copyHtmlBtn').addEventListener('click', async (e) => {
+      try {
+        await navigator.clipboard.writeText(preview.innerHTML);
+        const btn = e.currentTarget;
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1200);
+      } catch (err) { console.error('Copy failed:', err); }
+    });
+
+    document.getElementById('downloadHtmlBtn').addEventListener('click', async () => {
+      try {
+        const res = await fetch('assets/export-template.html');
+        if (!res.ok) throw new Error('Could not fetch export-template.html');
+        const template = await res.text();
+        
+        // Inject rendered HTML into template placeholder
+        const doc = template.replace('{{CONTENT}}', preview.innerHTML);
+        downloadFile(doc, 'markdown-export.html', 'text/html');
+      } catch (err) {
+        alert('Failed to load export template.');
+        console.error(err);
+      }
+    });
+
+    document.getElementById('downloadMdBtn').addEventListener('click', () => {
+      downloadFile(editor.value, 'document.md', 'text/markdown');
+    });
+
+    function downloadFile(content, filename, mime) {
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // --------------------------------------------------------------------------
+    // File Upload (click, browse, or drag & drop)
+    // --------------------------------------------------------------------------
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+
+    function loadFileIntoEditor(file) {
+      if (!file) return;
+      if (editor.value.trim() && !confirm(`Replace current content with "${file.name}"?`)) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        editor.value = e.target.result;
+        renderPreview();
+      };
+      reader.readAsText(file);
+    }
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) loadFileIntoEditor(fileInput.files[0]);
+      fileInput.value = '';
+    });
+
+    ['dragenter', 'dragover'].forEach((evt) => {
+      dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach((evt) => {
+      dropzone.addEventListener(evt, (e) => { e.preventDefault(); dropzone.classList.remove('dragover'); });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files.length) loadFileIntoEditor(e.dataTransfer.files[0]);
+    });
+
+    // Also allow dropping a file straight onto the editor itself
+    editor.addEventListener('dragover', (e) => e.preventDefault());
+    editor.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files.length) {
+        e.preventDefault();
+        loadFileIntoEditor(e.dataTransfer.files[0]);
+      }
+    });
+
+    renderPreview();
+  </script>
+</body>
+</html>
