@@ -7,7 +7,7 @@
   <!-- Primary Meta Tags -->
   <title>Metadata Viewer</title>
   <meta name="title" content="Metadata Viewer">
-  <meta name="description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, file hashes, and C2PA content-credential / AI-generation signals — entirely in your browser.">
+  <meta name="description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, and C2PA content-credential / AI-generation signals — entirely in your browser.">
   <meta name="keywords" content="metadata viewer, exif, file inspector, pdf metadata, id3 tags, c2pa, content credentials, ai detection, synthid, utility">
   <link rel="canonical" href="https://tools.mj46.in/metadata-viewer/">
 
@@ -15,14 +15,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tools.mj46.in/metadata-viewer/">
   <meta property="og:title" content="Metadata Viewer">
-  <meta property="og:description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, file hashes, and C2PA content-credential / AI-generation signals — entirely in your browser.">
+  <meta property="og:description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, and C2PA content-credential / AI-generation signals — entirely in your browser.">
   <meta property="og:image" content="https://tools.mj46.in/metadata-viewer/og-image.png?date=170826">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://tools.mj46.in/metadata-viewer/">
   <meta name="twitter:title" content="Metadata Viewer">
-  <meta name="twitter:description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, file hashes, and C2PA content-credential / AI-generation signals — entirely in your browser.">
+  <meta name="twitter:description" content="Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, and C2PA content-credential / AI-generation signals — entirely in your browser.">
   <meta name="twitter:image" content="https://tools.mj46.in/metadata-viewer/og-image.png?date=170826">
 
   <style>
@@ -663,7 +663,7 @@
         <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2v6h6"/><circle cx="16.5" cy="17.5" r="2.5" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 19.5L21 22"/></svg>
       </div>
       <h1>Metadata Viewer</h1>
-      <p class="subtitle">Deep file inspection — EXIF, GPS, document info, ID3 tags, hashes & AI-content provenance (C2PA).</p>
+      <p class="subtitle">Deep file inspection — EXIF, GPS, document info, ID3 tags & AI-content provenance (C2PA).</p>
     </header>
 
     <!-- Upload Zone (Full Width) -->
@@ -747,7 +747,6 @@
             <li><strong>Upload:</strong> Drop a file, or click to browse. It's inspected instantly and added to History.</li>
             <li><strong>Revisit:</strong> Click any past entry in History to reload its full breakdown — no re-upload needed.</li>
             <li><strong>Save Results:</strong> Use <code>Copy JSON</code> or <code>Export JSON</code> to keep the extracted data.</li>
-            <li><strong>Verify Integrity:</strong> Check the SHA-256/SHA-1 hashes to confirm a file hasn't been altered.</li>
           </ul>
         </div>
 
@@ -773,7 +772,7 @@
           <ul>
             <li><strong>Everything Stays Local:</strong> Files are parsed entirely in your browser — nothing is uploaded anywhere.</li>
             <li><strong>Signature Verification:</strong> Detects the real file type from its byte signature, not just the declared extension.</li>
-            <li><strong>Genuinely Deep:</strong> Camera EXIF, GPS, PDF permissions/attachments, precise audio/video technicals, cryptographic hashes & C2PA — all in one inspector.</li>
+            <li><strong>Genuinely Deep:</strong> Camera EXIF, GPS, PDF permissions/attachments, precise audio/video technicals & C2PA — all in one inspector.</li>
           </ul>
         </div>
       </div>
@@ -807,10 +806,6 @@
   <!-- ============================================================
        Metadata Extraction Libraries (CDN)
        ============================================================ -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js"></script> -->
-
   <script src="assets/full.umd.js"></script>
   <script src="assets/pdf.min.js"></script>
   <script src="assets/jsmediatags.min.js"></script>
@@ -818,36 +813,8 @@
   <script>
 
     if (window.pdfjsLib) {
-      //window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
       window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.min.js';
     }
-
-    /* original */
-    // --------------------------------------------------------------------------
-    // C2PA (Content Credentials) engine — loaded as an ES module + blob-worker,
-    // since Worker() cannot load a cross-origin script directly.
-    // --------------------------------------------------------------------------
-    // const C2PA_VERSION = '0.30.17';
-    // const C2PA_BASE = `https://cdn.jsdelivr.net/npm/c2pa@${C2PA_VERSION}/dist/`;
-    // let c2paLib = null;
-    // let c2paEngine = null;
-    // let c2paReady = false;
-
-    // const c2paInitPromise = (async () => {
-    //   try {
-    //     c2paLib = await import(C2PA_BASE + 'c2pa.esm.min.js');
-    //     const workerCode = await fetch(C2PA_BASE + 'c2pa.worker.min.js').then(r => r.text());
-    //     const workerBlobUrl = URL.createObjectURL(new Blob([workerCode], { type: 'text/javascript' }));
-    //     c2paEngine = await c2paLib.createC2pa({
-    //       wasmSrc: C2PA_BASE + 'assets/wasm/toolkit_bg.wasm',
-    //       workerSrc: workerBlobUrl
-    //     });
-    //     c2paReady = true;
-    //   } catch (e) {
-    //     console.warn('C2PA engine unavailable:', e);
-    //     c2paReady = false;
-    //   }
-    // })();
 
     // --------------------------------------------------------------------------
     // C2PA (Content Credentials) engine — self-hosted, same-origin
@@ -913,6 +880,24 @@
     // --------------------------------------------------------------------------
     // Small Helpers
     // --------------------------------------------------------------------------
+    function truncateFileName(name, maxLength = 28) {
+      if (!name || name.length <= maxLength) return name;
+      const extIdx = name.lastIndexOf('.');
+      if (extIdx <= 0 || extIdx === name.length - 1) {
+        const half = Math.floor((maxLength - 3) / 2);
+        return `${name.slice(0, half)}...${name.slice(-half)}`;
+      }
+      const ext = name.slice(extIdx);
+      const base = name.slice(0, extIdx);
+      const avail = maxLength - ext.length - 3;
+      if (avail <= 2) {
+        return `${base.slice(0, 8)}...${ext}`;
+      }
+      const front = Math.ceil(avail / 2);
+      const back = Math.floor(avail / 2);
+      return `${base.slice(0, front)}...${base.slice(-back)}${ext}`;
+    }
+
     function escapeHtml(str) {
       const div = document.createElement('div');
       div.textContent = String(str);
@@ -1004,36 +989,12 @@
 
     function basicInfoRows(file, signature) {
       return [
-        { key: 'File Name', value: file.name },
+        { key: 'File Name', value: truncateFileName(file.name) },
         { key: 'File Size', value: formatBytes(file.size) },
         { key: 'Declared MIME Type', value: file.type || 'Unknown' },
         { key: 'Detected Signature', value: signature },
         { key: 'Last Modified', value: file.lastModified ? new Date(file.lastModified).toLocaleString() : 'Unknown' }
       ];
-    }
-
-    const HASH_SIZE_LIMIT = 150 * 1024 * 1024; // 150 MB
-
-    async function computeHashes(file) {
-      if (!window.crypto || !window.crypto.subtle) {
-        return [{ key: 'Status', value: 'Hashing unavailable in this browser context (requires HTTPS)' }];
-      }
-      if (file.size > HASH_SIZE_LIMIT) {
-        return [{ key: 'Status', value: `File too large to hash in-browser (> ${formatBytes(HASH_SIZE_LIMIT)})` }];
-      }
-      try {
-        const buf = await file.arrayBuffer();
-        const [sha256, sha1] = await Promise.all([
-          crypto.subtle.digest('SHA-256', buf),
-          crypto.subtle.digest('SHA-1', buf)
-        ]);
-        return [
-          { key: 'SHA-256', value: bufToHex(sha256) },
-          { key: 'SHA-1', value: bufToHex(sha1) }
-        ];
-      } catch (e) {
-        return [{ key: 'Status', value: 'Unable to compute hashes' }];
-      }
     }
 
     // --------------------------------------------------------------------------
@@ -1391,6 +1352,9 @@
           const isHex = r.key === 'Hex';
           const valSpan = document.createElement('span');
           valSpan.className = 'kv-val' + (isHex ? ' hex' : '') + (r.cls ? ' ' + r.cls : '');
+          if (r.key === 'File Name') {
+            valSpan.title = escapeHtml(file.name);
+          }
           if (r.isLink) {
             valSpan.innerHTML = `<a href="${r.href}" target="_blank" rel="noopener">${escapeHtml(r.value)}</a>`;
           } else {
@@ -1427,14 +1391,13 @@
 
     async function inspect(file) {
       currentFileBaseName = (file.name || 'metadata').replace(/\.[^.]+$/, '') || 'metadata';
-      metaBody.innerHTML = '<div class="loading-text">Analyzing file — reading metadata, hashing & checking AI provenance…</div>';
+      metaBody.innerHTML = '<div class="loading-text">Analyzing file — reading metadata & checking AI provenance…</div>';
       setToolbarEnabled(false);
 
-      const [signature, extracted, hex, hashRows, c2paRows] = await Promise.all([
+      const [signature, extracted, hex, c2paRows] = await Promise.all([
         detectSignature(file),
         extractMetadata(file),
         hexDump(file),
-        computeHashes(file),
         extractC2pa(file)
       ]);
 
@@ -1442,7 +1405,6 @@
         { title: 'Basic Info', rows: basicInfoRows(file, signature) },
         { title: 'AI / Content Provenance (C2PA)', rows: c2paRows },
         ...extracted.sections,
-        { title: 'File Integrity (Hashes)', rows: hashRows },
         { title: 'Raw Header (First 64 Bytes)', rows: [{ key: 'Hex', value: hex }] }
       ];
 
@@ -1503,11 +1465,12 @@
         const cat = detectCategory(f);
         const div = document.createElement('div');
         div.className = 'history-item' + (idx === activeIndex ? ' active' : '');
+        const truncatedName = truncateFileName(f.name, 25);
         div.innerHTML = `
           <div class="chip-left">
             <div class="file-icon">${getCategoryIcon(cat, 16)}</div>
             <div class="file-meta">
-              <div class="file-name">${escapeHtml(f.name)}</div>
+              <div class="file-name" title="${escapeHtml(f.name)}">${escapeHtml(truncatedName)}</div>
               <div class="file-size">${formatBytes(f.size)}</div>
             </div>
           </div>

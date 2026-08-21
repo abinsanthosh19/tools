@@ -129,7 +129,7 @@
         "url": "metadata-viewer/",
         "tags": ["metadata", "exif", "file inspector", "pdf", "id3", "c2pa", "ai detection", "utility"],
         "category": "UTILITY",
-        "description": "Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags, file hashes, and C2PA content-credential / AI-generation signals — entirely in your browser.",
+        "description": "Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags and C2PA content-credential / AI-generation signals — entirely in your browser.",
         "footer": { "slug": "metadata-viewer", "version": "v1.1" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><circle cx='16.5' cy='17.5' r='2.5' stroke-width='2'></circle><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18.5 19.5L21 22'></path></svg>"
       }
@@ -146,6 +146,30 @@
         "description": "Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.",
         "footer": { "slug": "markdown-preview", "version": "v1.0" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 13h6M9 17h6M9 9h1'></path></svg>"
+      }
+    },
+    {
+      "tool_id": 110,
+      "name": "emoji-collection",
+      "card": {
+        "id": 110,
+        "title": "Emoji Collection",
+        "url": "emoji-collection/",
+        "tags": [
+          "emoji",
+          "emojis",
+          "emoji search",
+          "unicode",
+          "symbols",
+          "copy"
+        ],
+        "category": "UTILITY",
+        "description": "Search emojis by keywords and copy them instantly to the clipboard.",
+        "footer": {
+          "slug": "emoji-collection",
+          "version": "v1.0"
+        },
+        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' stroke-width='2'></circle><path stroke-linecap='round' stroke-width='2' d='M8 14s1.5 2 4 2 4-2 4-2M8.5 9.5h.01M15.5 9.5h.01'></path></svg>"
       }
     }
   ]
