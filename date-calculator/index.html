@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Date Calculator</title>
+  <meta name="title" content="Date Calculator">
+  <meta name="description" content="Calculate the exact difference between dates, add or subtract days, and find weekdays with precise calendar calculations.">
+  <meta name="keywords" content="date calculator, date difference, days calculator, date counter, calendar calculator, utility">
+  <link rel="canonical" href="https://tools.mj46.in/date-calculator/">
+
+  <!-- date-fns 4.4.0 via jsDelivr -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/date-fns@4.4.0/cdn.min.js"></script> -->
+   <script src="date-fns.min.js"></script>
+
+  <style>
+
+
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-op-bg: rgba(99, 102, 241, 0.12);
+      --btn-op-color: #818cf8;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-op-bg: rgba(79, 70, 229, 0.08);
+      --btn-op-color: #4f46e5;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Main App Split View */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .app-layout {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    /* Card Containers */
+    .calc-card, .history-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Display Area */
+    .display-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-align: right;
+      margin-bottom: 1.25rem;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      word-break: break-all;
+    }
+
+    .expression-line {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      min-height: 1.25rem;
+    }
+
+    .result-line {
+      font-family: var(--font-mono);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Keypad Grid */
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .calc-btn {
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--btn-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
+    .calc-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Operator & Special Key Styles */
+    .calc-btn.op {
+      background: var(--btn-op-bg);
+      color: var(--btn-op-color);
+      border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .calc-btn.action {
+      color: #f43f5e; /* Rose accent for clear/del */
+    }
+
+    .calc-btn.equals {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: transparent;
+      grid-column: span 2;
+    }
+
+    .calc-btn.equals:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* History Panel Header & Actions */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clear-history-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .clear-history-btn:hover {
+      color: #f43f5e;
+    }
+
+    /* History Items List */
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 4px;
+    }
+
+    .history-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      text-align: right;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .history-item:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(-2px);
+    }
+
+    .history-exp {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .history-res {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .empty-history {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.85rem;
+      margin: auto 0;
+      padding: 2rem 0;
+    }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+  
+
+    /* Password Generator */
+    .generator-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .password-display {
+      display: flex;
+      gap: .65rem;
+      align-items: stretch;
+      margin-bottom: 1.25rem;
+    }
+
+    .password-output {
+      flex: 1;
+      min-width: 0;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font: 700 1.15rem var(--font-mono);
+      padding: 1rem;
+      outline: none;
+      letter-spacing: .02em;
+    }
+
+    .password-output:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .icon-btn, .generate-btn {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all .15s ease;
+      font-weight: 700;
+    }
+
+    .icon-btn {
+      width: 52px;
+      background: var(--btn-bg);
+      color: var(--text-primary);
+    }
+
+    .icon-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: .9rem 1rem;
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: transparent;
+      font-size: 1rem;
+    }
+
+    .generate-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .control-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .65rem;
+      color: var(--text-secondary);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .length-value {
+      color: var(--accent-primary);
+      font-family: var(--font-mono);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-primary);
+      cursor: pointer;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .7rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: .8rem .9rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+      transition: all .15s ease;
+    }
+
+    .option:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .option input {
+      accent-color: var(--accent-primary);
+      width: 17px;
+      height: 17px;
+    }
+
+    .strength {
+      margin-top: 1.25rem;
+      padding: .9rem 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .strength-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .55rem;
+      color: var(--text-secondary);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .strength-label {
+      color: var(--text-primary);
+    }
+
+    .strength-meter {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--btn-bg);
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0;
+      background: var(--accent-primary);
+      transition: width .2s ease;
+    }
+
+    .tip {
+      margin-top: .85rem;
+      color: var(--text-muted);
+      font-size: .8rem;
+    }
+
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      color: var(--accent-primary);
+      margin-bottom: .75rem;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: .875rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    @media (min-width: 768px) {
+      .generator-layout {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .options { grid-template-columns: 1fr; }
+      .password-output { font-size: 1rem; }
+    }
+  
+
+    .date-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .date-layout {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .55rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .mode-tab {
+      padding: .75rem .5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--btn-bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 700;
+      transition: all .15s ease;
+    }
+
+    .mode-tab:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .mode-tab.active {
+      background: var(--btn-op-bg);
+      color: var(--btn-op-color);
+      border-color: rgba(99, 102, 241, .3);
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .field label {
+      color: var(--text-secondary);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: .85rem .9rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font: 500 .95rem var(--font-sans);
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .today-btn {
+      align-self: flex-end;
+      margin-top: .25rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--btn-bg);
+      color: var(--text-secondary);
+      padding: .45rem .7rem;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .date-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .65rem;
+      min-height: 30px;
+    }
+
+    .include-date {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      color: var(--text-secondary);
+      font-size: .78rem;
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .include-date input {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      accent-color: var(--accent-primary);
+      cursor: pointer;
+    }
+
+    .include-date:hover {
+      color: var(--text-primary);
+    }
+
+    .today-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .action-row {
+      display: flex;
+      gap: .75rem;
+      margin-top: 1.25rem;
+    }
+
+    .primary-btn {
+      flex: 1;
+      padding: .9rem 1rem;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: var(--accent-primary);
+      color: white;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: .95rem;
+    }
+
+    .primary-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .secondary-btn {
+      padding: .9rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--btn-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .secondary-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+    }
+
+    .result-card {
+      margin-top: 1.25rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .result-title {
+      color: var(--text-muted);
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 800;
+      margin-bottom: .5rem;
+    }
+
+    .result-main {
+      font: 800 1.75rem var(--font-mono);
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+
+    .result-sub {
+      margin-top: .5rem;
+      color: var(--text-secondary);
+      font-size: .9rem;
+    }
+
+    .breakdown {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: .65rem;
+      margin-top: 1rem;
+    }
+
+    .breakdown-item {
+      text-align: center;
+      padding: .8rem .5rem;
+      background: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .breakdown-number {
+      display: block;
+      color: var(--accent-primary);
+      font: 800 1.15rem var(--font-mono);
+    }
+
+    .breakdown-label {
+      color: var(--text-muted);
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1rem;
+    }
+
+    .quick-btn {
+      padding: .55rem .75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      background: var(--btn-bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .quick-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Weekday-specific accent */
+    .mode-tab[data-mode="weekdays"].active {
+      background: rgba(245, 158, 11, 0.14);
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .weekday-accent {
+      color: #f59e0b;
+    }
+
+    .weekday-result-card {
+      border-color: rgba(245, 158, 11, 0.28);
+    }
+
+    .weekday-result-card .result-main {
+      color: #f59e0b;
+    }
+
+    [data-theme="light"] .mode-tab[data-mode="weekdays"].active {
+      background: rgba(217, 119, 6, 0.10);
+      color: #b45309;
+      border-color: rgba(180, 83, 9, 0.28);
+    }
+
+    [data-theme="light"] .weekday-accent,
+    [data-theme="light"] .weekday-result-card .result-main {
+      color: #b45309;
+    }
+
+    [data-theme="light"] .weekday-result-card {
+      border-color: rgba(180, 83, 9, 0.25);
+    }
+
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      color: var(--accent-primary);
+      margin-bottom: .75rem;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: .875rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .breakdown { grid-template-columns: repeat(2, 1fr); }
+
+      .date-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="17" rx="2" stroke-width="2"/>
+          <path stroke-width="2" d="M16 2v4M8 2v4M3 10h18"/>
+          <path stroke-width="2" d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+        </svg>
+      </div>
+      <h1>Date Calculator</h1>
+      <p class="subtitle">Count days between dates, calculate calendar differences, and find future or past dates precisely.</p>
+    </header>
+
+    <main class="date-layout">
+      <section class="date-card">
+
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="difference">Date Difference</button>
+          <button class="mode-tab" data-mode="add">Add / Subtract</button>
+          <button class="mode-tab" data-mode="weekdays">Weekday Finder</button>
+        </div>
+
+        <!-- Difference -->
+        <div id="differencePanel">
+          <div class="date-grid">
+            <div class="field">
+              <label for="startDate">Start Date</label>
+              <input id="startDate" type="date">
+              <div class="date-options">
+                <button class="today-btn" data-target="startDate">Use Today</button>
+                <label class="include-date">
+                  <input id="includeStartDate" type="checkbox">
+                  <span>Include this date</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="endDate">End Date</label>
+              <input id="endDate" type="date">
+              <div class="date-options">
+                <button class="today-btn" data-target="endDate">Use Today</button>
+                <label class="include-date">
+                  <input id="includeEndDate" type="checkbox">
+                  <span>Include this date</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <button class="quick-btn" data-range="today">Today → Today</button>
+            <button class="quick-btn" data-range="week">Today → +7 days</button>
+            <button class="quick-btn" data-range="month">Today → +30 days</button>
+            <button class="quick-btn" data-range="year">Today → +1 year</button>
+          </div>
+
+          <div class="action-row">
+            <button class="primary-btn" id="calculateDifference">Calculate Difference</button>
+            <button class="secondary-btn" id="swapDates">Swap Dates</button>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title">Difference</div>
+            <div class="result-main" id="differenceMain">0 days</div>
+            <div class="result-sub" id="differenceSub">Select two dates to calculate.</div>
+
+            <div class="breakdown">
+              <div class="breakdown-item">
+                <span class="breakdown-number" id="diffYears">0</span>
+                <span class="breakdown-label">Years</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-number" id="diffMonths">0</span>
+                <span class="breakdown-label">Months</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-number" id="diffDays">0</span>
+                <span class="breakdown-label">Days</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-number" id="diffWeekdays">0</span>
+                <span class="breakdown-label">Weekdays</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="breakdown-number" id="diffSundays">0</span>
+                <span class="breakdown-label">Sundays</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add / Subtract -->
+        <div id="addPanel" class="hidden">
+          <div class="date-grid">
+            <div class="field">
+              <label for="baseDate">Base Date</label>
+              <input id="baseDate" type="date">
+              <button class="today-btn" data-target="baseDate">Use Today</button>
+            </div>
+
+            <div class="field">
+              <label for="amount">Amount</label>
+              <input id="amount" type="number" value="30" min="0" step="1">
+            </div>
+
+            <div class="field">
+              <label for="unit">Unit</label>
+              <select id="unit">
+                <option value="days">Days</option>
+                <option value="weeks">Weeks</option>
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="direction">Operation</label>
+              <select id="direction">
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="primary-btn" id="calculateAdd">Calculate Date</button>
+          </div>
+
+          <div class="result-card">
+            <div class="result-title">Result Date</div>
+            <div class="result-main" id="addResult">—</div>
+            <div class="result-sub" id="addSub">Choose a date and amount.</div>
+          </div>
+        </div>
+
+        <!-- Weekday -->
+        <div id="weekdaysPanel" class="hidden">
+          <div class="date-grid">
+            <div class="field">
+              <label for="weekdayDate">Date</label>
+              <input id="weekdayDate" type="date">
+              <button class="today-btn" data-target="weekdayDate">Use Today</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="primary-btn" id="calculateWeekday">Find Weekday</button>
+          </div>
+
+          <div class="result-card weekday-result-card">
+            <div class="result-title weekday-accent">Day of Week</div>
+            <div class="result-main" id="weekdayResult">—</div>
+            <div class="result-sub" id="weekdaySub">Select a date.</div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom:.5rem;">
+        <div class="panel-title">How to Use &amp; Guide</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <h3>How to Open</h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <div class="info-box">
+          <h3>How to Use</h3>
+          <ul>
+            <li>Compare two dates to get the exact calendar difference and weekday count.</li>
+            <li>Add or subtract days, weeks, months, or years from a date.</li>
+            <li>Use the weekday finder to identify the day of the week for any date.</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>USP (Why It's Different)</h3>
+          <ul>
+            <li><strong>date-fns:</strong> Uses the date-fns library through jsDelivr for robust calendar calculations.</li>
+            <li><strong>Calendar-aware:</strong> Handles leap years and varying month lengths correctly.</li>
+            <li><strong>Client-side:</strong> Calculations happen directly in the browser.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const {
+      differenceInCalendarDays,
+      differenceInDays,
+      differenceInCalendarMonths,
+      differenceInCalendarYears,
+      addDays,
+      addWeeks,
+      addMonths,
+      addYears,
+      format,
+      isValid
+    } = dateFns;
+
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const pathname = window.location.pathname.replace('/\\/+$/', '');
+      const segments = pathname.split('/').filter(Boolean);
+
+      // Works with:
+      //   /date-calculator/
+      //   /date-calculator
+      //   /tools/date-calculator/
+      // The last non-empty path segment is treated as the tool slug.
+      const currentSlug = segments.length ? segments[segments.length - 1].toLowerCase() : '';
+
+      const hubPath = segments.length > 1
+        ? '/' + segments.slice(0, -1).join('/') + '/'
+        : '/';
+
+      const hubEl = document.getElementById('openHubPath');
+      if (hubEl) {
+        hubEl.textContent = hubPath;
+      }
+
+      try {
+        const response = await fetch('/tools-config.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Config file unavailable');
+
+        const config = await response.json();
+        const tools = Array.isArray(config.tools) ? config.tools : [];
+
+        const tool = tools.find(t => {
+          const configSlug = String(
+            t.card?.footer?.slug ||
+            t.slug ||
+            t.name ||
+            ''
+          ).replace('/^\\/+|\\/+$/g', '').toLowerCase();
+
+          const configUrl = String(
+            t.card?.url ||
+            t.url ||
+            ''
+          ).replace('/^\\/+|\\/+$/g', '').toLowerCase();
+
+          return configSlug === currentSlug || configUrl === currentSlug;
+        });
+
+        if (!tool) throw new Error(`Tool not found: ${currentSlug}`);
+
+        const slug = String(
+          tool.card?.footer?.slug ||
+          tool.slug ||
+          tool.name ||
+          currentSlug
+        ).replace('/^\\/+|\\/+$/g', '');
+
+        const toolId = tool.tool_id ?? tool.card?.id;
+
+        document.getElementById('openSlug').textContent = `/${slug}`;
+        document.getElementById('openToolId').textContent = `/${toolId ?? 'Unavailable'}`;
+      } catch (err) {
+        console.error('Error loading tool info:', err);
+
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
+    // --------------------------------------------------------------------------
+    // Theme Switcher
+    // --------------------------------------------------------------------------
+    const htmlElement = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    applyTheme(
+      localStorage.getItem('theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    );
+
+    themeToggleBtn.addEventListener('click', () => {
+      applyTheme(htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    function localDateString(date = new Date()) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+      const [y, m, d] = value.split('-').map(Number);
+      const date = new Date(y, m - 1, d);
+      return isValid(date) ? date : null;
+    }
+
+    function formatLong(date) {
+      return format(date, 'EEEE, MMMM d, yyyy');
+    }
+
+    function countWeekdays(start, end) {
+      let a = start <= end ? start : end;
+      const b = start <= end ? end : start;
+      let count = 0;
+
+      // Calendar-day iteration avoids DST-related millisecond rounding issues.
+      while (a <= b) {
+        const day = a.getDay();
+        if (day !== 0 && day !== 6) count++;
+        a = addDays(a, 1);
+      }
+
+      return count;
+    }
+
+    function countSundays(start, end) {
+      let a = start <= end ? start : end;
+      const b = start <= end ? end : start;
+      let count = 0;
+
+      while (a <= b) {
+        if (a.getDay() === 0) count++;
+        a = addDays(a, 1);
+      }
+
+      return count;
+    }
+
+    function calculateDifference() {
+      const start = parseDate(document.getElementById('startDate').value);
+      const end = parseDate(document.getElementById('endDate').value);
+
+      if (!start || !end) return;
+
+      const includeStart = document.getElementById('includeStartDate').checked;
+      const includeEnd = document.getElementById('includeEndDate').checked;
+
+      const rawDays = Math.abs(differenceInCalendarDays(end, start));
+      const sameDate = rawDays === 0;
+
+      // Calendar-day counting:
+      // 26 -> 27 is 1 day apart, but including the endpoints means
+      // the counted dates are [26, 27] = 2 days.
+      // Both endpoint checkboxes therefore add at most ONE extra
+      // calendar day to a non-zero date difference.
+      let days = rawDays;
+
+      if (!sameDate && (includeStart || includeEnd)) {
+        days += 1;
+      } else if (sameDate && (includeStart || includeEnd)) {
+        days = 1;
+      }
+
+      const signedDays = differenceInCalendarDays(end, start);
+      const months = Math.abs(differenceInCalendarMonths(end, start));
+      const years = Math.abs(differenceInCalendarYears(end, start));
+
+      // Weekday and Sunday counts follow the same endpoint inclusion rules.
+      let weekdays = countWeekdays(start, end);
+      let sundays = countSundays(start, end);
+
+      if (!sameDate) {
+        const startIsWeekday = start.getDay() !== 0 && start.getDay() !== 6;
+        const endIsWeekday = end.getDay() !== 0 && end.getDay() !== 6;
+
+        // The helper functions count the whole calendar range inclusively.
+        // Remove endpoints when their "Include this date" checkbox is off.
+        if (!includeStart && startIsWeekday) weekdays--;
+        if (!includeEnd && endIsWeekday) weekdays--;
+
+        if (!includeStart && start.getDay() === 0) sundays--;
+        if (!includeEnd && end.getDay() === 0) sundays--;
+      } else if (!(includeStart || includeEnd)) {
+        weekdays = 0;
+        sundays = 0;
+      } else {
+        weekdays = (start.getDay() !== 0 && start.getDay() !== 6) ? 1 : 0;
+        sundays = start.getDay() === 0 ? 1 : 0;
+      }
+
+      document.getElementById('differenceMain').textContent =
+        `${days.toLocaleString()} day${days === 1 ? '' : 's'}`;
+
+      let inclusionText = 'Both endpoints excluded';
+      if (includeStart && includeEnd) inclusionText = 'Both endpoints included';
+      else if (includeStart) inclusionText = 'Start date included';
+      else if (includeEnd) inclusionText = 'End date included';
+
+      document.getElementById('differenceSub').textContent =
+        sameDate
+          ? `${formatLong(start)} • ${inclusionText}`
+          : `${formatLong(start)} → ${formatLong(end)} • ${inclusionText}`;
+
+      document.getElementById('diffYears').textContent = years.toLocaleString();
+      document.getElementById('diffMonths').textContent = months.toLocaleString();
+      document.getElementById('diffDays').textContent = days.toLocaleString();
+      document.getElementById('diffWeekdays').textContent = weekdays.toLocaleString();
+      document.getElementById('diffSundays').textContent = sundays.toLocaleString();
+    }
+
+    function calculateAdd() {
+      const base = parseDate(document.getElementById('baseDate').value);
+      const amount = Number(document.getElementById('amount').value);
+      const unit = document.getElementById('unit').value;
+      const direction = document.getElementById('direction').value;
+
+      if (!base || !Number.isFinite(amount) || amount < 0) return;
+
+      const signed = direction === 'add' ? amount : -amount;
+      let result;
+
+      switch (unit) {
+        case 'days': result = addDays(base, signed); break;
+        case 'weeks': result = addWeeks(base, signed); break;
+        case 'months': result = addMonths(base, signed); break;
+        case 'years': result = addYears(base, signed); break;
+      }
+
+      document.getElementById('addResult').textContent = formatLong(result);
+      document.getElementById('addSub').textContent =
+        `${direction === 'add' ? 'Added' : 'Subtracted'} ${amount} ${unit} from ${formatLong(base)}.`;
+    }
+
+    function calculateWeekday() {
+      const date = parseDate(document.getElementById('weekdayDate').value);
+      if (!date) return;
+
+      document.getElementById('weekdayResult').textContent = format(date, 'EEEE');
+      document.getElementById('weekdaySub').textContent = formatLong(date);
+    }
+
+    document.querySelectorAll('.mode-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        document.getElementById('differencePanel').classList.toggle('hidden', tab.dataset.mode !== 'difference');
+        document.getElementById('addPanel').classList.toggle('hidden', tab.dataset.mode !== 'add');
+        document.getElementById('weekdaysPanel').classList.toggle('hidden', tab.dataset.mode !== 'weekdays');
+      });
+    });
+
+    document.querySelectorAll('.today-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById(btn.dataset.target).value = localDateString();
+      });
+    });
+
+    document.getElementById('calculateDifference').addEventListener('click', calculateDifference);
+
+    document.getElementById('includeStartDate').addEventListener('change', calculateDifference);
+    document.getElementById('includeEndDate').addEventListener('change', calculateDifference);
+
+    document.getElementById('swapDates').addEventListener('click', () => {
+      const a = document.getElementById('startDate');
+      const b = document.getElementById('endDate');
+      [a.value, b.value] = [b.value, a.value];
+      calculateDifference();
+    });
+
+    document.querySelectorAll('[data-range]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const today = new Date();
+        const start = localDateString(today);
+        let endDate = today;
+
+        if (btn.dataset.range === 'week') endDate = addDays(today, 7);
+        if (btn.dataset.range === 'month') endDate = addDays(today, 30);
+        if (btn.dataset.range === 'year') endDate = addYears(today, 1);
+
+        document.getElementById('startDate').value = start;
+        document.getElementById('endDate').value = localDateString(endDate);
+        calculateDifference();
+      });
+    });
+
+    document.getElementById('calculateAdd').addEventListener('click', calculateAdd);
+    document.getElementById('calculateWeekday').addEventListener('click', calculateWeekday);
+
+    const today = new Date();
+    const todayValue = localDateString(today);
+
+    document.getElementById('startDate').value = todayValue;
+    document.getElementById('endDate').value = todayValue;
+    document.getElementById('baseDate').value = todayValue;
+    document.getElementById('weekdayDate').value = todayValue;
+
+    calculateDifference();
+    calculateAdd();
+    calculateWeekday();
+  </script>
+</body>
+</html>

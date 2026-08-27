@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator</title>
+  <meta name="title" content="Password Generator">
+  <meta name="description" content="Generate strong, secure passwords with customizable length and character options.">
+  <meta name="keywords" content="password, generator, secure password, random password, utility">
+  <link rel="canonical" href="https://tools.mj46.in/password-generator/">
+  <style>
+
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-op-bg: rgba(99, 102, 241, 0.12);
+      --btn-op-color: #818cf8;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-op-bg: rgba(79, 70, 229, 0.08);
+      --btn-op-color: #4f46e5;
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Main App Split View */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .app-layout {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    /* Card Containers */
+    .calc-card, .history-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Display Area */
+    .display-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-align: right;
+      margin-bottom: 1.25rem;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      word-break: break-all;
+    }
+
+    .expression-line {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      min-height: 1.25rem;
+    }
+
+    .result-line {
+      font-family: var(--font-mono);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Keypad Grid */
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+
+    .calc-btn {
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--btn-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calc-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
+    .calc-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Operator & Special Key Styles */
+    .calc-btn.op {
+      background: var(--btn-op-bg);
+      color: var(--btn-op-color);
+      border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .calc-btn.action {
+      color: #f43f5e; /* Rose accent for clear/del */
+    }
+
+    .calc-btn.equals {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border-color: transparent;
+      grid-column: span 2;
+    }
+
+    .calc-btn.equals:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    /* History Panel Header & Actions */
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .clear-history-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .clear-history-btn:hover {
+      color: #f43f5e;
+    }
+
+    /* History Items List */
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding-right: 4px;
+    }
+
+    .history-item {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      text-align: right;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .history-item:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(-2px);
+    }
+
+    .history-exp {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .history-res {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .empty-history {
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.85rem;
+      margin: auto 0;
+      padding: 2rem 0;
+    }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+  
+
+    /* Password Generator */
+    .generator-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .password-display {
+      display: flex;
+      gap: .65rem;
+      align-items: stretch;
+      margin-bottom: 1.25rem;
+    }
+
+    .password-output {
+      flex: 1;
+      min-width: 0;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font: 700 1.15rem var(--font-mono);
+      padding: 1rem;
+      outline: none;
+      letter-spacing: .02em;
+    }
+
+    .password-output:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .icon-btn, .generate-btn {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all .15s ease;
+      font-weight: 700;
+    }
+
+    .icon-btn {
+      width: 52px;
+      background: var(--btn-bg);
+      color: var(--text-primary);
+    }
+
+    .icon-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: .9rem 1rem;
+      background: var(--accent-primary);
+      color: #fff;
+      border-color: transparent;
+      font-size: 1rem;
+    }
+
+    .generate-btn:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .control-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .65rem;
+      color: var(--text-secondary);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .length-value {
+      color: var(--accent-primary);
+      font-family: var(--font-mono);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent-primary);
+      cursor: pointer;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .7rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: .8rem .9rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      user-select: none;
+      transition: all .15s ease;
+    }
+
+    .option:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .option input {
+      accent-color: var(--accent-primary);
+      width: 17px;
+      height: 17px;
+    }
+
+    .strength {
+      margin-top: 1.25rem;
+      padding: .9rem 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .strength-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: .55rem;
+      color: var(--text-secondary);
+      font-size: .85rem;
+      font-weight: 700;
+    }
+
+    .strength-label {
+      color: var(--text-primary);
+    }
+
+    .strength-meter {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--btn-bg);
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0;
+      background: var(--accent-primary);
+      transition: width .2s ease;
+    }
+
+    .tip {
+      margin-top: .85rem;
+      color: var(--text-muted);
+      font-size: .8rem;
+    }
+
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      color: var(--accent-primary);
+      margin-bottom: .75rem;
+    }
+
+    .info-box ul {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: .875rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    @media (min-width: 768px) {
+      .generator-layout {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .options { grid-template-columns: 1fr; }
+      .password-output { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <rect x="4" y="10" width="16" height="11" rx="2" stroke-width="2"/>
+          <path stroke-width="2" d="M8 10V7a4 4 0 018 0v3M8 15h.01M12 15h.01M16 15h.01"/>
+        </svg>
+      </div>
+      <h1>Secure Password Generator</h1>
+      <p class="subtitle">Create strong random passwords with complete control over length and character types.</p>
+    </header>
+
+    <main class="generator-layout">
+      <section class="generator-card">
+        <div class="password-display">
+          <input id="passwordOutput" class="password-output" type="text" readonly
+                 aria-label="Generated password">
+          <button id="copyBtn" class="icon-btn" title="Copy password" aria-label="Copy password">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <rect x="9" y="9" width="10" height="10" rx="1" stroke-width="2"/>
+              <path stroke-width="2" d="M6 15H5a1 1 0 01-1-1V5a1 1 0 011-1h9a1 1 0 011 1v1"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <span>Password Length</span>
+            <span class="length-value" id="lengthValue">20</span>
+          </div>
+          <input id="length" type="range" min="4" max="64" value="20">
+        </div>
+
+        <div class="control-header">
+          <span>Character Types</span>
+          <span id="charCount">4 selected</span>
+        </div>
+
+        <div class="options">
+          <label class="option"><input id="uppercase" type="checkbox" checked> Uppercase (A-Z)</label>
+          <label class="option"><input id="lowercase" type="checkbox" checked> Lowercase (a-z)</label>
+          <label class="option"><input id="numbers" type="checkbox" checked> Numbers (0-9)</label>
+          <label class="option"><input id="symbols" type="checkbox" checked> Symbols (!@#)</label>
+        </div>
+
+        <button id="generateBtn" class="generate-btn">Generate Password</button>
+
+        <div class="strength">
+          <div class="strength-row">
+            <span>Password Strength</span>
+            <span id="strengthLabel" class="strength-label">Strong</span>
+          </div>
+          <div class="strength-meter">
+            <div id="strengthFill" class="strength-fill"></div>
+          </div>
+          <div class="tip">Use longer passwords with multiple character types for better security.</div>
+        </div>
+      </section>
+    </main>
+
+    <section class="info-card">
+      <div class="panel-header" style="margin-bottom:.5rem;">
+        <div class="panel-title">How to Use &amp; Guide</div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <h3>How to Open</h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <div class="info-box">
+          <h3>How to Use</h3>
+          <ul>
+            <li>Choose a password length from 4 to 64 characters.</li>
+            <li>Select the character types you want to include.</li>
+            <li>Click <code>Generate Password</code> and use <code>Copy</code> to copy it.</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>USP (Why It's Different)</h3>
+          <ul>
+            <li><strong>Browser-side:</strong> Passwords are generated locally in the browser.</li>
+            <li><strong>Crypto RNG:</strong> Uses the Web Crypto API for random selection.</li>
+            <li><strong>Customizable:</strong> Control length and character composition.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Dynamic Tool Info Loader (/tools-config.json)
+    // --------------------------------------------------------------------------
+    async function loadDynamicToolInfo() {
+      const currentHost = window.location.host || 'root domain';
+
+      document.querySelectorAll('.dynamic-domain').forEach(el => {
+        el.textContent = currentHost;
+      });
+
+      const pathname = window.location.pathname.replace(/\/+$/, '');
+      const segments = pathname.split('/').filter(Boolean);
+
+      // Supports:
+      //   /password-generator/
+      //   /password-generator
+      //   /tools/password-generator/
+      const currentSlug = segments.length
+        ? segments[segments.length - 1].toLowerCase()
+        : '';
+
+      const hubPath = segments.length > 1
+        ? '/' + segments.slice(0, -1).join('/') + '/'
+        : '/';
+
+      document.getElementById('openHubPath').textContent = hubPath;
+
+      try {
+        const response = await fetch('/tools-config.json', {
+          cache: 'no-store'
+        });
+
+        if (!response.ok) {
+          throw new Error('tools-config.json could not be loaded');
+        }
+
+        const config = await response.json();
+
+        // Supports either:
+        //   { "tools": [...] }
+        // or directly an array of tool objects.
+        const tools = Array.isArray(config)
+          ? config
+          : Array.isArray(config.tools)
+            ? config.tools
+            : [];
+
+        const tool = tools.find(item => {
+          const slug = String(
+            item.card?.footer?.slug ||
+            item.slug ||
+            item.name ||
+            ''
+          ).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+          const url = String(
+            item.card?.url ||
+            item.url ||
+            ''
+          ).replace(/^\/+|\/+$/g, '').toLowerCase();
+
+          return slug === currentSlug || url === currentSlug;
+        });
+
+        if (!tool) {
+          throw new Error(`Tool "${currentSlug}" was not found in tools-config.json`);
+        }
+
+        const slug = String(
+          tool.card?.footer?.slug ||
+          tool.slug ||
+          tool.name ||
+          currentSlug
+        ).replace('/^\\/+|\\/+$/g', '');
+
+        const toolId = tool.tool_id ?? tool.card?.id;
+
+        document.getElementById('openSlug').textContent = `/${slug}`;
+        document.getElementById('openToolId').textContent =
+          toolId !== undefined && toolId !== null
+            ? `/${toolId}`
+            : 'Unavailable';
+
+      } catch (error) {
+        console.error('Unable to load tool information:', error);
+
+        document.getElementById('openSlug').textContent = 'Unavailable';
+        document.getElementById('openToolId').textContent = 'Unavailable';
+      }
+    }
+
+    loadDynamicToolInfo();
+
+    // --------------------------------------------------------------------------
+    // Theme
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+
+    const savedTheme = localStorage.getItem('theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    const output = document.getElementById('passwordOutput');
+    const length = document.getElementById('length');
+    const lengthValue = document.getElementById('lengthValue');
+    const charCount = document.getElementById('charCount');
+    const strengthLabel = document.getElementById('strengthLabel');
+    const strengthFill = document.getElementById('strengthFill');
+
+    const sets = {
+      uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      lowercase: 'abcdefghijklmnopqrstuvwxyz',
+      numbers: '0123456789',
+      symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+    };
+
+    function getSelectedSets() {
+      return ['uppercase', 'lowercase', 'numbers', 'symbols']
+        .filter(id => document.getElementById(id).checked)
+        .map(id => sets[id]);
+    }
+
+    function secureRandomIndex(max) {
+      const limit = Math.floor(0x100000000 / max) * max;
+      const array = new Uint32Array(1);
+      let value;
+      do {
+        crypto.getRandomValues(array);
+        value = array[0];
+      } while (value >= limit);
+      return value % max;
+    }
+
+    function generatePassword() {
+      const selectedIds = ['uppercase', 'lowercase', 'numbers', 'symbols']
+        .filter(id => document.getElementById(id).checked);
+
+      if (!selectedIds.length) {
+        output.value = 'Select a character type';
+        updateStrength();
+        return;
+      }
+
+      const selectedSets = selectedIds.map(id => sets[id]);
+      const pool = selectedSets.join('');
+      const size = Number(length.value);
+      const chars = [];
+
+      // Guarantee at least one character from every selected set.
+      selectedSets.forEach(set => {
+        chars.push(set[secureRandomIndex(set.length)]);
+      });
+
+      while (chars.length < size) {
+        chars.push(pool[secureRandomIndex(pool.length)]);
+      }
+
+      // Fisher-Yates shuffle using crypto randomness.
+      for (let i = chars.length - 1; i > 0; i--) {
+        const j = secureRandomIndex(i + 1);
+        [chars[i], chars[j]] = [chars[j], chars[i]];
+      }
+
+      output.value = chars.join('');
+      updateStrength();
+    }
+
+    function updateStrength() {
+      const selected = getSelectedSets().length;
+      charCount.textContent = `${selected} selected`;
+
+      if (!selected) {
+        strengthLabel.textContent = 'Unavailable';
+        strengthFill.style.width = '0%';
+        return;
+      }
+
+      const len = Number(length.value);
+      const score = Math.min(100, Math.round(
+        (len / 64) * 55 +
+        (selected / 4) * 45
+      ));
+
+      strengthFill.style.width = `${score}%`;
+      strengthLabel.textContent =
+        score < 35 ? 'Weak' :
+        score < 60 ? 'Moderate' :
+        score < 80 ? 'Strong' : 'Very Strong';
+    }
+
+    length.addEventListener('input', () => {
+      lengthValue.textContent = length.value;
+      updateStrength();
+      generatePassword();
+    });
+
+    ['uppercase', 'lowercase', 'numbers', 'symbols'].forEach(id => {
+      document.getElementById(id).addEventListener('change', () => {
+        const anySelected = getSelectedSets().length > 0;
+        if (!anySelected) {
+          document.getElementById(id).checked = true;
+        }
+        updateStrength();
+        generatePassword();
+      });
+    });
+
+    document.getElementById('generateBtn').addEventListener('click', generatePassword);
+
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      if (!output.value || output.value === 'Select a character type') return;
+      try {
+        await navigator.clipboard.writeText(output.value);
+        const original = output.value;
+        output.value = 'Copied!';
+        setTimeout(() => output.value = original, 700);
+      } catch {
+        output.select();
+        document.execCommand('copy');
+      }
+    });
+
+    generatePassword();
+  </script>
+</body>
+</html>
