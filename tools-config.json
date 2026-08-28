@@ -6,7 +6,7 @@
       "card": {
         "id": 101,
         "title": "File Downloader",
-        "url": "file-downloader/",
+        "url": "/file-downloader/",
         "tags": ["file", "download", "manager", "utility"],
         "category": "UTILITY",
         "description": "Download files from URLs with ease and control.",
@@ -20,7 +20,7 @@
       "card": {
         "id": 102,
         "title": "File Hash Checker & Verifier",
-        "url": "file-hash-verifier/",
+        "url": "/file-hash-verifier/",
         "tags": ["file", "hash", "verification", "security"],
         "category": "SECURITY",
         "description": "Verify the integrity of files using cryptographic hash functions.",
@@ -34,7 +34,7 @@
       "card": {
         "id": 103,
         "title": "UUID Generator",
-        "url": "uuid-generator/",
+        "url": "/uuid-generator/",
         "tags": ["uuid", "guid", "random", "generator", "id", "identifier"],
         "category": "GENERATOR",
         "description": "Generate unique RFC4122 compliant version-4 UUIDs individually or in bulk.",
@@ -48,7 +48,7 @@
       "card": {
         "id": 104,
         "title": "Calculator",
-        "url": "calculator/",
+        "url": "/calculator/",
         "tags": ["calculator", "math", "arithmetic", "utility"],
         "category": "UTILITY",
         "description": "Perform basic arithmetic calculations quickly and easily.",
@@ -62,7 +62,7 @@
       "card": {
         "id": 105,
         "title": "File Encrypter & Decrypter",
-        "url": "file-encryptor/",
+        "url": "/file-encryptor/",
         "tags": [
           "file-encryptor",
           "aes-256",
@@ -87,7 +87,7 @@
       "card": {
         "id": 106,
         "title": "QR Code Generator & Reader",
-        "url": "qr-code/",
+        "url": "/qr-code/",
         "tags": [
           "qr-code",
           "generator",
@@ -112,7 +112,7 @@
       "card": {
         "id": 107,
         "title": "Color Picker",
-        "url": "color-picker/",
+        "url": "/color-picker/",
         "tags": ["color picker", "hex", "rgb", "hsl", "eyedropper", "utility"],
         "category": "UTILITY",
         "description": "Pick colors visually or sample them straight from an uploaded image, with instant HEX, RGB, and HSL values.",
@@ -126,7 +126,7 @@
       "card": {
         "id": 108,
         "title": "Metadata Viewer",
-        "url": "metadata-viewer/",
+        "url": "/metadata-viewer/",
         "tags": ["metadata", "exif", "file inspector", "pdf", "id3", "c2pa", "ai detection", "utility"],
         "category": "UTILITY",
         "description": "Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags and C2PA content-credential / AI-generation signals — entirely in your browser.",
@@ -140,7 +140,7 @@
       "card": {
         "id": 109,
         "title": "Markdown Preview",
-        "url": "markdown-preview/",
+        "url": "/markdown-preview/",
         "tags": ["markdown", "preview", "editor", "gfm", "utility"],
         "category": "UTILITY",
         "description": "Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.",
@@ -154,7 +154,7 @@
       "card": {
         "id": 110,
         "title": "Emoji Collection",
-        "url": "emoji-collection/",
+        "url": "/emoji-collection/",
         "tags": [
           "emoji",
           "emojis",
@@ -178,7 +178,7 @@
       "card": {
         "id": 111,
         "title": "Password Generator",
-        "url": "password-generator/",
+        "url": "/password-generator/",
         "tags": ["password", "security", "generator", "random", "utility"],
         "category": "GENERATOR",
         "description": "Generate strong random passwords with customizable length and character types.",
@@ -195,7 +195,7 @@
       "card": {
         "id": 112,
         "title": "Date Calculator",
-        "url": "date-calculator/",
+        "url": "/date-calculator/",
         "tags": ["date", "calendar", "days", "calculator", "utility"],
         "category": "UTILITY",
         "description": "Calculate date differences, count days, add or subtract time, and find weekdays precisely.",
@@ -212,7 +212,7 @@
       "card": {
         "id": 113,
         "title": "Internet Speed Test",
-        "url": "internet-speed-test/",
+        "url": "/internet-speed-test/",
         "tags": ["internet", "speed", "ping", "network", "utility"],
         "category": "UTILITY",
         "description": "Test your internet connection speed, latency, jitter, and packet loss.",
@@ -233,7 +233,7 @@
         "tags": ["url", "shortener", "links", "utility"],
         "category": "UTILITY",
         "description": "Shorten long URLs instantly and keep a local history of your generated links.",
-        "footer": { "slug": "fwd.mj46.in", "version": "v1.0" },
+        "footer": { "slug": "url-shortener", "version": "v1.0" },
         "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'></path></svg>"
       }
     }
