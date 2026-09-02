@@ -691,7 +691,7 @@
 <body>
   <div class="container">
     <div class="top-bar">
-      <a href=".." class="back-link">
+      <a href=".." onclick="if(history.length>1){window.history.back(); return false;}else{window.location.href='..'}" class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
         </svg>
@@ -1044,5 +1044,6 @@
 
     generatePassword();
   </script>
+  <script src="https://www.mj46.in/js/telemetry.js"></script>
 </body>
 </html>

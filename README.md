@@ -40,11 +40,16 @@ The main tool directory is driven by a central `tools-config.json` configuration
 
 ```text
 JS-Tools/
-├── tool-directory/
+├── tool-directory1/
+│   ├── index.html
+│   └── ...
+├── tool-directory2/
 │   ├── index.html
 │   └── ...
 ├── tools-config.json
 ├── index.html
+├── 404.html
+├── NT-*                # Non Tools / other resources
 ├── LICENSE
 └── README.md
 ```

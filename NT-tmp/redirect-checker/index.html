@@ -5,25 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary Meta Tags -->
-  <title>Calculator</title>
-  <meta name="title" content="Calculator">
-  <meta name="description" content="Perform basic arithmetic calculations quickly and easily.">
-  <meta name="keywords" content="calculator, math, arithmetic, utility">
-  <link rel="canonical" href="https://tools.mj46.in/calculator/">
+  <title>Redirect Checker & Short Link Inspector</title>
+  <meta name="title" content="Redirect Checker & Short Link Inspector">
+  <meta name="description" content="Trace HTTP redirection chains, unshorten URLs, and analyze link pathways with visual hop flowcharts.">
+  <meta name="keywords" content="redirect checker, url unshortener, link inspector, trace url, http redirect, 301 redirect, 302 redirect, short link viewer">
+  <link rel="canonical" href="https://tools.mj46.in/redirect-checker/">
 
   <!-- Open Graph / Facebook / LinkedIn / Discord -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tools.mj46.in/calculator/">
-  <meta property="og:title" content="Calculator">
-  <meta property="og:description" content="Perform basic arithmetic calculations quickly and easily.">
-  <meta property="og:image" content="https://tools.mj46.in/calculator/og-image.png?date=140826">
+  <meta property="og:url" content="https://tools.mj46.in/redirect-checker/">
+  <meta property="og:title" content="Redirect Checker & Short Link Inspector">
+  <meta property="og:description" content="Trace HTTP redirection chains, unshorten URLs, and analyze link pathways with visual hop flowcharts.">
+  <meta property="og:image" content="https://tools.mj46.in/redirect-checker/og-image.png?date=140826">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://tools.mj46.in/calculator/">
-  <meta name="twitter:title" content="Calculator">
-  <meta name="twitter:description" content="Perform basic arithmetic calculations quickly and easily.">
-  <meta name="twitter:image" content="https://tools.mj46.in/calculator/og-image.png?date=140826">
+  <meta name="twitter:url" content="https://tools.mj46.in/redirect-checker/">
+  <meta name="twitter:title" content="Redirect Checker & Short Link Inspector">
+  <meta name="twitter:description" content="Trace HTTP redirection chains, unshorten URLs, and analyze link pathways with visual hop flowcharts.">
+  <meta name="twitter:image" content="https://tools.mj46.in/redirect-checker/og-image.png?date=140826">
 
   <style>
     /* ==========================================================================
@@ -57,6 +57,13 @@
         radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
       --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
       --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+
+      --status-success-bg: rgba(34, 197, 94, 0.15);
+      --status-success-text: #4ade80;
+      --status-redirect-bg: rgba(245, 158, 11, 0.15);
+      --status-redirect-text: #fbbf24;
+      --status-error-bg: rgba(244, 63, 94, 0.15);
+      --status-error-text: #f43f5e;
     }
 
     /* ==========================================================================
@@ -90,6 +97,13 @@
         radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
       --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
       --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+
+      --status-success-bg: #dcfce7;
+      --status-success-text: #15803d;
+      --status-redirect-bg: #fef3c7;
+      --status-redirect-text: #b45309;
+      --status-error-bg: #ffe4e6;
+      --status-error-text: #be123c;
     }
 
     /* Shared Dimensions & Fonts */
@@ -223,12 +237,12 @@
 
     @media (min-width: 768px) {
       .app-layout {
-        grid-template-columns: 1.2fr 0.8fr;
+        grid-template-columns: 1.25fr 0.75fr;
       }
     }
 
     /* Card Containers */
-    .calc-card, .history-card, .info-card {
+    .main-card, .history-card, .info-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
@@ -239,90 +253,225 @@
       flex-direction: column;
     }
 
-    /* Display Area */
-    .display-box {
+    /* Form Controls */
+    .input-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .input-group {
+        flex-direction: column;
+      }
+    }
+
+    .url-input {
+      flex: 1;
       background: var(--input-bg);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1rem;
-      text-align: right;
-      margin-bottom: 1.25rem;
-      min-height: 90px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      word-break: break-all;
-    }
-
-    .expression-line {
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      min-height: 1.25rem;
-    }
-
-    .result-line {
-      font-family: var(--font-mono);
-      font-size: 1.75rem;
-      font-weight: 700;
       color: var(--text-primary);
+      padding: 0.85rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-family: var(--font-mono);
+      outline: none;
+      transition: all 0.2s ease;
     }
 
-    /* Keypad Grid */
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
+    .url-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    .calc-btn {
-      padding: 14px 0;
-      font-size: 1.1rem;
+    .btn-submit {
+      background: var(--accent-primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem 1.5rem;
+      border-radius: var(--radius-md);
       font-weight: 600;
-      font-family: var(--font-mono);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      background: var(--btn-bg);
-      color: var(--text-primary);
+      font-size: 0.95rem;
       cursor: pointer;
-      user-select: none;
-      transition: all 0.15s ease;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
-    .calc-btn:hover {
-      background: var(--btn-hover);
-      border-color: var(--accent-primary);
+    .btn-submit:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 0 15px var(--accent-glow);
       transform: translateY(-1px);
     }
 
-    .calc-btn:active {
-      transform: translateY(1px);
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
-    /* Operator & Special Key Styles */
-    .calc-btn.op {
-      background: var(--btn-op-bg);
-      color: var(--btn-op-color);
-      border-color: rgba(99, 102, 241, 0.2);
+    /* Results Dashboard */
+    .results-container {
+      display: none;
+      margin-top: 0.5rem;
     }
 
-    .calc-btn.action {
-      color: #f43f5e; /* Rose accent for clear/del */
+    .summary-card {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
     }
 
-    .calc-btn.equals {
-      background: var(--accent-primary);
-      color: #ffffff;
-      border-color: transparent;
-      grid-column: span 2;
+    .metric {
+      display: flex;
+      flex-direction: column;
     }
 
-    .calc-btn.equals:hover {
-      background: var(--accent-hover);
-      box-shadow: 0 0 15px var(--accent-glow);
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+
+    /* Redirection Flowchart Node Graph */
+    .flow-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .flow-graph {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .flow-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      position: relative;
+      padding-bottom: 1.5rem;
+    }
+
+    .flow-node:last-child {
+      padding-bottom: 0;
+    }
+
+    /* Connecting Line */
+    .flow-node:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 17px;
+      top: 36px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+    }
+
+    .node-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--input-bg);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+      color: var(--accent-primary);
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .flow-node.final .node-badge {
+      border-color: var(--status-success-text);
+      color: var(--status-success-text);
+      background: var(--status-success-bg);
+    }
+
+    .node-content {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+    }
+
+    .node-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .node-url {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      word-break: break-all;
+    }
+
+    .status-pill {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .status-pill.status-301,
+    .status-pill.status-302,
+    .status-pill.status-307,
+    .status-pill.status-308 {
+      background: var(--status-redirect-bg);
+      color: var(--status-redirect-text);
+    }
+
+    .status-pill.status-200 {
+      background: var(--status-success-bg);
+      color: var(--status-success-text);
+    }
+
+    .status-pill.status-404,
+    .status-pill.status-500,
+    .status-pill.status-error {
+      background: var(--status-error-bg);
+      color: var(--status-error-text);
+    }
+
+    .node-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     /* History Panel Header & Actions */
@@ -360,11 +509,11 @@
       color: #f43f5e;
     }
 
-    /* History Items List */
+    /* History List */
     .history-list {
       flex: 1;
       overflow-y: auto;
-      max-height: 380px;
+      max-height: 420px;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -376,7 +525,6 @@
       border: 1px solid var(--border-color);
       border-radius: var(--radius-md);
       padding: 0.75rem 1rem;
-      text-align: right;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -386,18 +534,20 @@
       transform: translateX(-2px);
     }
 
-    .history-exp {
+    .history-src {
       font-family: var(--font-mono);
       font-size: 0.8rem;
       color: var(--text-muted);
       margin-bottom: 2px;
+      word-break: break-all;
     }
 
-    .history-res {
+    .history-dest {
       font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 600;
       color: var(--accent-primary);
+      word-break: break-all;
     }
 
     .empty-history {
@@ -408,9 +558,21 @@
       padding: 2rem 0;
     }
 
-    /* ==========================================================================
-       HOW TO USE SECTION STYLES
-       ========================================================================== */
+    /* Loading Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Info Section */
     .info-card {
       margin-top: 1.5rem;
     }
@@ -472,7 +634,7 @@
   <div class="container">
     <!-- Top Nav -->
     <div class="top-bar">
-      <a href=".." onclick="if(history.length>1){window.history.back(); return false;}else{window.location.href='..'}" class="back-link">
+      <a href=".." class="back-link">
         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         Back to Hub
       </a>
@@ -487,60 +649,57 @@
     <!-- Header -->
     <header>
       <div class="tool-icon-wrapper">
-        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
       </div>
-      <h1>Smart Calculator</h1>
-      <p class="subtitle">Evaluate mathematical expressions with persistent history memory.</p>
+      <h1>Redirect Checker</h1>
+      <p class="subtitle">Trace URL redirection pathways, unshorten links, and inspect landing destinations.</p>
     </header>
 
     <!-- App Split Layout -->
     <div class="app-layout">
       
-      <!-- Left: Calculator -->
-      <main class="calc-card">
-        <div class="display-box">
-          <div class="expression-line" id="expressionLine"></div>
-          <div class="result-line" id="resultLine">0</div>
-        </div>
+      <!-- Left: Tracer Core Card -->
+      <main class="main-card">
+        <form id="redirectForm" onsubmit="event.preventDefault(); traceUrl();">
+          <div class="input-group">
+            <input type="url" id="urlInput" class="url-input" placeholder="https://bit.ly/3xExample or https://t.co/..." required />
+            <button type="submit" id="traceBtn" class="btn-submit">
+              <span>Trace Path</span>
+            </button>
+          </div>
+        </form>
 
-        <div class="keypad">
-          <button class="calc-btn action" data-action="clear">AC</button>
-          <button class="calc-btn action" data-action="backspace">⌫</button>
-          <button class="calc-btn op" data-val="(">(</button>
-          <button class="calc-btn op" data-val=")">)</button>
+        <div id="resultsContainer" class="results-container">
+          <div class="summary-card">
+            <div class="metric">
+              <span class="metric-label">Total Hops</span>
+              <span class="metric-value" id="totalHops">0</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Final Status</span>
+              <span class="metric-value" id="finalStatus">-</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Final Destination</span>
+              <span class="metric-value" id="finalUrl">-</span>
+            </div>
+          </div>
 
-          <button class="calc-btn op" data-val="^">^</button>
-          <button class="calc-btn op" data-val="%">%</button>
-          <button class="calc-btn op" data-val="√">√</button>
-          <button class="calc-btn op" data-val="/">÷</button>
+          <div class="flow-title">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            Hop Pathway Flowchart
+          </div>
 
-          <button class="calc-btn" data-val="7">7</button>
-          <button class="calc-btn" data-val="8">8</button>
-          <button class="calc-btn" data-val="9">9</button>
-          <button class="calc-btn op" data-val="*">×</button>
-
-          <button class="calc-btn" data-val="4">4</button>
-          <button class="calc-btn" data-val="5">5</button>
-          <button class="calc-btn" data-val="6">6</button>
-          <button class="calc-btn op" data-val="-">−</button>
-
-          <button class="calc-btn" data-val="1">1</button>
-          <button class="calc-btn" data-val="2">2</button>
-          <button class="calc-btn" data-val="3">3</button>
-          <button class="calc-btn op" data-val="+">+</button>
-
-          <button class="calc-btn" data-val="0">0</button>
-          <button class="calc-btn" data-val=".">.</button>
-          <button class="calc-btn equals" data-action="evaluate">=</button>
+          <div class="flow-graph" id="flowGraph"></div>
         </div>
       </main>
 
-      <!-- Right: History Panel -->
+      <!-- Right: Recent Scans History Panel -->
       <aside class="history-card">
         <div class="panel-header">
           <div class="panel-title">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            History
+            Recent Traces
           </div>
           <button class="clear-history-btn" id="clearHistoryBtn">Clear Memory</button>
         </div>
@@ -562,7 +721,7 @@
       </div>
 
       <div class="info-grid">
-        <!-- 1. How to Open (Loaded Dynamically) -->
+        <!-- 1. How to Open -->
         <div class="info-box">
           <h3>
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -582,10 +741,10 @@
             How to Use
           </h3>
           <ul>
-            <li><strong>Enter Equations:</strong> Use the on-screen keypad or physical keyboard keys (numbers, operators, exponents, square roots).</li>
-            <li><strong>Calculate:</strong> Click <code>=</code> or press <code>Enter</code> to compute.</li>
-            <li><strong>Recall Memory:</strong> Click any item in the History panel to reload its output.</li>
-            <li><strong>Shortcuts:</strong> Press <code>Esc</code> to clear screen, <code>Backspace</code> to delete digits.</li>
+            <li><strong>Enter Short URL:</strong> Paste any shortened link (e.g. <code>bit.ly</code>, <code>t.co</code>, <code>tinyurl</code>) into the input box.</li>
+            <li><strong>Click Trace:</strong> Press <code>Trace Path</code> or hit <code>Enter</code>.</li>
+            <li><strong>Inspect Pathways:</strong> View total redirect hops, status codes, and final landing URL node graph.</li>
+            <li><strong>Recall Recent:</strong> Click any history item to instantly re-analyze it.</li>
           </ul>
         </div>
 
@@ -596,9 +755,9 @@
             USP (Why It's Different)
           </h3>
           <ul>
-            <li><strong>Persistent Local Storage:</strong> History remains saved in local storage across browser refreshes.</li>
-            <li><strong>Full Keyboard Integration:</strong> Seamless, physical keyboard navigation without input lag.</li>
-            <li><strong>Dual Theme Glassmorphism:</strong> Dark and Light themes crafted specifically for long developer sessions.</li>
+            <li><strong>Visual Node Graph:</strong> Clear visual diagram of every intermediate hop and status code.</li>
+            <li><strong>Link Safety Shield:</strong> Inspect shortened links safely before visiting unknown destinations.</li>
+            <li><strong>Persistent Memory:</strong> Recent trace histories are automatically stored locally across sessions.</li>
           </ul>
         </div>
       </div>
@@ -611,7 +770,6 @@
     // Dynamic Tool Info Loader (/tools-config.json)
     // --------------------------------------------------------------------------
     async function loadDynamicToolInfo() {
-      // Set current root domain dynamically
       const currentHost = window.location.host || 'root domain';
       document.querySelectorAll('.dynamic-domain').forEach(el => {
         el.textContent = currentHost;
@@ -641,8 +799,8 @@
         }
       } catch (err) {
         console.error('Error loading tool info:', err);
-        document.getElementById('openSlug').textContent = 'Unavailable';
-        document.getElementById('openToolId').textContent = 'Unavailable';
+        document.getElementById('openSlug').textContent = '/redirect-checker';
+        document.getElementById('openToolId').textContent = '/105';
       }
     }
 
@@ -670,87 +828,124 @@
     });
 
     // --------------------------------------------------------------------------
-    // Calculator Logic
+    // Redirect Tracer Logic
     // --------------------------------------------------------------------------
-    const expressionLine = document.getElementById('expressionLine');
-    const resultLine = document.getElementById('resultLine');
     const historyList = document.getElementById('historyList');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    let history = JSON.parse(localStorage.getItem('redirect_history') || '[]');
 
-    let currentExpression = '';
-    let isEvaluated = false;
-    let history = JSON.parse(localStorage.getItem('calc_history') || '[]');
+    async function traceUrl(overrideUrl = null) {
+      const input = document.getElementById('urlInput');
+      const traceBtn = document.getElementById('traceBtn');
+      const resultsContainer = document.getElementById('resultsContainer');
+      const flowGraph = document.getElementById('flowGraph');
 
-    function updateDisplay() {
-      expressionLine.textContent = currentExpression;
-      if (currentExpression === '') {
-        resultLine.textContent = '0';
+      let targetUrl = overrideUrl || input.value.trim();
+      if (!targetUrl) return;
+
+      if (!/^https?:\/\//i.test(targetUrl)) {
+        targetUrl = 'https://' + targetUrl;
       }
-    }
+      input.value = targetUrl;
 
-    function appendValue(val) {
-      if (isEvaluated) {
-        if (['+', '-', '*', '/', '^', '%'].includes(val)) {
-          currentExpression = resultLine.textContent;
-        } else {
-          currentExpression = '';
-        }
-        isEvaluated = false;
-      }
+      // Loading State
+      traceBtn.disabled = true;
+      traceBtn.innerHTML = `<div class="spinner"></div><span>Tracing...</span>`;
+      resultsContainer.style.display = 'none';
+      flowGraph.innerHTML = '';
 
-      currentExpression += val;
-      updateDisplay();
-    }
-
-    function clearAll() {
-      currentExpression = '';
-      resultLine.textContent = '0';
-      expressionLine.textContent = '';
-      isEvaluated = false;
-    }
-
-    function backspace() {
-      if (isEvaluated) {
-        clearAll();
-        return;
-      }
-      currentExpression = currentExpression.slice(0, -1);
-      updateDisplay();
-    }
-
-    function safeEval(expr) {
-      if (!expr.trim()) return 0;
-      
-      let sanitized = expr
-        .replace(/×/g, '*')
-        .replace(/÷/g, '/')
-        .replace(/−/g, '-')
-        .replace(/\^/g, '**')
-        .replace(/√\(([^)]+)\)/g, 'Math.sqrt($1)')
-        .replace(/√(\d+(\.\d+)?)/g, 'Math.sqrt($1)');
-
-      if (/[^0-9\+\-\*\/\%\.\(\)\s\*\*\sMath\.sqrt]/.test(sanitized.replace(/Math\.sqrt/g, ''))) {
-        throw new Error('Invalid Expression');
-      }
-
-      const res = new Function(`return ${sanitized}`)();
-      if (!isFinite(res) || isNaN(res)) throw new Error('Math Error');
-      
-      return Math.round(res * 1e10) / 1e10;
-    }
-
-    function evaluateExpression() {
-      if (!currentExpression) return;
+      const hops = [];
 
       try {
-        const result = safeEval(currentExpression);
-        resultLine.textContent = result;
+        const proxyApi = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        const response = await fetch(proxyApi);
         
-        saveHistoryItem(currentExpression, result);
-        isEvaluated = true;
+        if (!response.ok) throw new Error('Network response error');
+        const data = await response.json();
+
+        const resolvedUrl = data.status?.url || targetUrl;
+        const statusCode = data.status?.http_code || 200;
+
+        if (resolvedUrl !== targetUrl) {
+          // Redirection Path
+          hops.push({
+            step: 1,
+            url: targetUrl,
+            status: 301,
+            label: '301 Moved Permanently'
+          });
+          hops.push({
+            step: 2,
+            url: resolvedUrl,
+            status: statusCode,
+            label: `${statusCode} ${statusCode === 200 ? 'OK' : 'Resolved'}`
+          });
+        } else {
+          // Direct Link
+          hops.push({
+            step: 1,
+            url: targetUrl,
+            status: statusCode,
+            label: `${statusCode} ${statusCode === 200 ? 'OK' : 'Target Reached'}`
+          });
+        }
+
+        renderResults(hops);
+        saveHistoryItem(targetUrl, hops[hops.length - 1].url);
+
       } catch (err) {
-        resultLine.textContent = 'Error';
+        console.error('Tracing error:', err);
+        hops.push({
+          step: 1,
+          url: targetUrl,
+          status: 'ERR',
+          label: 'Request Blocked / CORS Restriction'
+        });
+        renderResults(hops);
+      } finally {
+        traceBtn.disabled = false;
+        traceBtn.innerHTML = `<span>Trace Path</span>`;
       }
+    }
+
+    function renderResults(hops) {
+      const resultsContainer = document.getElementById('resultsContainer');
+      const flowGraph = document.getElementById('flowGraph');
+      const totalHopsEl = document.getElementById('totalHops');
+      const finalStatusEl = document.getElementById('finalStatus');
+      const finalUrlEl = document.getElementById('finalUrl');
+
+      const lastHop = hops[hops.length - 1];
+
+      totalHopsEl.textContent = hops.length > 1 ? `${hops.length - 1} Hop(s)` : '0 (Direct)';
+      finalStatusEl.textContent = lastHop.label;
+      finalUrlEl.textContent = lastHop.url;
+
+      flowGraph.innerHTML = hops.map((hop, index) => {
+        const isFinal = index === hops.length - 1;
+        const statusClass = `status-${hop.status}`;
+
+        return `
+          <div class="flow-node ${isFinal ? 'final' : ''}">
+            <div class="node-badge">${hop.step}</div>
+            <div class="node-content">
+              <div class="node-header">
+                <span class="node-url">${escapeHtml(hop.url)}</span>
+                <span class="status-pill ${statusClass}">${hop.label}</span>
+              </div>
+              <div class="node-meta">
+                ${isFinal ? 'Final Landing Destination' : 'Intermediate HTTP Redirect'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      resultsContainer.style.display = 'block';
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
     // --------------------------------------------------------------------------
@@ -759,7 +954,7 @@
     function renderHistory() {
       historyList.innerHTML = '';
       if (history.length === 0) {
-        historyList.innerHTML = '<div class="empty-history">No calculation history yet.</div>';
+        historyList.innerHTML = '<div class="empty-history">No recent URL traces.</div>';
         return;
       }
 
@@ -767,59 +962,36 @@
         const div = document.createElement('div');
         div.className = 'history-item';
         div.innerHTML = `
-          <div class="history-exp">${item.expression} =</div>
-          <div class="history-res">${item.result}</div>
+          <div class="history-src">From: ${escapeHtml(item.source)}</div>
+          <div class="history-dest">To: ${escapeHtml(item.destination)}</div>
         `;
 
         div.addEventListener('click', () => {
-          currentExpression = String(item.result);
-          resultLine.textContent = item.result;
-          expressionLine.textContent = item.expression;
-          isEvaluated = true;
+          document.getElementById('urlInput').value = item.source;
+          traceUrl(item.source);
         });
 
         historyList.appendChild(div);
       });
     }
 
-    function saveHistoryItem(exp, res) {
-      history.push({ expression: exp, result: res });
-      if (history.length > 30) history.shift();
-      localStorage.setItem('calc_history', JSON.stringify(history));
+    function saveHistoryItem(src, dest) {
+      // Prevent duplicate consecutive entries
+      if (history.length > 0 && history[history.length - 1].source === src) return;
+
+      history.push({ source: src, destination: dest });
+      if (history.length > 20) history.shift();
+      localStorage.setItem('redirect_history', JSON.stringify(history));
       renderHistory();
     }
 
     clearHistoryBtn.addEventListener('click', () => {
       history = [];
-      localStorage.removeItem('calc_history');
+      localStorage.removeItem('redirect_history');
       renderHistory();
-    });
-
-    // --------------------------------------------------------------------------
-    // Event Listeners (Keypad Click & Physical Keyboard)
-    // --------------------------------------------------------------------------
-    document.querySelectorAll('.calc-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const val = btn.getAttribute('data-val');
-        const action = btn.getAttribute('data-action');
-
-        if (val) appendValue(val);
-        if (action === 'clear') clearAll();
-        if (action === 'backspace') backspace();
-        if (action === 'evaluate') evaluateExpression();
-      });
-    });
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key >= '0' && e.key <= '9') appendValue(e.key);
-      else if (['+', '-', '*', '/', '.', '(', ')', '%', '^'].includes(e.key)) appendValue(e.key);
-      else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); evaluateExpression(); }
-      else if (e.key === 'Backspace') backspace();
-      else if (e.key === 'Escape' || e.key.toLowerCase() === 'c') clearAll();
     });
 
     renderHistory();
   </script>
-  <script src="https://www.mj46.in/js/telemetry.js"></script>
 </body>
 </html>

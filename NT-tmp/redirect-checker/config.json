@@ -1,0 +1,24 @@
+{
+      "tool_id": 105,
+      "name": "redirect-checker",
+      "card": {
+        "id": 105,
+        "title": "Redirect Checker",
+        "url": "redirect-checker/",
+        "tags": [
+          "redirect",
+          "shortener",
+          "link",
+          "url",
+          "trace",
+          "hop",
+          "status",
+          "unshorten",
+          "inspector"
+        ],
+        "category": "NETWORK",
+        "description": "Trace HTTP redirection chains, unshorten URLs, and analyze link pathways with visual hop flowcharts.",
+        "footer": { "slug": "redirect-checker", "version": "v1.0" },
+        "icon": "<svg width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 7h8m0 0v8m0-8l-8 8-4-4-6 6\"/></svg>"
+      }
+    }
