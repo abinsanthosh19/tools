@@ -1260,6 +1260,7 @@
     </section>
   </div>
 
+  <script src="/NT-js/loadDynamicToolInfo.js" defer></script>
   <script>
     const {
       differenceInCalendarDays,
@@ -1273,83 +1274,6 @@
       format,
       isValid
     } = dateFns;
-
-    // --------------------------------------------------------------------------
-    // Dynamic Tool Info Loader (/tools-config.json)
-    // --------------------------------------------------------------------------
-    async function loadDynamicToolInfo() {
-      const currentHost = window.location.host || 'root domain';
-
-      document.querySelectorAll('.dynamic-domain').forEach(el => {
-        el.textContent = currentHost;
-      });
-
-      const pathname = window.location.pathname.replace('/\\/+$/', '');
-      const segments = pathname.split('/').filter(Boolean);
-
-      // Works with:
-      //   /date-calculator/
-      //   /date-calculator
-      //   /tools/date-calculator/
-      // The last non-empty path segment is treated as the tool slug.
-      const currentSlug = segments.length ? segments[segments.length - 1].toLowerCase() : '';
-
-      const hubPath = segments.length > 1
-        ? '/' + segments.slice(0, -1).join('/') + '/'
-        : '/';
-
-      const hubEl = document.getElementById('openHubPath');
-      if (hubEl) {
-        hubEl.textContent = hubPath;
-      }
-
-      try {
-        const response = await fetch('/tools-config.json', { cache: 'no-store' });
-        if (!response.ok) throw new Error('Config file unavailable');
-
-        const config = await response.json();
-        const tools = Array.isArray(config.tools) ? config.tools : [];
-
-        const tool = tools.find(t => {
-          const configSlug = String(
-            t.card?.footer?.slug ||
-            t.slug ||
-            t.name ||
-            ''
-          ).replace('/^\\/+|\\/+$/g', '').toLowerCase();
-
-          const configUrl = String(
-            t.card?.url ||
-            t.url ||
-            ''
-          ).replace('/^\\/+|\\/+$/g', '').toLowerCase();
-
-          return configSlug === currentSlug || configUrl === currentSlug;
-        });
-
-        if (!tool) throw new Error(`Tool not found: ${currentSlug}`);
-
-        const slug = String(
-          tool.card?.footer?.slug ||
-          tool.slug ||
-          tool.name ||
-          currentSlug
-        ).replace('/^\\/+|\\/+$/g', '');
-
-        const toolId = tool.tool_id ?? tool.card?.id;
-
-        document.getElementById('openSlug').textContent = `/${slug}`;
-        document.getElementById('openToolId').textContent = `/${toolId ?? 'Unavailable'}`;
-      } catch (err) {
-        console.error('Error loading tool info:', err);
-
-        document.getElementById('openSlug').textContent = 'Unavailable';
-        document.getElementById('openToolId').textContent = 'Unavailable';
-      }
-    }
-
-    loadDynamicToolInfo();
-
     // --------------------------------------------------------------------------
     // Theme Switcher
     // --------------------------------------------------------------------------

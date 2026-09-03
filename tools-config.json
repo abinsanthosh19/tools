@@ -1,241 +1,155 @@
 {
   "tools": [
     {
-      "tool_id": 101,
+      "id": 101,
       "name": "file-downloader",
-      "card": {
-        "id": 101,
-        "title": "File Downloader",
-        "url": "/file-downloader/",
-        "tags": ["file", "download", "manager", "utility"],
-        "category": "UTILITY",
-        "description": "Download files from URLs with ease and control.",
-        "footer": { "slug": "file-downloader", "version": "v1.0" },
-        "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path d='M12 3v12m0 0l-4-4m4 4l4-4'/><rect x='4' y='17' width='16' height='4' rx='1'/></svg>"
-      }
+      "title": "File Downloader",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Download files from URLs with ease and control.",
+      "tags": ["file", "download", "manager", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path d='M12 3v12m0 0l-4-4m4 4l4-4'/><rect x='4' y='17' width='16' height='4' rx='1'/></svg>"
     },
     {
-      "tool_id": 102,
+      "id": 102,
       "name": "file-hash-verifier",
-      "card": {
-        "id": 102,
-        "title": "File Hash Checker & Verifier",
-        "url": "/file-hash-verifier/",
-        "tags": ["file", "hash", "verification", "security"],
-        "category": "SECURITY",
-        "description": "Verify the integrity of files using cryptographic hash functions.",
-        "footer": { "slug": "file-hash-verifier", "version": "v1.0" },
-        "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'/></svg>"
-      }
+      "title": "File Hash Checker & Verifier",
+      "category": "SECURITY",
+      "version": "v1.0",
+      "description": "Verify the integrity of files using cryptographic hash functions.",
+      "tags": ["file", "hash", "verification", "security"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'/></svg>"
     },
     {
-      "tool_id": 103,
+      "id": 103,
       "name": "uuid-generator",
-      "card": {
-        "id": 103,
-        "title": "UUID Generator",
-        "url": "/uuid-generator/",
-        "tags": ["uuid", "guid", "random", "generator", "id", "identifier"],
-        "category": "GENERATOR",
-        "description": "Generate unique RFC4122 compliant version-4 UUIDs individually or in bulk.",
-        "footer": { "slug": "uuid-generator", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 20l4-16m2 16l4-16M6 9h14M4 15h14'></path></svg>"
-      }
+      "title": "UUID Generator",
+      "category": "GENERATOR",
+      "version": "v1.0",
+      "description": "Generate unique RFC4122 compliant version-4 UUIDs individually or in bulk.",
+      "tags": ["uuid", "guid", "random", "generator", "id", "identifier"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M7 20l4-16m2 16l4-16M6 9h14M4 15h14'></path></svg>"
     },
     {
-      "tool_id": 104,
+      "id": 104,
       "name": "calculator",
-      "card": {
-        "id": 104,
-        "title": "Calculator",
-        "url": "/calculator/",
-        "tags": ["calculator", "math", "arithmetic", "utility"],
-        "category": "UTILITY",
-        "description": "Perform basic arithmetic calculations quickly and easily.",
-        "footer": { "slug": "calculator", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z'></path></svg>"
-      }
+      "title": "Calculator",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Perform basic arithmetic calculations quickly and easily.",
+      "tags": ["calculator", "math", "arithmetic", "utility"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z'></path></svg>"
     },
     {
-      "tool_id": 105,
+      "id": 105,
       "name": "file-encryptor",
-      "card": {
-        "id": 105,
-        "title": "File Encrypter & Decrypter",
-        "url": "/file-encryptor/",
-        "tags": [
-          "file-encryptor",
-          "aes-256",
-          "mjcrypt",
-          "decrypter",
-          "encryption",
-          "privacy",
-          "security"
-        ],
-        "category": "SECURITY",
-        "description": "Securely encrypt and decrypt any file client-side using AES-256-GCM with a single password.",
-        "footer": {
-          "slug": "file-encryptor",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'></path></svg>"
-      }
+      "title": "File Encrypter & Decrypter",
+      "category": "SECURITY",
+      "version": "v1.0",
+      "description": "Securely encrypt and decrypt any file client-side using AES-256-GCM with a single password.",
+      "tags": ["file-encryptor", "aes-256", "mjcrypt", "decrypter", "encryption", "privacy", "security"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'></path></svg>"
     },
     {
-      "tool_id": 106,
+      "id": 106,
       "name": "qr-code",
-      "card": {
-        "id": 106,
-        "title": "QR Code Generator & Reader",
-        "url": "/qr-code/",
-        "tags": [
-          "qr-code",
-          "generator",
-          "scanner",
-          "reader",
-          "decoder",
-          "privacy",
-          "utilities"
-        ],
-        "category": "UTILITIES",
-        "description": "Generate custom QR codes or scan and decode existing QR code images entirely in your browser.",
-        "footer": {
-          "slug": "qr-code",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><rect x='3' y='3' width='6' height='6' stroke-width='2'/><rect x='15' y='3' width='6' height='6' stroke-width='2'/><rect x='3' y='15' width='6' height='6' stroke-width='2'/><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 15h2v2h-2zM19 19h2v2h-2zM17 17h2v2h-2z'/></svg>"
-      }
+      "title": "QR Code Generator & Reader",
+      "category": "UTILITIES",
+      "version": "v1.0",
+      "description": "Generate custom QR codes or scan and decode existing QR code images entirely in your browser.",
+      "tags": ["qr-code", "generator", "scanner", "reader", "decoder", "privacy", "utilities"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><rect x='3' y='3' width='6' height='6' stroke-width='2'/><rect x='15' y='3' width='6' height='6' stroke-width='2'/><rect x='3' y='15' width='6' height='6' stroke-width='2'/><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M15 15h2v2h-2zM19 19h2v2h-2zM17 17h2v2h-2z'/></svg>"
     },
     {
-      "tool_id": 107,
+      "id": 107,
       "name": "color-picker",
-      "card": {
-        "id": 107,
-        "title": "Color Picker",
-        "url": "/color-picker/",
-        "tags": ["color picker", "hex", "rgb", "hsl", "eyedropper", "utility"],
-        "category": "UTILITY",
-        "description": "Pick colors visually or sample them straight from an uploaded image, with instant HEX, RGB, and HSL values.",
-        "footer": { "slug": "color-picker", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 22 1-1h3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 21v-3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z'></path></svg>"
-      }
+      "title": "Color Picker",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Pick colors visually or sample them straight from an uploaded image, with instant HEX, RGB, and HSL values.",
+      "tags": ["color picker", "hex", "rgb", "hsl", "eyedropper", "utility"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 22 1-1h3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 21v-3l9-9'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z'></path></svg>"
     },
     {
-      "tool_id": 108,
+      "id": 108,
       "name": "metadata-viewer",
-      "card": {
-        "id": 108,
-        "title": "Metadata Viewer",
-        "url": "/metadata-viewer/",
-        "tags": ["metadata", "exif", "file inspector", "pdf", "id3", "c2pa", "ai detection", "utility"],
-        "category": "UTILITY",
-        "description": "Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags and C2PA content-credential / AI-generation signals — entirely in your browser.",
-        "footer": { "slug": "metadata-viewer", "version": "v1.1" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><circle cx='16.5' cy='17.5' r='2.5' stroke-width='2'></circle><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18.5 19.5L21 22'></path></svg>"
-      }
+      "title": "Metadata Viewer",
+      "category": "UTILITY",
+      "version": "v1.1",
+      "description": "Inspect deep file metadata — EXIF, GPS, PDF info, ID3 tags and C2PA content-credential / AI-generation signals — entirely in your browser.",
+      "tags": ["metadata", "exif", "file inspector", "pdf", "id3", "c2pa", "ai detection", "utility"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h5.5'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><circle cx='16.5' cy='17.5' r='2.5' stroke-width='2'></circle><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M18.5 19.5L21 22'></path></svg>"
     },
     {
-      "tool_id": 109,
+      "id": 109,
       "name": "markdown-preview",
-      "card": {
-        "id": 109,
-        "title": "Markdown Preview",
-        "url": "/markdown-preview/",
-        "tags": ["markdown", "preview", "editor", "gfm", "utility"],
-        "category": "UTILITY",
-        "description": "Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.",
-        "footer": { "slug": "markdown-preview", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 13h6M9 17h6M9 9h1'></path></svg>"
-      }
+      "title": "Markdown Preview",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Write or upload Markdown and see a live, GitHub-flavored preview with tables, task lists, and syntax-highlighted code — entirely in your browser.",
+      "tags": ["markdown", "preview", "editor", "gfm", "utility"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M14 2v6h6'></path><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 13h6M9 17h6M9 9h1'></path></svg>"
     },
     {
-      "tool_id": 110,
+      "id": 110,
       "name": "emoji-collection",
-      "card": {
-        "id": 110,
-        "title": "Emoji Collection",
-        "url": "/emoji-collection/",
-        "tags": [
-          "emoji",
-          "emojis",
-          "emoji search",
-          "unicode",
-          "symbols",
-          "copy"
-        ],
-        "category": "UTILITY",
-        "description": "Search emojis by keywords and copy them instantly to the clipboard.",
-        "footer": {
-          "slug": "emoji-collection",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' stroke-width='2'></circle><path stroke-linecap='round' stroke-width='2' d='M8 14s1.5 2 4 2 4-2 4-2M8.5 9.5h.01M15.5 9.5h.01'></path></svg>"
-      }
+      "title": "Emoji Collection",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Search emojis by keywords and copy them instantly to the clipboard.",
+      "tags": ["emoji", "emojis", "emoji search", "unicode", "symbols", "copy"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' stroke-width='2'></circle><path stroke-linecap='round' stroke-width='2' d='M8 14s1.5 2 4 2 4-2 4-2M8.5 9.5h.01M15.5 9.5h.01'></path></svg>"
     },
     {
-      "tool_id": 111,
+      "id": 111,
       "name": "password-generator",
-      "card": {
-        "id": 111,
-        "title": "Password Generator",
-        "url": "/password-generator/",
-        "tags": ["password", "security", "generator", "random", "utility"],
-        "category": "GENERATOR",
-        "description": "Generate strong random passwords with customizable length and character types.",
-        "footer": {
-          "slug": "password-generator",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='4' y='10' width='16' height='11' rx='2'/><path d='M8 10V7a4 4 0 018 0v3'/><path d='M8 15h.01M12 15h.01M16 15h.01'/></svg>"
-      }
+      "title": "Password Generator",
+      "category": "GENERATOR",
+      "version": "v1.0",
+      "description": "Generate strong random passwords with customizable length and character types.",
+      "tags": ["password", "security", "generator", "random", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='4' y='10' width='16' height='11' rx='2'/><path d='M8 10V7a4 4 0 018 0v3'/><path d='M8 15h.01M12 15h.01M16 15h.01'/></svg>"
     },
     {
-      "tool_id": 112,
+      "id": 112,
       "name": "date-calculator",
-      "card": {
-        "id": 112,
-        "title": "Date Calculator",
-        "url": "/date-calculator/",
-        "tags": ["date", "calendar", "days", "calculator", "utility"],
-        "category": "UTILITY",
-        "description": "Calculate date differences, count days, add or subtract time, and find weekdays precisely.",
-        "footer": {
-          "slug": "date-calculator",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='4' width='18' height='17' rx='2'/><path d='M16 2v4M8 2v4M3 10h18'/><path d='M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01'/></svg>"
-      }
+      "title": "Date Calculator",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Calculate date differences, count days, add or subtract time, and find weekdays precisely.",
+      "tags": ["date", "calendar", "days", "calculator", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='4' width='18' height='17' rx='2'/><path d='M16 2v4M8 2v4M3 10h18'/><path d='M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01'/></svg>"
     },
     {
-      "tool_id": 113,
+      "id": 113,
       "name": "internet-speed-test",
-      "card": {
-        "id": 113,
-        "title": "Internet Speed Test",
-        "url": "/internet-speed-test/",
-        "tags": ["internet", "speed", "ping", "network", "utility"],
-        "category": "UTILITY",
-        "description": "Test your internet connection speed, latency, jitter, and packet loss.",
-        "footer": {
-          "slug": "internet-speed-test",
-          "version": "v1.0"
-        },
-        "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path d='M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.94 0M12 20h.01'/></svg>"
-      }
+      "title": "Internet Speed Test",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Test your internet connection speed, latency, jitter, and packet loss.",
+      "tags": ["internet", "speed", "ping", "network", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path d='M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.94 0M12 20h.01'/></svg>"
     },
     {
-      "tool_id": 114,
+      "id": 114,
       "name": "url-shortener",
-      "card": {
-        "id": 114,
-        "title": "URL Shortener",
-        "url": "https://fwd.mj46.in/",
-        "tags": ["url", "shortener", "links", "utility"],
-        "category": "UTILITY",
-        "description": "Shorten long URLs instantly and keep a local history of your generated links.",
-        "footer": { "slug": "url-shortener", "version": "v1.0" },
-        "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'></path></svg>"
-      }
+      "title": "URL Shortener",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "url": "https://fwd.mj46.in/",
+      "description": "Shorten long URLs instantly and keep a local history of your generated links.",
+      "tags": ["url", "shortener", "links", "utility"],
+      "icon": "<svg width='28' height='28' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'></path></svg>"
+    },
+    {
+      "id": 115,
+      "name": "audio-channel-tester",
+      "title": "Audio & Channel Tester",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Test left/right stereo channels, balance, speaker output, and 3D/8D spatial audio effects.",
+      "tags": ["audio", "stereo", "channel", "headphones", "speaker", "3d", "8d", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z'/></svg>"
     }
   ]
 }

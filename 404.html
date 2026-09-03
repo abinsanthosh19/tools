@@ -287,10 +287,8 @@
       const card = document.getElementById('notFoundCard');
       const pathDisplay = document.getElementById('requestedPath');
 
-      // Extract path segments (e.g., "/104" -> ["104"])
       const path = window.location.pathname;
       const pathSegments = path.split('/').filter(Boolean);
-      
       pathDisplay.textContent = path;
 
       if (pathSegments.length > 0) {
@@ -302,15 +300,13 @@
           if (configRes.ok) {
             const config = await configRes.json();
             
-            // Match by tool_id (e.g. 104) OR by tool name (e.g. uuid-generator)
             const matchedTool = config.tools.find(t => 
-              (t.tool_id && t.tool_id === possibleId) || 
-              (t.name && t.name.toLowerCase() === querySegment)
+              t.id === possibleId || t.name.toLowerCase() === querySegment
             );
 
-            if (matchedTool && matchedTool.card && matchedTool.card.url) {
-              // Redirect to destination URL
-              window.location.replace(`${matchedTool.card.url}`);
+            if (matchedTool) {
+              const targetUrl = matchedTool.url || `/${matchedTool.name}/`;
+              window.location.replace(targetUrl);
               return;
             }
           }
@@ -319,7 +315,6 @@
         }
       }
 
-      // If no match found or error occurs, show 404 UI
       loader.style.display = 'none';
       card.style.display = 'flex';
     }

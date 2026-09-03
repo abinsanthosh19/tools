@@ -934,60 +934,11 @@
 
   </div>
 
+  <script src="/NT-js/loadDynamicToolInfo.js" defer></script>
   <script>
     /* ==========================================================================
        INTERNET SPEED TEST
        ========================================================================== */
-
-    // --------------------------------------------------------------------------
-    // Dynamic Tool Info Loader (/tools-config.json)
-    // --------------------------------------------------------------------------
-    async function loadDynamicToolInfo() {
-      const currentHost = window.location.host || 'root domain';
-
-      document.querySelectorAll('.dynamic-domain').forEach(el => {
-        el.textContent = currentHost;
-      });
-
-      const path = window.location.pathname.replace(/\/+$/, '');
-      const lastSlash = path.lastIndexOf('/');
-      const hubPath = lastSlash > 0 ? path.substring(0, lastSlash) : '/';
-
-      const hubEl = document.getElementById('openHubPath');
-      if (hubEl) {
-        hubEl.textContent = currentHost;
-      }
-
-      try {
-        const response = await fetch('/tools-config.json', { cache: 'no-store' });
-        if (!response.ok) throw new Error('Config file unavailable');
-
-        const config = await response.json();
-
-        const currentName = path.split('/').filter(Boolean).pop()?.toLowerCase() || '';
-
-        const tool = config.tools?.find(t => {
-          const name = t.name?.toLowerCase();
-          const slug = t.card?.footer?.slug?.toLowerCase();
-          return name === currentName || slug === currentName;
-        });
-
-        if (tool) {
-          const slug = tool.card?.footer?.slug || tool.slug || tool.name.toLowerCase();
-          document.getElementById('openSlug').textContent = `/${slug}/`;
-          document.getElementById('openToolId').textContent = `/${tool.tool_id}`;
-        } else {
-          throw new Error('Tool not found in configuration');
-        }
-      } catch (err) {
-        console.warn('Could not load tool info:', err);
-        document.getElementById('openSlug').textContent = '/internet-speed-test/';
-        document.getElementById('openToolId').textContent = '/102';
-      }
-    }
-
-    loadDynamicToolInfo();
-
 
     // --------------------------------------------------------------------------
     // Theme Switcher

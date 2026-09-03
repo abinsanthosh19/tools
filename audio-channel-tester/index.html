@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>Audio & Channel Tester</title>
+  <meta name="title" content="Audio & Channel Tester">
+  <meta name="description" content="Test left/right stereo channels, balance, and 3D/8D spatial audio effects online.">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+      
+      --error-color: #ef4444;
+      --success-color: #10b981;
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+      
+      --error-color: #dc2626;
+      --success-color: #059669;
+    }
+
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    /* Top Navigation Bar */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border-color); transition: all 0.2s ease;
+    }
+    .back-link:hover { color: var(--text-primary); border-color: var(--accent-primary); }
+
+    .theme-toggle {
+      background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 500; backdrop-filter: blur(8px); transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { border-color: var(--accent-primary); box-shadow: 0 0 12px var(--accent-glow); }
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; } [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; } [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header { text-align: center; margin-bottom: 2.5rem; }
+    .tool-icon-wrapper {
+      display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: var(--radius-lg); background: var(--icon-bg); border: 1px solid var(--border-color); color: var(--accent-primary); margin-bottom: 1rem;
+    }
+    h1 { font-size: 2.25rem; font-weight: 800; background: var(--heading-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text-secondary); font-size: 1rem; }
+
+    /* App Layout */
+    .app-layout {
+      display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+    }
+    @media (min-width: 820px) { .app-layout { grid-template-columns: 1fr 1fr; } }
+
+    /* Card Containers */
+    .app-card {
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; backdrop-filter: blur(12px); box-shadow: var(--card-shadow); display: flex; flex-direction: column; gap: 1.25rem;
+    }
+
+    .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
+    .panel-title { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+
+    /* Channel Quick Test Buttons */
+    .channel-buttons {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+    }
+    .channel-btn {
+      padding: 1.25rem 0.5rem; border-radius: var(--radius-md); background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 8px; font-weight: 700;
+    }
+    .channel-btn:hover { border-color: var(--accent-primary); background: var(--bg-card-hover); transform: translateY(-2px); }
+    .channel-btn:active { transform: translateY(0); }
+    .channel-btn.active { border-color: var(--accent-primary); background: var(--accent-glow); color: var(--accent-primary); box-shadow: 0 0 15px var(--accent-glow); }
+    .channel-badge { font-size: 1.5rem; line-height: 1; }
+    .channel-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* Audio Source & Upload Area */
+    .audio-source-box {
+      background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .source-select-row { display: flex; gap: 0.5rem; }
+    .source-btn {
+      flex: 1; padding: 8px 12px; border-radius: var(--radius-sm); background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; text-align: center;
+    }
+    .source-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+
+    .file-input-wrapper { display: none; }
+    .file-input-wrapper.active { display: block; }
+    .custom-file-label {
+      display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 1px dashed var(--border-color); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); transition: all 0.2s ease;
+    }
+    .custom-file-label:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+
+    /* Controls & Sliders */
+    .control-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .control-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+    .control-value { font-family: var(--font-mono); color: var(--accent-primary); font-weight: 700; }
+
+    .slider-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; font-family: var(--font-mono); }
+
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 4px; background: var(--input-bg); border: 1px solid var(--border-color); outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-primary); cursor: pointer; box-shadow: 0 0 10px var(--accent-glow); transition: transform 0.1s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+
+    /* Action Buttons */
+    .btn-row { display: flex; gap: 0.75rem; }
+    .action-btn {
+      flex: 1; padding: 12px 16px; border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary { background: var(--accent-primary); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); box-shadow: 0 4px 12px var(--accent-glow); transform: translateY(-1px); }
+    .btn-secondary { background: var(--btn-bg); border: 1px solid var(--border-color); color: var(--text-primary); }
+    .btn-secondary:hover { background: var(--btn-hover); border-color: var(--accent-primary); }
+    .btn-secondary.active { background: var(--accent-glow); border-color: var(--accent-primary); color: var(--accent-primary); }
+
+    /* Spatial Orbit Canvas & Visualizer */
+    .visualizer-card { align-items: center; text-align: center; justify-content: center; position: relative; }
+    .canvas-wrapper { position: relative; width: 100%; max-width: 280px; aspect-ratio: 1; margin: 0 auto; }
+    canvas { width: 100%; height: 100%; border-radius: 50%; background: var(--input-bg); border: 1px solid var(--border-color); }
+
+    /* Info Grid Layout (Bottom Section) */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .info-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .info-box h3 svg {
+      color: var(--accent-primary);
+    }
+
+    .info-box ol, .info-box ul {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    .info-box li {
+      margin-bottom: 0.6rem;
+    }
+
+    .info-box li:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-box strong {
+      color: var(--text-primary);
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--input-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-primary);
+      font-size: 0.8rem;
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="top-bar">
+      <a href=".." class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+      </div>
+      <h1>Audio & Channel Tester</h1>
+      <p class="subtitle">Check speaker/headphone channels, custom panning balance, and 3D/8D spatial effects.</p>
+    </header>
+
+    <!-- App Split Layout -->
+    <div class="app-layout">
+      
+      <!-- Left Column: Channel & Panning Controls -->
+      <main class="app-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+            Channel Quick Test
+          </div>
+        </div>
+
+        <!-- L / C / R Instant Channel Test Buttons -->
+        <div class="channel-buttons">
+          <button class="channel-btn" id="btnLeft">
+            <span class="channel-badge">👈 L</span>
+            <span class="channel-label">Left Channel</span>
+          </button>
+          <button class="channel-btn" id="btnCenter">
+            <span class="channel-badge">🎧 C</span>
+            <span class="channel-label">Center (Both)</span>
+          </button>
+          <button class="channel-btn" id="btnRight">
+            <span class="channel-badge">R 👉</span>
+            <span class="channel-label">Right Channel</span>
+          </button>
+        </div>
+
+        <!-- Audio Source Selector -->
+        <div class="audio-source-box">
+          <div class="control-header">
+            <span>Audio Source</span>
+          </div>
+          <div class="source-select-row">
+            <button class="source-btn active" id="srcToneBtn">Synth Melody</button>
+            <button class="source-btn" id="srcFileBtn">Upload File</button>
+          </div>
+          <div class="file-input-wrapper" id="fileInputWrapper">
+            <label for="audioFileInput" class="custom-file-label" id="fileLabel">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              Choose MP3 / WAV audio
+            </label>
+            <input type="file" id="audioFileInput" accept="audio/*" style="display:none;">
+          </div>
+        </div>
+
+        <!-- Panning Slider (L --- C --- R) -->
+        <div class="control-group">
+          <div class="control-header">
+            <span>Channel Balance (Pan)</span>
+            <span class="control-value" id="panValDisplay">Center (0.0)</span>
+          </div>
+          <input type="range" id="panSlider" min="-1" max="1" step="0.02" value="0">
+          <div class="slider-labels">
+            <span>LEFT (-1.0)</span>
+            <span>CENTER (0.0)</span>
+            <span>RIGHT (+1.0)</span>
+          </div>
+        </div>
+
+        <!-- Volume Slider -->
+        <div class="control-group">
+          <div class="control-header">
+            <span>Master Volume</span>
+            <span class="control-value" id="volValDisplay">80%</span>
+          </div>
+          <input type="range" id="volSlider" min="0" max="1" step="0.01" value="0.8">
+        </div>
+
+        <!-- Play/Pause & 8D Effect Mode -->
+        <div class="btn-row">
+          <button class="action-btn btn-primary" id="playBtn">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/></svg>
+            <span id="playBtnText">Play Continuous</span>
+          </button>
+          <button class="action-btn btn-secondary" id="orbit8dBtn">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Enable 8D Orbit
+          </button>
+        </div>
+      </main>
+
+      <!-- Right Column: Visualizer Canvas -->
+      <aside class="app-card visualizer-card">
+        <div class="panel-header" style="width: 100%;">
+          <div class="panel-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/></svg>
+            3D Sound Stage
+          </div>
+        </div>
+
+        <div class="canvas-wrapper">
+          <canvas id="orbitCanvas" width="300" height="300"></canvas>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Info Grid Section -->
+    <div class="info-grid">
+      <!-- 1. How to Open (Loaded Dynamically) -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          How to Open
+        </h3>
+        <ol>
+          <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+          <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+          <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+        </ol>
+      </div>
+
+      <!-- 2. How to Use -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+          How to Use
+        </h3>
+        <ul>
+          <li><strong>Quick Channel Test:</strong> Click <code>L</code>, <code>C</code>, or <code>R</code> to play instant chime tones verifying left/right channels.</li>
+          <li><strong>Audio Source:</strong> Use the built-in synth melody or upload custom <code>MP3</code>/<code>WAV</code> files.</li>
+          <li><strong>Balance & Volume:</strong> Drag the balance slider between <code>-1.0</code> (Left) and <code>+1.0</code> (Right).</li>
+          <li><strong>8D Simulation:</strong> Toggle <code>Enable 8D Orbit</code> for continuous panning and depth filters around your head.</li>
+        </ul>
+      </div>
+
+      <!-- 3. USP -->
+      <div class="info-box">
+        <h3>
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+          USP (Why It's Different)
+        </h3>
+        <ul>
+          <li><strong>Zero-Latency Web Audio:</strong> Real-time browser audio synthesis with precise channel separation.</li>
+          <li><strong>True 8D Sound Emulation:</strong> Combines continuous stereo spatial panning with dynamic low-pass depth filtering.</li>
+          <li><strong>3D Visual Sound Stage:</strong> Live circular visualizer showing real-time sound trajectory relative to ears.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  
+  <script src="/NT-js/loadDynamicToolInfo.js" defer></script>
+  <script>
+
+    // --------------------------------------------------------------------------
+    // UI & Canvas Element Selectors
+    // --------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+    const htmlElement = document.documentElement;
+
+    const panSlider = document.getElementById('panSlider');
+    const volSlider = document.getElementById('volSlider');
+    const panValDisplay = document.getElementById('panValDisplay');
+    const volValDisplay = document.getElementById('volValDisplay');
+    
+    const playBtn = document.getElementById('playBtn');
+    const playBtnText = document.getElementById('playBtnText');
+    const orbit8dBtn = document.getElementById('orbit8dBtn');
+    
+    const srcToneBtn = document.getElementById('srcToneBtn');
+    const srcFileBtn = document.getElementById('srcFileBtn');
+    const fileInputWrapper = document.getElementById('fileInputWrapper');
+    const audioFileInput = document.getElementById('audioFileInput');
+    const fileLabel = document.getElementById('fileLabel');
+
+    const btnLeft = document.getElementById('btnLeft');
+    const btnCenter = document.getElementById('btnCenter');
+    const btnRight = document.getElementById('btnRight');
+    
+    const canvas = document.getElementById('orbitCanvas');
+    const ctx2d = canvas ? canvas.getContext('2d') : null;
+
+    // --------------------------------------------------------------------------
+    // Web Audio Engine State Variables
+    // --------------------------------------------------------------------------
+    let audioCtx = null;
+    let stereoPanner = null;
+    let masterGain = null;
+    let filterNode = null;
+    let analyserNode = null;
+
+    let isPlaying = false;
+    let is8DActive = false;
+    let currentSourceType = 'synth';
+    let audioBuffer = null;
+    let activeBufferNode = null;
+    let synthInterval = null;
+
+    let orbitAngle = 0;
+    let animationFrameId = null;
+
+    // --------------------------------------------------------------------------
+    // Visualizer Canvas Drawer
+    // --------------------------------------------------------------------------
+    function drawCanvasStatic() {
+      if (!canvas || !ctx2d) return;
+
+      const isDark = htmlElement.getAttribute('data-theme') === 'dark';
+      const width = canvas.width;
+      const height = canvas.height;
+      const center = width / 2;
+
+      ctx2d.clearRect(0, 0, width, height);
+
+      // Draw Orbit Track Line
+      ctx2d.beginPath();
+      ctx2d.arc(center, center, 95, 0, Math.PI * 2);
+      ctx2d.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+      ctx2d.lineWidth = 2;
+      ctx2d.setLineDash([6, 6]);
+      ctx2d.stroke();
+      ctx2d.setLineDash([]);
+
+      // Draw Listener Head Icon in Center
+      ctx2d.fillStyle = isDark ? '#f8fafc' : '#0f172a';
+      ctx2d.beginPath();
+      ctx2d.arc(center, center, 22, 0, Math.PI * 2);
+      ctx2d.fill();
+
+      // Ears
+      ctx2d.fillStyle = '#6366f1';
+      ctx2d.beginPath(); ctx2d.arc(center - 24, center, 6, 0, Math.PI * 2); ctx2d.fill(); // Left Ear
+      ctx2d.beginPath(); ctx2d.arc(center + 24, center, 6, 0, Math.PI * 2); ctx2d.fill(); // Right Ear
+
+      // L/R Labels
+      ctx2d.font = '700 11px var(--font-mono)';
+      ctx2d.fillStyle = isDark ? '#94a3b8' : '#64748b';
+      ctx2d.textAlign = 'center';
+      ctx2d.fillText('L', center - 115, center + 4);
+      ctx2d.fillText('R', center + 115, center + 4);
+    }
+
+    // --------------------------------------------------------------------------
+    // Theme Logic
+    // --------------------------------------------------------------------------
+    function applyTheme(theme) {
+      htmlElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+      drawCanvasStatic();
+    }
+
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --------------------------------------------------------------------------
+    // Audio Context Initialization
+    // --------------------------------------------------------------------------
+    function initAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+
+        // Nodes
+        stereoPanner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+        masterGain = audioCtx.createGain();
+        filterNode = audioCtx.createBiquadFilter();
+        analyserNode = audioCtx.createAnalyser();
+
+        // Node Configuration
+        masterGain.gain.value = parseFloat(volSlider.value);
+        filterNode.type = 'lowpass';
+        filterNode.frequency.value = 20000;
+        analyserNode.fftSize = 64;
+
+        if (stereoPanner) {
+          stereoPanner.connect(filterNode);
+        }
+        filterNode.connect(masterGain);
+        masterGain.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+      }
+
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Quick Channel One-Shot Tones (L, C, R)
+    // --------------------------------------------------------------------------
+    function playQuickTone(panValue, freqSeq = [440, 880]) {
+      initAudioContext();
+      
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const tempPanner = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freqSeq[0], now);
+      osc.frequency.exponentialRampToValueAtTime(freqSeq[1], now + 0.25);
+
+      gain.gain.setValueAtTime(masterGain.gain.value, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+      if (tempPanner) {
+        tempPanner.pan.value = panValue;
+        osc.connect(gain);
+        gain.connect(tempPanner);
+        tempPanner.connect(audioCtx.destination);
+      } else {
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+      }
+
+      osc.start(now);
+      osc.stop(now + 0.42);
+    }
+
+    btnLeft.addEventListener('click', () => {
+      highlightTempButton(btnLeft);
+      playQuickTone(-1.0, [350, 520]);
+    });
+    btnCenter.addEventListener('click', () => {
+      highlightTempButton(btnCenter);
+      playQuickTone(0.0, [440, 660]);
+    });
+    btnRight.addEventListener('click', () => {
+      highlightTempButton(btnRight);
+      playQuickTone(1.0, [520, 780]);
+    });
+
+    function highlightTempButton(btn) {
+      [btnLeft, btnCenter, btnRight].forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setTimeout(() => btn.classList.remove('active'), 500);
+    }
+
+    // --------------------------------------------------------------------------
+    // Continuous Audio Source Logic
+    // --------------------------------------------------------------------------
+    function startContinuousAudio() {
+      initAudioContext();
+      stopContinuousAudio();
+
+      isPlaying = true;
+      playBtnText.textContent = 'Pause Audio';
+
+      if (currentSourceType === 'file' && audioBuffer) {
+        activeBufferNode = audioCtx.createBufferSource();
+        activeBufferNode.buffer = audioBuffer;
+        activeBufferNode.loop = true;
+        
+        if (stereoPanner) activeBufferNode.connect(stereoPanner);
+        else activeBufferNode.connect(filterNode);
+
+        activeBufferNode.start();
+      } else {
+        let noteIndex = 0;
+        const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+        
+        synthInterval = setInterval(() => {
+          if (!isPlaying) return;
+          const osc = audioCtx.createOscillator();
+          const noteGain = audioCtx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.value = notes[noteIndex % notes.length];
+          noteIndex++;
+
+          const now = audioCtx.currentTime;
+          noteGain.gain.setValueAtTime(0.3, now);
+          noteGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+          if (stereoPanner) osc.connect(noteGain).connect(stereoPanner);
+          else osc.connect(noteGain).connect(filterNode);
+
+          osc.start(now);
+          osc.stop(now + 0.38);
+        }, 320);
+      }
+
+      startVisualizerLoop();
+    }
+
+    function stopContinuousAudio() {
+      isPlaying = false;
+      playBtnText.textContent = 'Play Continuous';
+
+      if (activeBufferNode) {
+        try { activeBufferNode.stop(); } catch(e) {}
+        activeBufferNode = null;
+      }
+      if (synthInterval) {
+        clearInterval(synthInterval);
+        synthInterval = null;
+      }
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        stopContinuousAudio();
+      } else {
+        startContinuousAudio();
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Source Switcher & File Upload
+    // --------------------------------------------------------------------------
+    srcToneBtn.addEventListener('click', () => {
+      srcToneBtn.classList.add('active');
+      srcFileBtn.classList.remove('active');
+      fileInputWrapper.classList.remove('active');
+      currentSourceType = 'synth';
+      if (isPlaying) startContinuousAudio();
+    });
+
+    srcFileBtn.addEventListener('click', () => {
+      srcFileBtn.classList.add('active');
+      srcToneBtn.classList.remove('active');
+      fileInputWrapper.classList.add('active');
+      currentSourceType = 'file';
+    });
+
+    audioFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      fileLabel.textContent = file.name;
+      initAudioContext();
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        audioCtx.decodeAudioData(evt.target.result, (buffer) => {
+          audioBuffer = buffer;
+          if (isPlaying) startContinuousAudio();
+        }, () => {
+          alert('Error decoding audio file.');
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    // --------------------------------------------------------------------------
+    // Panning & Volume Sliders
+    // --------------------------------------------------------------------------
+    panSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      updatePanDisplay(val);
+      if (stereoPanner && !is8DActive) {
+        stereoPanner.pan.setValueAtTime(val, audioCtx ? audioCtx.currentTime : 0);
+      }
+    });
+
+    function updatePanDisplay(val) {
+      if (val === 0) panValDisplay.textContent = 'Center (0.0)';
+      else if (val < 0) panValDisplay.textContent = `Left (${val.toFixed(2)})`;
+      else panValDisplay.textContent = `Right (+${val.toFixed(2)})`;
+    }
+
+    volSlider.addEventListener('input', (e) => {
+      const val = parseFloat(e.target.value);
+      volValDisplay.textContent = `${Math.round(val * 100)}%`;
+      if (masterGain) {
+        masterGain.gain.setValueAtTime(val, audioCtx.currentTime);
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // 8D Orbit Effect Mode
+    // --------------------------------------------------------------------------
+    orbit8dBtn.addEventListener('click', () => {
+      is8DActive = !is8DActive;
+      if (is8DActive) {
+        orbit8dBtn.classList.add('active');
+        orbit8dBtn.innerHTML = `
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          8D Orbit Active
+        `;
+        if (!isPlaying) startContinuousAudio();
+      } else {
+        orbit8dBtn.classList.remove('active');
+        orbit8dBtn.innerHTML = `
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Enable 8D Orbit
+        `;
+        if (filterNode) filterNode.frequency.setValueAtTime(20000, audioCtx.currentTime);
+        if (stereoPanner) stereoPanner.pan.setValueAtTime(parseFloat(panSlider.value), audioCtx.currentTime);
+      }
+    });
+
+    // --------------------------------------------------------------------------
+    // Visualizer Loop
+    // --------------------------------------------------------------------------
+    function startVisualizerLoop() {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+      function renderFrame() {
+        if (!isPlaying) {
+          drawCanvasStatic();
+          return;
+        }
+
+        drawCanvasStatic();
+
+        const width = canvas.width;
+        const center = width / 2;
+        const radius = 95;
+
+        if (is8DActive) {
+          orbitAngle += 0.035;
+          const panVal = Math.sin(orbitAngle);
+          
+          if (stereoPanner) {
+            stereoPanner.pan.setValueAtTime(panVal, audioCtx.currentTime);
+          }
+          panSlider.value = panVal;
+          updatePanDisplay(panVal);
+
+          const depthVal = Math.cos(orbitAngle);
+          if (filterNode) {
+            const freq = depthVal < 0 ? 2500 + (1 + depthVal) * 5000 : 20000;
+            filterNode.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          }
+        } else {
+          const panVal = parseFloat(panSlider.value);
+          orbitAngle = panVal * (Math.PI / 2);
+        }
+
+        const orbX = center + Math.sin(orbitAngle) * radius;
+        const orbY = center - Math.cos(orbitAngle) * (radius * 0.5);
+
+        ctx2d.beginPath();
+        ctx2d.arc(orbX, orbY, 12, 0, Math.PI * 2);
+        ctx2d.fillStyle = '#6366f1';
+        ctx2d.shadowColor = '#6366f1';
+        ctx2d.shadowBlur = 15;
+        ctx2d.fill();
+        ctx2d.shadowBlur = 0;
+
+        animationFrameId = requestAnimationFrame(renderFrame);
+      }
+
+      renderFrame();
+    }
+
+    // Initial Static Render
+    drawCanvasStatic();
+  </script>
+</body>
+</html>

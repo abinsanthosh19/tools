@@ -770,36 +770,28 @@
       // ==========================================================================
 
       function normalizeTool(tool) {
-        if (!tool || typeof tool !== "object" || !tool.card) {
-          return null;
-        }
+        if (!tool || typeof tool !== "object") return null;
 
-        const card = tool.card;
-        const tags = Array.isArray(card.tags)
-          ? card.tags.filter((tag) => typeof tag === "string")
-          : [];
+        const tags = Array.isArray(tool.tags) ? tool.tags.filter(t => typeof t === "string") : [];
+        const name = String(tool.name || "");
 
         return {
-          id: tool.tool_id ?? card.id ?? "",
-          name: String(tool.name ?? ""),
-          title: String(card.title ?? tool.name ?? "Untitled Tool"),
-          url: String(card.url ?? "#"),
-          category: String(card.category ?? "TOOL"),
-          description: String(card.description ?? ""),
-          slug: String(card.footer?.slug ?? tool.name ?? ""),
-          version: String(card.footer?.version ?? ""),
-          icon: String(card.icon ?? ""),
+          id: tool.id ?? "",
+          name: name,
+          title: String(tool.title || name),
+          url: String(tool.url || `/${name}/`),
+          category: String(tool.category || "UTILITY"),
+          description: String(tool.description || ""),
+          slug: name,
+          version: String(tool.version || "v1.0"),
+          icon: String(tool.icon || ""),
           searchText: [
-            tool.name,
-            card.title,
-            card.description,
-            card.category,
-            card.footer?.slug,
-            ...tags,
-          ]
-            .filter(Boolean)
-            .join(" ")
-            .toLocaleLowerCase(),
+            name,
+            tool.title,
+            tool.description,
+            tool.category,
+            ...tags
+          ].filter(Boolean).join(" ").toLowerCase()
         };
       }
 
