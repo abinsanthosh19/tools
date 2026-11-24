@@ -766,6 +766,37 @@
       }
 
       // ==========================================================================
+      // THEME SYNC ON BACK NAVIGATION / TAB FOCUS
+      // ==========================================================================
+
+      function syncThemeFromStorage() {
+        const storedTheme = getPreferredTheme();
+        if (elements.html.dataset.theme !== storedTheme) {
+          applyTheme(storedTheme, false);
+        }
+      }
+
+      // Sync when page is restored from Back/Forward Cache (BFCache)
+      window.addEventListener("pageshow", syncThemeFromStorage);
+
+      // Sync on history state changes (Back/Forward buttons)
+      window.addEventListener("popstate", syncThemeFromStorage);
+
+      // Sync when returning focus to the home tab
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          syncThemeFromStorage();
+        }
+      });
+
+      // Sync across multiple open browser tabs
+      window.addEventListener("storage", (e) => {
+        if (!e.key || e.key === THEME_STORAGE_KEY) {
+          syncThemeFromStorage();
+        }
+      });
+      
+      // ==========================================================================
       // VALIDATION / NORMALIZATION
       // ==========================================================================
 

@@ -160,6 +160,16 @@
       "description": "Identify keyboard keys, codes, locations, modifiers, and keyboard events in real time.",
       "tags": ["keyboard", "key", "keycode", "event", "developer", "utility"],
       "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14' rx='2'/><path d='M6 9h.01M9 9h.01M12 9h.01M15 9h.01M18 9h.01M6 13h.01M9 13h.01M12 13h.01M15 13h.01M18 13h.01M8 16h8'/></svg>"
+    },
+    {
+      "id": 117,
+      "name": "keyboard-typing-test",
+      "title": "Keyboard Typing Test",
+      "category": "UTILITY",
+      "version": "v1.0",
+      "description": "Test your typing speed, practice with preset or custom stories, and build your daily typing streak.",
+      "tags": ["keyboard", "typing", "wpm", "speed test", "practice", "streak", "utility"],
+      "icon": "<svg width='22' height='22' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='4' width='18' height='16' rx='2'/><path d='M7 8h10M7 12h10M7 16h6'/></svg>"
     }
   ]
 }

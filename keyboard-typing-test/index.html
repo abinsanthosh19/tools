@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>Keyboard Typing Test & Practice</title>
+  <meta name="title" content="Keyboard Typing Test & Practice">
+  <meta name="description" content="Test your typing speed, build daily practice streaks, and type custom stories or default practice passages with flexible time modes.">
+  <meta name="keywords" content="typing test, wpm test, typing speed, practice story, touch typing, typing streak">
+  <link rel="canonical" href="https://tools.mj46.in/keyboard-typing-test/">
+
+  <!-- Open Graph / Facebook / LinkedIn / Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tools.mj46.in/keyboard-typing-test/">
+  <meta property="og:title" content="Keyboard Typing Test & Practice">
+  <meta property="og:description" content="Test your typing speed, build daily practice streaks, and type custom stories or default practice passages with flexible time modes.">
+  <meta property="og:image" content="https://tools.mj46.in/keyboard-typing-test/og-image.png?date=140826">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://tools.mj46.in/keyboard-typing-test/">
+  <meta name="twitter:title" content="Keyboard Typing Test & Practice">
+  <meta name="twitter:description" content="Test your typing speed, build daily practice streaks, and type custom stories or default practice passages with flexible time modes.">
+  <meta name="twitter:image" content="https://tools.mj46.in/keyboard-typing-test/og-image.png?date=140826">
+
+  <script src="/NT-js/initTheme.js"></script>
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM VARIABLES (DARK THEME - DEFAULT)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-main: #090d16;
+      --bg-card: rgba(19, 27, 46, 0.6);
+      --bg-card-hover: rgba(25, 36, 61, 0.8);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(99, 102, 241, 0.5);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-primary: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --input-bg: rgba(15, 23, 42, 0.8);
+      --icon-bg: rgba(255, 255, 255, 0.03);
+      --tag-bg: rgba(255, 255, 255, 0.05);
+
+      --btn-bg: rgba(255, 255, 255, 0.04);
+      --btn-hover: rgba(255, 255, 255, 0.09);
+      --btn-active-bg: rgba(99, 102, 241, 0.15);
+      --btn-active-color: #818cf8;
+
+      --char-correct: #38bdf8;
+      --char-incorrect: #f43f5e;
+      --char-untyped: #475569;
+      --char-bg-error: rgba(244, 63, 94, 0.2);
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+      --card-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ==========================================================================
+       LIGHT THEME OVERRIDES
+       ========================================================================== */
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.75);
+      --bg-card-hover: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(79, 70, 229, 0.4);
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      
+      --accent-primary: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --input-bg: rgba(255, 255, 255, 0.9);
+      --icon-bg: rgba(0, 0, 0, 0.04);
+      --tag-bg: rgba(0, 0, 0, 0.05);
+
+      --btn-bg: rgba(0, 0, 0, 0.03);
+      --btn-hover: rgba(0, 0, 0, 0.07);
+      --btn-active-bg: rgba(79, 70, 229, 0.08);
+      --btn-active-color: #4f46e5;
+
+      --char-correct: #0284c7;
+      --char-incorrect: #e11d48;
+      --char-untyped: #94a3b8;
+      --char-bg-error: rgba(225, 29, 72, 0.15);
+
+      --bg-gradient: 
+        radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+      --heading-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      --card-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Shared Dimensions & Fonts */
+    :root {
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+
+    [data-theme="dark"] .sun-icon { display: block; }
+    [data-theme="dark"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: block; }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .tool-icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      background: var(--icon-bg);
+      border: 1px solid var(--border-color);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Main Container Cards */
+    .typing-card, .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Control Panel Header */
+    .controls-panel {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .group-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-right: 0.25rem;
+    }
+
+    .option-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .option-btn:hover {
+      background: var(--btn-hover);
+      color: var(--text-primary);
+      border-color: var(--accent-primary);
+    }
+
+    .option-btn.active {
+      background: var(--btn-active-bg);
+      color: var(--btn-active-color);
+      border-color: var(--accent-primary);
+    }
+
+    .upload-btn-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Streak Badge */
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #f59e0b;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* Stats Display Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Typing Arena / Display Area */
+    .typing-arena {
+      position: relative;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      min-height: 180px;
+      max-height: 260px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: var(--char-untyped);
+      cursor: text;
+      user-select: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .typing-arena:focus-within, .typing-arena.active {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .hidden-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      left: -9999px;
+    }
+
+    /* Character Formatting */
+    .char {
+      position: relative;
+      transition: color 0.1s ease, background 0.1s ease;
+      border-radius: 2px;
+    }
+
+    .char.correct {
+      color: var(--char-correct);
+    }
+
+    .char.incorrect {
+      color: var(--char-incorrect);
+      background-color: var(--char-bg-error);
+    }
+
+    .char.cursor::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 2px;
+      height: 1.2em;
+      background-color: var(--accent-primary);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Action Toolbar / Reset */
+    .arena-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .hint-text code {
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .restart-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .restart-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent-primary);
+      transform: rotate(15deg);
+    }
+
+    /* Results Modal / Overlay */
+    .results-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .results-overlay.show {
+      display: flex;
+    }
+
+    .results-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .results-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .results-stat {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+    }
+
+    .results-stat .val {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .results-stat .lbl {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .close-results-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .close-results-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Modal / Paste Custom Text */
+    .paste-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 101;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .paste-modal.show {
+      display: flex;
+    }
+
+    .paste-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      max-width: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .paste-textarea {
+      width: 100%;
+      height: 160px;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      resize: vertical;
+      outline: none;
+    }
+
+    .paste-textarea:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .paste-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* Custom Text Indicator Badge */
+    .custom-text-badge {
+      display: none;
+      font-size: 0.75rem;
+      color: var(--accent-primary);
+      background: var(--btn-active-bg);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    /* ==========================================================================
+       HOW TO USE SECTION STYLES
+       ========================================================================== */
+    .info-card {
+      margin-top: 1.5rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .info-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .info-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-box h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul, .info-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .info-box code {
+      font-family: var(--font-mono);
+      background: var(--tag-bg);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 640px) {
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .controls-panel {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Nav -->
+    <div class="top-bar">
+      <a href=".." onclick="if(history.length>1){window.history.back(); return false;}else{window.location.href='..'}" class="back-link">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to Hub
+      </a>
+
+      <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <span id="themeToggleText">Light Mode</span>
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="tool-icon-wrapper">
+        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h18M3 19h18M5 9h14M7 13h10M9 17h6"/></svg>
+      </div>
+      <h1>Keyboard Typing Test</h1>
+      <p class="subtitle">Improve speed, accuracy, and practice streaks with stories and custom text.</p>
+    </header>
+
+    <!-- App Main Layout -->
+    <main class="typing-card">
+      
+      <!-- Controls Panel -->
+      <div class="controls-panel">
+        
+        <!-- Mode Switcher -->
+        <div class="control-group">
+          <span class="group-label">Mode:</span>
+          <button class="option-btn active" data-mode="speed" id="btnModeSpeed">⚡ Speed Test</button>
+          <button class="option-btn" data-mode="story" id="btnModeStory">📖 Practice Story</button>
+        </div>
+
+        <!-- Time Options (30s, 60s, 120s, Infinite) -->
+        <div class="control-group" id="timeGroup">
+          <span class="group-label">Time:</span>
+          <button class="option-btn active" data-time="30">30s</button>
+          <button class="option-btn" data-time="60">60s</button>
+          <button class="option-btn" data-time="120">120s</button>
+          <button class="option-btn" data-time="infinite">∞ Infinite</button>
+        </div>
+
+        <!-- Story Source Switcher (Visible in Story mode or custom upload) -->
+        <div class="control-group" id="storySourceGroup">
+          <span class="group-label">Source:</span>
+          <button class="option-btn active" id="btnDefaultStory">Default File</button>
+          
+          <div class="upload-btn-wrapper">
+            <button class="option-btn" id="btnUploadFile">📁 Upload .txt</button>
+            <input type="file" id="fileInput" accept=".txt">
+          </div>
+
+          <button class="option-btn" id="btnPasteText">📝 Paste Text</button>
+        </div>
+
+        <!-- Streak Badge -->
+        <div class="streak-badge" id="streakBadge" title="Practice daily to keep your streak going!">
+          🔥 <span id="streakCount">0</span> Day Streak
+        </div>
+
+      </div>
+
+      <!-- Stats Display Bar -->
+      <div class="stats-bar">
+        <div class="stat-box">
+          <div class="stat-val" id="timerVal">30</div>
+          <div class="stat-label" id="timerLabel">Time Left</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="wpmVal">0</div>
+          <div class="stat-label">WPM</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="accuracyVal">100%</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="errorVal">0</div>
+          <div class="stat-label">Errors</div>
+        </div>
+      </div>
+
+      <!-- Custom Badge indicator -->
+      <div style="display: flex; justify-content: space-between; align-items: center; min-height: 20px;">
+        <span class="custom-text-badge" id="customBadge">Custom Passage Loaded</span>
+      </div>
+
+      <!-- Typing Arena -->
+      <div class="typing-arena" id="typingArena" tabindex="0">
+        <input type="text" class="hidden-input" id="hiddenInput" autocomplete="off" capitalize="off" spellcheck="false">
+        <div id="textContainer">Click here or press any key to start typing...</div>
+      </div>
+
+      <!-- Arena Actions & Shortcuts Hint -->
+      <div class="arena-actions">
+        <div class="hint-text">
+          Press <code>Tab</code> + <code>Enter</code> or click <strong>Restart</strong> to reset test.
+        </div>
+        <button class="restart-btn" id="restartBtn">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Restart
+        </button>
+      </div>
+
+    </main>
+
+    <!-- How to Use & Documentation Section -->
+    <section class="info-card">
+      <div class="panel-header" style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-primary);">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        How to Use & Guide
+      </div>
+
+      <div class="info-grid">
+        <!-- 1. How to Open -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            How to Open
+          </h3>
+          <ol>
+            <li><strong>Direct Slug:</strong> Type <code id="openSlug">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Tool ID:</strong> Type <code id="openToolId">Loading...</code> on <code class="dynamic-domain">...</code></li>
+            <li><strong>Hub Search:</strong> Search on the root hub path (<code id="openHubPath">/</code>).</li>
+          </ol>
+        </div>
+
+        <!-- 2. How to Use -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 11l5 5"/></svg>
+            How to Use
+          </h3>
+          <ul>
+            <li><strong>Choose Mode:</strong> Select <code>Speed Test</code> for quick timer rounds or <code>Practice Story</code> for long-form passages.</li>
+            <li><strong>Set Timer:</strong> Select <code>30s</code>, <code>60s</code>, <code>120s</code>, or <code>∞ Infinite</code> for untimed continuous typing.</li>
+            <li><strong>Upload or Paste:</strong> Load your own <code>.txt</code> stories or snippets to test specialized vocabulary.</li>
+            <li><strong>Maintain Streaks:</strong> Complete at least one typing session daily to build your practice streak!</li>
+          </ul>
+        </div>
+
+        <!-- 3. USP -->
+        <div class="info-box">
+          <h3>
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            USP (Why It's Different)
+          </h3>
+          <ul>
+            <li><strong>Infinite & Timed Modes:</strong> Seamlessly transition between timed speed benchmarks and infinite endurance practice.</li>
+            <li><strong>Custom Story Integration:</strong> Practice typing on your own documents, code blocks, or custom study files.</li>
+            <li><strong>Daily Practice Streak Tracker:</strong> Motivates consistent daily touch-typing habits locally without sign-ups.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Test Results Overlay Modal -->
+  <div class="results-overlay" id="resultsModal">
+    <div class="results-card">
+      <h2 class="results-title">Test Complete! 🎉</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Here is how you performed:</p>
+
+      <div class="results-grid">
+        <div class="results-stat">
+          <div class="val" id="resWpm">0</div>
+          <div class="lbl">Words Per Min</div>
+        </div>
+        <div class="results-stat">
+          <div class="val" id="resAcc">0%</div>
+          <div class="lbl">Accuracy</div>
+        </div>
+        <div class="results-stat">
+          <div class="val" id="resTime">0s</div>
+          <div class="lbl">Time Elapsed</div>
+        </div>
+        <div class="results-stat">
+          <div class="val" id="resChars">0</div>
+          <div class="lbl">Correct Chars</div>
+        </div>
+      </div>
+
+      <button class="close-results-btn" id="closeResultsBtn">Try Again</button>
+    </div>
+  </div>
+
+  <!-- Paste Text Modal -->
+  <div class="paste-modal" id="pasteModal">
+    <div class="paste-card">
+      <h3 style="color: var(--text-primary); font-size: 1.1rem; font-weight: 700;">Paste Custom Practice Text</h3>
+      <textarea class="paste-textarea" id="pasteTextarea" placeholder="Paste your story or paragraph here..."></textarea>
+      <div class="paste-actions">
+        <button class="option-btn" id="cancelPasteBtn">Cancel</button>
+        <button class="option-btn active" id="confirmPasteBtn">Load Passage</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/NT-js/loadDynamicToolInfo.js" defer></script>
+  <script src="/NT-js/themeLogic.js" defer></script>
+
+  <script>
+    // --------------------------------------------------------------------------
+    // Default Random Words Bank & Fallback Story Text
+    // --------------------------------------------------------------------------
+    const RANDOM_WORDS = [
+      "the", "be", "of", "and", "a", "to", "in", "he", "have", "it", "that", "for", "they", "i", "with",
+      "as", "not", "on", "she", "at", "by", "this", "we", "you", "do", "but", "from", "or", "which",
+      "one", "would", "all", "will", "there", "say", "who", "make", "when", "can", "more", "if", "no",
+      "man", "out", "other", "so", "what", "time", "up", "go", "about", "than", "into", "could", "state",
+      "only", "new", "year", "some", "take", "come", "these", "know", "see", "use", "get", "like",
+      "then", "first", "work", "life", "over", "think", "also", "back", "after", "use", "two", "how",
+      "our", "work", "first", "well", "way", "even", "new", "want", "because", "any", "these", "give",
+      "day", "most", "us", "keyboard", "practice", "speed", "accuracy", "focus", "rhythm", "steady"
+    ];
+
+    const FALLBACK_STORY = "The standard clock on the wall clicked with a quiet rhythm as the quiet rain tapped gently against the window pane. In the heart of the bustling city, a small coffee shop stayed open past midnight, emitting a warm golden glow onto the damp pavement outside. Inside, steam rose gracefully from ceramic mugs, carrying the rich aroma of freshly ground dark roast espresso and toasted cinnamon. Mastering the art of swift and accurate typing requires steady patience, deliberate focus, and consistent daily practice. With each focused session, muscle memory sharpens, rhythm develops, and thoughts flow effortlessly from mind to screen.";
+
+    // --------------------------------------------------------------------------
+    // DOM Elements
+    // --------------------------------------------------------------------------
+    const typingArena = document.getElementById('typingArena');
+    const hiddenInput = document.getElementById('hiddenInput');
+    const textContainer = document.getElementById('textContainer');
+
+    const timerVal = document.getElementById('timerVal');
+    const timerLabel = document.getElementById('timerLabel');
+    const wpmVal = document.getElementById('wpmVal');
+    const accuracyVal = document.getElementById('accuracyVal');
+    const errorVal = document.getElementById('errorVal');
+
+    const btnModeSpeed = document.getElementById('btnModeSpeed');
+    const btnModeStory = document.getElementById('btnModeStory');
+    const timeGroup = document.getElementById('timeGroup');
+    const storySourceGroup = document.getElementById('storySourceGroup');
+
+    const btnDefaultStory = document.getElementById('btnDefaultStory');
+    const fileInput = document.getElementById('fileInput');
+    const btnPasteText = document.getElementById('btnPasteText');
+    const customBadge = document.getElementById('customBadge');
+
+    const streakCount = document.getElementById('streakCount');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const resultsModal = document.getElementById('resultsModal');
+    const closeResultsBtn = document.getElementById('closeResultsBtn');
+    const resWpm = document.getElementById('resWpm');
+    const resAcc = document.getElementById('resAcc');
+    const resTime = document.getElementById('resTime');
+    const resChars = document.getElementById('resChars');
+
+    const pasteModal = document.getElementById('pasteModal');
+    const pasteTextarea = document.getElementById('pasteTextarea');
+    const cancelPasteBtn = document.getElementById('cancelPasteBtn');
+    const confirmPasteBtn = document.getElementById('confirmPasteBtn');
+
+    // --------------------------------------------------------------------------
+    // State Variables
+    // --------------------------------------------------------------------------
+    let currentMode = 'speed'; // 'speed' | 'story'
+    let selectedTime = 30; // 30, 60, 120, or 'infinite'
+    let storyText = ''; // holds default story or loaded story
+    let currentText = ''; // actual text rendered in arena
+    let customTextLoaded = false;
+
+    let timer = null;
+    let timeElapsed = 0;
+    let timeLeft = 30;
+    let isTestActive = false;
+    let isTestFinished = false;
+
+    let charIndex = 0;
+    let errorsCount = 0;
+    let totalTypedChars = 0;
+    let correctTypedChars = 0;
+
+    // --------------------------------------------------------------------------
+    // Initialization & Event Listeners
+    // --------------------------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      initStreak();
+      fetchDefaultStory();
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // Mode switches
+      btnModeSpeed.addEventListener('click', () => setMode('speed'));
+      btnModeStory.addEventListener('click', () => setMode('story'));
+
+      // Time switches
+      timeGroup.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          timeGroup.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const t = btn.getAttribute('data-time');
+          selectedTime = t === 'infinite' ? 'infinite' : parseInt(t, 10);
+          resetTest();
+        });
+      });
+
+      // Default story button
+      btnDefaultStory.addEventListener('click', () => {
+        customTextLoaded = false;
+        customBadge.style.display = 'none';
+        btnDefaultStory.classList.add('active');
+        resetTest();
+      });
+
+      // Upload file listener
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const txt = evt.target.result.trim();
+            if (txt) {
+              storyText = sanitizeText(txt);
+              customTextLoaded = true;
+              customBadge.textContent = `Custom File: ${file.name}`;
+              customBadge.style.display = 'inline-block';
+              btnDefaultStory.classList.remove('active');
+              setMode('story');
+              resetTest();
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+
+      // Paste Modal listeners
+      btnPasteText.addEventListener('click', () => pasteModal.classList.add('show'));
+      cancelPasteBtn.addEventListener('click', () => pasteModal.classList.remove('show'));
+      confirmPasteBtn.addEventListener('click', () => {
+        const txt = pasteTextarea.value.trim();
+        if (txt) {
+          storyText = sanitizeText(txt);
+          customTextLoaded = true;
+          customBadge.textContent = 'Custom Pasted Text Loaded';
+          customBadge.style.display = 'inline-block';
+          btnDefaultStory.classList.remove('active');
+          pasteModal.classList.remove('show');
+          pasteTextarea.value = '';
+          setMode('story');
+          resetTest();
+        }
+      });
+
+      // Restart Button
+      restartBtn.addEventListener('click', resetTest);
+      closeResultsBtn.addEventListener('click', () => {
+        resultsModal.classList.remove('show');
+        resetTest();
+      });
+
+      // Typing Focus & Input
+      typingArena.addEventListener('click', () => {
+        hiddenInput.focus();
+        typingArena.classList.add('active');
+      });
+
+      hiddenInput.addEventListener('blur', () => {
+        typingArena.classList.remove('active');
+      });
+
+      hiddenInput.addEventListener('input', handleTypingInput);
+
+      // Keyboard Shortcuts (Tab + Enter to restart)
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && (e.target === hiddenInput || e.target === typingArena)) {
+          if (isTestFinished) resetTest();
+        }
+        if (e.key === 'Escape') {
+          resetTest();
+        }
+      });
+    }
+
+    // Fetch `practice-story.txt` separately with fallback
+    async function fetchDefaultStory() {
+      try {
+        const res = await fetch('practice-story.txt');
+        if (res.ok) {
+          const text = await res.text();
+          if (text.trim()) storyText = sanitizeText(text);
+          else storyText = sanitizeText(FALLBACK_STORY);
+        } else {
+          storyText = sanitizeText(FALLBACK_STORY);
+        }
+      } catch (e) {
+        storyText = sanitizeText(FALLBACK_STORY);
+      }
+      resetTest();
+    }
+
+    function sanitizeText(str) {
+      return str.replace(/\s+/g, ' ').trim();
+    }
+
+    // --------------------------------------------------------------------------
+    // Mode Logic
+    // --------------------------------------------------------------------------
+    function setMode(mode) {
+      currentMode = mode;
+      if (mode === 'speed') {
+        btnModeSpeed.classList.add('active');
+        btnModeStory.classList.remove('active');
+      } else {
+        btnModeStory.classList.add('active');
+        btnModeSpeed.classList.remove('active');
+      }
+      resetTest();
+    }
+
+    function generateRandomWordsPassage(count = 150) {
+      let res = [];
+      for (let i = 0; i < count; i++) {
+        const rand = RANDOM_WORDS[Math.floor(Math.random() * RANDOM_WORDS.length)];
+        res.push(rand);
+      }
+      return res.join(' ');
+    }
+
+    // --------------------------------------------------------------------------
+    // Test Setup & Reset
+    // --------------------------------------------------------------------------
+    function resetTest() {
+      clearInterval(timer);
+      timer = null;
+      isTestActive = false;
+      isTestFinished = false;
+
+      charIndex = 0;
+      errorsCount = 0;
+      totalTypedChars = 0;
+      correctTypedChars = 0;
+      timeElapsed = 0;
+
+      // Select target text based on mode
+      if (currentMode === 'speed') {
+        currentText = generateRandomWordsPassage(200);
+      } else {
+        currentText = storyText || FALLBACK_STORY;
+      }
+
+      // Timer Display setup
+      if (selectedTime === 'infinite') {
+        timerLabel.textContent = 'Elapsed Time';
+        timerVal.textContent = '0s';
+      } else {
+        timerLabel.textContent = 'Time Left';
+        timeLeft = selectedTime;
+        timerVal.textContent = `${timeLeft}s`;
+      }
+
+      wpmVal.textContent = '0';
+      accuracyVal.textContent = '100%';
+      errorVal.textContent = '0';
+
+      hiddenInput.value = '';
+      renderTextSpan();
+
+      if (document.activeElement === hiddenInput) {
+        hiddenInput.focus();
+      }
+    }
+
+    function renderTextSpan() {
+      textContainer.innerHTML = '';
+      const chars = currentText.split('');
+      chars.forEach((char, index) => {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = char;
+        if (index === 0) span.classList.add('cursor');
+        textContainer.appendChild(span);
+      });
+      typingArena.scrollTop = 0;
+    }
+
+    // --------------------------------------------------------------------------
+    // Core Typing Handler
+    // --------------------------------------------------------------------------
+    function handleTypingInput(e) {
+      if (isTestFinished) return;
+
+      const spans = textContainer.querySelectorAll('.char');
+      const inputValue = hiddenInput.value;
+
+      if (!isTestActive && inputValue.length > 0) {
+        startTimer();
+      }
+
+      // Handle backspace or forwards
+      const typedChar = inputValue[inputValue.length - 1];
+
+      if (inputValue.length < charIndex) {
+        // Backspacing
+        for (let i = inputValue.length; i < charIndex; i++) {
+          if (spans[i]) {
+            spans[i].className = 'char';
+          }
+        }
+        charIndex = inputValue.length;
+      } else if (inputValue.length > charIndex) {
+        // Typing forward
+        if (charIndex < spans.length) {
+          const expectedChar = spans[charIndex].textContent;
+          totalTypedChars++;
+
+          if (typedChar === expectedChar) {
+            spans[charIndex].className = 'char correct';
+            correctTypedChars++;
+          } else {
+            spans[charIndex].className = 'char incorrect';
+            errorsCount++;
+          }
+
+          charIndex++;
+        }
+      }
+
+      // Update Cursor position
+      spans.forEach((s, idx) => {
+        s.classList.remove('cursor');
+        if (idx === charIndex) {
+          s.classList.add('cursor');
+        }
+      });
+
+      // Auto scroll cursor into view inside arena
+      if (spans[charIndex]) {
+        const activeSpan = spans[charIndex];
+        const containerRect = typingArena.getBoundingClientRect();
+        const spanRect = activeSpan.getBoundingClientRect();
+
+        if (spanRect.bottom > containerRect.bottom - 20) {
+          typingArena.scrollTop += (spanRect.bottom - containerRect.bottom) + 30;
+        } else if (spanRect.top < containerRect.top + 20) {
+          typingArena.scrollTop -= (containerRect.top - spanRect.top) + 30;
+        }
+      }
+
+      // Live Stats recalculation
+      updateStats();
+
+      // Check for story finish condition
+      if (charIndex >= spans.length) {
+        finishTest();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Timer & Metrics Logic
+    // --------------------------------------------------------------------------
+    function startTimer() {
+      isTestActive = true;
+      const startTime = Date.now();
+
+      timer = setInterval(() => {
+        timeElapsed++;
+
+        if (selectedTime === 'infinite') {
+          timerVal.textContent = `${timeElapsed}s`;
+        } else {
+          timeLeft--;
+          timerVal.textContent = `${timeLeft}s`;
+
+          if (timeLeft <= 0) {
+            finishTest();
+          }
+        }
+
+        updateStats();
+      }, 1000);
+    }
+
+    function updateStats() {
+      const timeInMinutes = (timeElapsed || 1) / 60;
+      
+      // Net WPM calculation standard: (Typed Chars / 5) / timeInMinutes
+      const grossWpm = Math.round((totalTypedChars / 5) / timeInMinutes);
+      const netWpm = Math.max(0, Math.round(((correctTypedChars / 5)) / timeInMinutes));
+
+      const accuracy = totalTypedChars > 0 
+        ? Math.round((correctTypedChars / totalTypedChars) * 100) 
+        : 100;
+
+      wpmVal.textContent = isNaN(netWpm) ? 0 : netWpm;
+      accuracyVal.textContent = `${isNaN(accuracy) ? 100 : accuracy}%`;
+      errorVal.textContent = errorsCount;
+    }
+
+    function finishTest() {
+      clearInterval(timer);
+      isTestActive = false;
+      isTestFinished = true;
+
+      updateStats();
+      updateStreak();
+
+      // Show Results Modal
+      resWpm.textContent = wpmVal.textContent;
+      resAcc.textContent = accuracyVal.textContent;
+      resTime.textContent = selectedTime === 'infinite' ? `${timeElapsed}s` : `${selectedTime - timeLeft}s`;
+      resChars.textContent = correctTypedChars;
+
+      resultsModal.classList.add('show');
+    }
+
+    // --------------------------------------------------------------------------
+    // Practice Streak Logic
+    // --------------------------------------------------------------------------
+    function initStreak() {
+      const streakData = JSON.parse(localStorage.getItem('typing_streak_data') || '{"streak": 0, "lastDate": ""}');
+      streakCount.textContent = streakData.streak;
+    }
+
+    function updateStreak() {
+      const today = new Date().toISOString().split('T')[0];
+      const streakData = JSON.parse(localStorage.getItem('typing_streak_data') || '{"streak": 0, "lastDate": ""}');
+
+      if (streakData.lastDate === today) {
+        // Already practiced today
+        return;
+      }
+
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+      if (streakData.lastDate === yesterday) {
+        streakData.streak += 1;
+      } else {
+        streakData.streak = 1;
+      }
+
+      streakData.lastDate = today;
+      localStorage.setItem('typing_streak_data', JSON.stringify(streakData));
+      streakCount.textContent = streakData.streak;
+    }
+  </script>
+  <script src="https://www.mj46.in/js/telemetry.js"></script>
+</body>
+</html>

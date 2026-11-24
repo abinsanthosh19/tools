@@ -3,12 +3,6 @@ import asyncio
 import json
 import os
 from playwright.async_api import async_playwright
-# pip install playwright
-# playwright install chromium
-
-#================================================
-# OG Image Generator CLI Tool # use -h
-#================================================
 
 # Configuration
 CONFIG_FILE = "tools-config.json"
@@ -195,9 +189,8 @@ async def generate_og_images(target_id=None, target_name=None, force=False):
     # Filter tools based on flags
     filtered_tools = []
     for tool in tools:
-        card = tool.get("card", {})
-        tool_id = tool.get("tool_id") or card.get("id")
-        tool_name = tool.get("name") or card.get("footer", {}).get("slug", "")
+        tool_id = tool.get("id")
+        tool_name = tool.get("name", "")
 
         # ID filter check
         if target_id is not None and tool_id != target_id:
@@ -206,11 +199,10 @@ async def generate_og_images(target_id=None, target_name=None, force=False):
         # Name/Slug filter check
         if target_name is not None:
             query = target_name.strip().lower()
-            slug = card.get("footer", {}).get("slug", "").lower()
-            name = tool.get("name", "").lower()
-            url = card.get("url", "").strip("/").lower()
+            name = tool_name.lower()
+            url = tool.get("url", "").strip("/").lower()
             
-            if query not in [name, slug, url]:
+            if query not in [name, url]:
                 continue
 
         filtered_tools.append(tool)
@@ -224,8 +216,7 @@ async def generate_og_images(target_id=None, target_name=None, force=False):
         page = await browser.new_page(viewport={"width": OG_WIDTH, "height": OG_HEIGHT})
 
         for tool in filtered_tools:
-            card = tool.get("card", {})
-            folder_name = tool.get("name") or card.get("url", "").rstrip("/")
+            folder_name = tool.get("name")
             
             if not folder_name:
                 continue
@@ -241,13 +232,13 @@ async def generate_og_images(target_id=None, target_name=None, force=False):
             html_content = HTML_TEMPLATE.format(
                 width=OG_WIDTH,
                 height=OG_HEIGHT,
-                icon=card.get("icon", ""),
-                category=card.get("category", "UTILITY"),
-                title=card.get("title", ""),
-                description=card.get("description", ""),
-                id=card.get("id", ""),
-                slug=card.get("footer", {}).get("slug", folder_name),
-                version=card.get("footer", {}).get("version", "v1.0"),
+                icon=tool.get("icon", ""),
+                category=tool.get("category", "UTILITY"),
+                title=tool.get("title", ""),
+                description=tool.get("description", ""),
+                id=tool.get("id", ""),
+                slug=tool.get("name", folder_name),
+                version=tool.get("version", "v1.0"),
                 site=SITE,
                 author=AUTHOR,
                 github=GITHUB
